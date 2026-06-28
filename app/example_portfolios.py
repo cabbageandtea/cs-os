@@ -18,11 +18,38 @@ class MockEducation:
 
 
 @dataclass(frozen=True)
+class MockHeroStat:
+    value: str
+    label: str
+
+
+@dataclass(frozen=True)
+class MockApproachStep:
+    number: str
+    title: str
+    body: str
+
+
+@dataclass(frozen=True)
+class MockSkillGroup:
+    name: str
+    skills: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class MockProjectHighlight:
+    title: str
+    body: str
+
+
+@dataclass(frozen=True)
 class MockExperience:
     title: str
     org: str
     dates: str
-    detail: str
+    detail: str = ""
+    meta: str = ""
+    bullets: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -51,7 +78,7 @@ class ExampleProfile:
     slug: str
     template_name: str
     resume_template: str
-    theme: str  # light-hero | dark
+    theme: str  # light-hero | dark | pro-teal | pro-coral
     package_label: str
     mock_domain: str
     person_name: str
@@ -72,14 +99,38 @@ class ExampleProfile:
     linkedin_headline: str
     linkedin_about: str
     linkedin_experience: tuple[MockExperience, ...] = ()
+    availability_badge: str = ""
+    trust_items: tuple[str, ...] = ()
+    hero_stats: tuple[MockHeroStat, ...] = ()
+    about_heading: str = ""
+    focus_areas: tuple[str, ...] = ()
+    role_tags: tuple[str, ...] = ()
+    approach_title: str = ""
+    approach_lead: str = ""
+    approach_steps: tuple[MockApproachStep, ...] = ()
+    experience_heading: str = ""
+    experience_lead: str = ""
+    experience: tuple[MockExperience, ...] = ()
+    project_section_title: str = ""
+    project_section_lead: str = ""
+    project_highlights: tuple[MockProjectHighlight, ...] = ()
+    skill_groups: tuple[MockSkillGroup, ...] = ()
+    skills_heading: str = ""
+    skills_lead: str = ""
+    certifications: tuple[str, ...] = ()
+    credentials_heading: str = ""
+    credentials_lead: str = ""
+    recruiter_snapshot: str = ""
+    contact_heading: str = ""
+    location_note: str = ""
 
 
 EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
     "alex-rivera": ExampleProfile(
         slug="alex-rivera",
-        template_name="examples/alex_rivera.html",
+        template_name="examples/portfolio_pro.html",
         resume_template="examples/resume_alex.html",
-        theme="light-hero",
+        theme="pro-teal",
         package_label="Launch",
         mock_domain="alexrivera.me",
         person_name="Alex Rivera",
@@ -169,15 +220,151 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         contact_blurb="Open to data analyst internships — healthcare, campus ops, and civic data.",
         linkedin_headline="Information Systems student · Seeking data analyst internship",
         linkedin_about=(
-            "Building Python/SQL projects with measurable outcomes. Portfolio, resume, and GitHub tell "
-            "one story — see alexrivera.me."
+            "Building Python/SQL projects with measurable outcomes — campus dining analytics, "
+            "healthcare wait-time dashboards, and stakeholder-ready summaries. Portfolio, resume, "
+            "and GitHub tell one story at alexrivera.me."
         ),
+        availability_badge="Open to data analyst internships · May 2027 · remote or hybrid",
+        trust_items=(
+            "State University · Dean's List",
+            "Google Data Analytics Certificate",
+            "40k+ rows in capstone datasets",
+            "Plotly + Tableau deliverables",
+        ),
+        hero_stats=(
+            MockHeroStat("2", "Shipped capstone projects"),
+            MockHeroStat("40k+", "Rows modeled & reported"),
+            MockHeroStat("3.7", "GPA · graduating 2027"),
+        ),
+        about_heading="Coursework with consequences.",
+        focus_areas=(
+            "ETL pipelines & reproducible SQL",
+            "Stakeholder-ready dashboards",
+            "Open-data analysis with documented assumptions",
+            "Executive summaries for non-technical audiences",
+            "Impact metrics recruiters can verify",
+        ),
+        role_tags=("Data Analyst Intern", "Healthcare analytics", "Campus operations", "Civic data"),
+        approach_title="Where questions meet defensible numbers",
+        approach_lead=(
+            "Not charts for their own sake — building pipelines and narratives that answer "
+            "who acts on the insight and what changed because of it."
+        ),
+        approach_steps=(
+            MockApproachStep(
+                "01",
+                "Discover",
+                "Start with the decision and the audience. Define the metric, the grain, and what "
+                "evidence would change someone's mind.",
+            ),
+            MockApproachStep(
+                "02",
+                "Model",
+                "Clean joins, documented assumptions, idempotent ingest. Notebooks and SQL scripts "
+                "a teammate can rerun without guessing.",
+            ),
+            MockApproachStep(
+                "03",
+                "Present",
+                "Executive summaries, annotated dashboards, and PDF memos built for a six-second "
+                "recruiter scan — outcome first, method second.",
+            ),
+        ),
+        experience_heading="Built in labs, validated on real questions",
+        experience_lead=(
+            "Research, tutoring, and campus operations experience — each project tied to a "
+            "stakeholder who could act on the result."
+        ),
+        experience=(
+            MockExperience(
+                title="Research Assistant — Campus Analytics Lab",
+                org="State University",
+                dates="Jan 2025 – Present",
+                meta="Part-time · On-campus · Data & reporting",
+                bullets=(
+                    "Built ETL pipelines ingesting 40k+ dining records into SQLite with daily refresh and data dictionary.",
+                    "Delivered Plotly dashboards and a scheduling memo adopted for a student-government pilot.",
+                    "Documented ingest runbooks so the lab can extend datasets without one-off scripts.",
+                ),
+            ),
+            MockExperience(
+                title="Peer Tutor — Intro to Databases",
+                org="State University",
+                dates="Sep 2024 – May 2025",
+                meta="10 hrs/wk · SQL labs",
+                bullets=(
+                    "Led weekly labs for 30+ students — joins, aggregations, window functions, and explain plans.",
+                    "Authored practice datasets modeled on operational reporting, not toy single-table examples.",
+                ),
+            ),
+            MockExperience(
+                title="Student Worker — Campus Dining Services",
+                org="State University",
+                dates="Aug 2023 – Present",
+                meta="Part-time · Operations floor",
+                bullets=(
+                    "Saw peak-hour waste and scheduling pain that became the dining analytics capstone.",
+                    "Partnered with shift leads on count accuracy during lunch rushes — grounded the analysis in floor reality.",
+                ),
+            ),
+        ),
+        project_section_title="Analytics from real operational questions",
+        project_section_lead=(
+            "Capstone-grade work with problem statements, methods, and outcomes — not tutorial clones."
+        ),
+        project_highlights=(
+            MockProjectHighlight(
+                "Peak-hour modeling",
+                "Heatmaps and waste-by-station views tied to actionable scheduling windows — not vanity charts.",
+            ),
+            MockProjectHighlight(
+                "ER bottleneck analysis",
+                "Star-schema SQL plus Tableau views separating intake delay from bed-assignment delay.",
+            ),
+            MockProjectHighlight(
+                "Executive summaries",
+                "One-page PDF memos with outcome metrics hiring managers can repeat in a screen.",
+            ),
+            MockProjectHighlight(
+                "Reproducible ingest",
+                "Idempotent daily loads, documented assumptions, and handoff notes for the next analyst.",
+            ),
+        ),
+        skill_groups=(
+            MockSkillGroup(
+                "Data & analysis",
+                ("Python", "SQL", "Pandas", "Statistics", "Hypothesis testing", "Data visualization"),
+            ),
+            MockSkillGroup(
+                "Tools",
+                ("SQLite", "PostgreSQL", "Tableau", "Plotly", "Excel", "Jupyter"),
+            ),
+            MockSkillGroup(
+                "Communication",
+                ("Technical writing", "Stakeholder memos", "Presentation decks", "Git & GitHub"),
+            ),
+        ),
+        skills_heading="What recruiters scan for",
+        skills_lead="Analysis depth, tool fluency, and copy that survives a phone screen.",
+        certifications=(
+            "Google Data Analytics Professional Certificate",
+            "Dean's List — 4 semesters",
+            "Intro to Database Systems — A",
+        ),
+        credentials_heading="Formalizing a data-oriented path",
+        credentials_lead="Coursework and credentials aligned to analyst screens — not a scatter of unrelated badges.",
+        recruiter_snapshot=(
+            "IS senior · Python/SQL dashboards · campus + healthcare datasets · May 2027 · "
+            "seeking data analyst internships · portfolio + PDF + LinkedIn aligned."
+        ),
+        contact_heading="Open to the next internship",
+        location_note="Remote, hybrid, or on-site — healthcare, campus ops, and civic data teams.",
     ),
     "jordan-kim": ExampleProfile(
         slug="jordan-kim",
-        template_name="examples/jordan_kim.html",
+        template_name="examples/portfolio_pro.html",
         resume_template="examples/resume_jordan.html",
-        theme="dark",
+        theme="pro-coral",
         package_label="Accelerator",
         mock_domain="jordankim.me",
         person_name="Jordan Kim",
@@ -187,7 +374,6 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         email="jordan.kim@example.com",
         github_handle="jordankim-dev",
         linkedin_handle="jordankim",
-        about="",
         hero_lead=(
             "I automated inventory reporting as a floor lead. Now I build APIs and UIs with tests, "
             "deploys, and commit history recruiters can actually read."
@@ -278,9 +464,142 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
                 title="Floor Lead",
                 org="National retail chain",
                 dates="2019 – 2023",
+                meta="Full-time · Pittsburgh, PA · On-site",
                 detail="Inventory audits, associate training, Excel reporting adopted district-wide.",
+                bullets=(
+                    "Automated weekly shrink summaries in Excel — template adopted by two neighboring stores.",
+                    "Trained associates on count accuracy during peak seasons; reduced recurring mis-picks.",
+                    "Partnered with district on ad-hoc inventory investigations before escalation.",
+                ),
             ),
         ),
+        availability_badge="Open to junior SWE roles · backend-leaning full stack · remote or hybrid",
+        trust_items=(
+            "CodeForge Bootcamp · 480+ hours",
+            "4 yrs retail floor leadership",
+            "FastAPI + React capstone deployed",
+            "pytest + CI on every project",
+        ),
+        hero_stats=(
+            MockHeroStat("2", "Deployed capstone apps"),
+            MockHeroStat("4 yrs", "Retail ops before pivot"),
+            MockHeroStat("33", "GitHub repo stars (sample)"),
+        ),
+        about=(
+            "Four years as a floor lead taught me what breaks in production — mis-picks, shrink, "
+            "scheduling chaos. CodeForge formalized the fix: tested APIs, readable commits, and "
+            "deploy notes recruiters can follow."
+        ),
+        about_heading="Floor ops. Shipping code.",
+        focus_areas=(
+            "REST APIs with auth and audit trails",
+            "React UIs with clear empty states",
+            "Dockerized local dev + Render deploys",
+            "Notebook-to-service ML handoffs",
+            "Pivot narrative aligned across every surface",
+        ),
+        role_tags=("Junior SWE", "Backend-leaning", "Retail domain", "Career change"),
+        approach_title="Where ops discipline meets shipping",
+        approach_lead=(
+            "Not tutorial clones — features, tests, and READMEs that show how the system behaves "
+            "when someone else runs it."
+        ),
+        approach_steps=(
+            MockApproachStep(
+                "01",
+                "Scope",
+                "Define the workflow, roles, and failure modes first — especially for ops-heavy domains "
+                "like shift swaps and inventory.",
+            ),
+            MockApproachStep(
+                "02",
+                "Ship",
+                "FastAPI or React with pytest, typed handlers, and OpenAPI or component states documented.",
+            ),
+            MockApproachStep(
+                "03",
+                "Prove",
+                "Live demo, deploy notes, and commit history that tell the pivot story without hand-waving.",
+            ),
+        ),
+        experience_heading="Leadership before the bootcamp",
+        experience_lead=(
+            "Retail leadership that explains why my projects focus on audit trails, roles, and "
+            "operational edge cases."
+        ),
+        experience=(
+            MockExperience(
+                title="Floor Lead",
+                org="National retail chain",
+                dates="2019 – 2023",
+                meta="Full-time · Pittsburgh, PA",
+                bullets=(
+                    "Owned nightly shrink reporting and coached associates on count accuracy during peak weeks.",
+                    "Built Excel templates for inventory variance — adopted district-wide after pilot.",
+                    "Led ad-hoc investigations on mis-picks before they hit outbound — foundation for anomaly detector project.",
+                ),
+            ),
+            MockExperience(
+                title="Sales Associate → Key Holder",
+                org="Regional apparel retailer",
+                dates="2017 – 2019",
+                meta="Part-time · Southwestern PA",
+                bullets=(
+                    "Opened/closes, cash reconciliation, and back-room organization in high-traffic mall store.",
+                    "Promoted for reliability and training newer associates on POS and restock workflows.",
+                ),
+            ),
+        ),
+        project_section_title="Projects recruiters can run",
+        project_section_lead=(
+            "Capstones with live demos, tests, and README deploy sections — not README-only homework."
+        ),
+        project_highlights=(
+            MockProjectHighlight(
+                "Auth + audit trail",
+                "JWT roles, request/approve flow, and immutable history for shift swaps.",
+            ),
+            MockProjectHighlight(
+                "Live demo",
+                "Render-deployed ShiftSync with seed data and OpenAPI docs linked from README.",
+            ),
+            MockProjectHighlight(
+                "ML from ops data",
+                "Isolation Forest on shrink exports — notebook plus export script for floor follow-up.",
+            ),
+            MockProjectHighlight(
+                "Test coverage",
+                "pytest on API routes; CI badge in README for hiring screens.",
+            ),
+        ),
+        skill_groups=(
+            MockSkillGroup(
+                "Backend",
+                ("Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "pytest", "JWT"),
+            ),
+            MockSkillGroup(
+                "Frontend",
+                ("TypeScript", "React", "HTML/CSS", "REST clients", "Form validation"),
+            ),
+            MockSkillGroup(
+                "DevOps & ops",
+                ("Docker", "Git", "GitHub Actions", "Render", "Retail inventory workflows"),
+            ),
+        ),
+        skills_heading="Stack that matches the story",
+        skills_lead="Backend-leaning full stack with ops domain knowledge baked in.",
+        certifications=(
+            "CodeForge Full-Stack Engineering Certificate",
+            "AWS Cloud Practitioner (in progress)",
+        ),
+        credentials_heading="Credentials that support the pivot",
+        credentials_lead="Bootcamp capstone plus prior degree — narrative stays consistent on resume and LinkedIn.",
+        recruiter_snapshot=(
+            "Retail floor lead → bootcamp → junior SWE · FastAPI/React · live demo + tests · "
+            "Pittsburgh area · seeking backend-leaning full-stack roles."
+        ),
+        contact_heading="Open to junior SWE roles",
+        location_note="Remote, hybrid, or on-site — teams that value ops-minded engineers.",
     ),
 }
 
@@ -422,6 +741,31 @@ def example_template_context(slug: str, *, is_portfolio_home: bool = False) -> d
         "skills": profile.skills,
         "contact_blurb": profile.contact_blurb,
         "linkedin_experience": profile.linkedin_experience,
+        "availability_badge": profile.availability_badge,
+        "trust_items": profile.trust_items,
+        "hero_stats": profile.hero_stats,
+        "about_heading": profile.about_heading,
+        "focus_areas": profile.focus_areas,
+        "role_tags": profile.role_tags,
+        "approach_title": profile.approach_title,
+        "approach_lead": profile.approach_lead,
+        "approach_steps": profile.approach_steps,
+        "experience_heading": profile.experience_heading,
+        "experience_lead": profile.experience_lead,
+        "experience": profile.experience,
+        "project_section_title": profile.project_section_title,
+        "project_section_lead": profile.project_section_lead,
+        "project_highlights": profile.project_highlights,
+        "skill_groups": profile.skill_groups,
+        "skills_heading": profile.skills_heading,
+        "skills_lead": profile.skills_lead,
+        "certifications": profile.certifications,
+        "credentials_heading": profile.credentials_heading,
+        "credentials_lead": profile.credentials_lead,
+        "recruiter_snapshot": profile.recruiter_snapshot,
+        "contact_heading": profile.contact_heading,
+        "location_note": profile.location_note,
+        "last_name": profile.person_name.split(" ")[-1],
         "project_cards": _project_cards(slug, profile),
         "projects": profile.projects,
         "portfolio_url": portfolio_url(slug),

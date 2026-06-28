@@ -10,7 +10,7 @@ def test_alex_portfolio_example(client) -> None:
     assert response.status_code == 200
     body = response.text
     assert "alexrivera.me" in body
-    assert "Education" in body
+    assert "Experience" in body
     assert "State University" in body
     assert "example-suite-nav" in body
     assert 'href="/example/alex-rivera/repo/campus-dining"' in body

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ person_name }} — {{ target_role }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=5">
+</head>
+<body class="example-site ex-pro ex-pro--{{ theme }}">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+
+  <nav class="ex-pro-nav" id="top" aria-label="Primary">
+    <div class="ex-pro-wrap ex-pro-nav-inner">
+      <a class="ex-pro-nav-logo" href="#top">{{ person_name }}</a>
+      <button class="ex-pro-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-nav-toggle>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <ul class="ex-pro-nav-links" data-nav-links>
+        <li><a href="#about">About</a></li>
+        {% if experience %}<li><a href="#experience">Experience</a></li>{% endif %}
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact" class="ex-pro-nav-cta">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="ex-pro-hero">
+    <div class="ex-pro-hero-grid" aria-hidden="true"></div>
+    <div class="ex-pro-hero-glow ex-pro-hero-glow--right" aria-hidden="true"></div>
+    <div class="ex-pro-hero-glow ex-pro-hero-glow--left" aria-hidden="true"></div>
+    <div class="ex-pro-wrap ex-pro-hero-content">
+      <p class="ex-pro-hero-eyebrow">{{ target_role }} · {{ role_tagline }}</p>
+      {% if availability_badge %}
+      <p class="ex-pro-hero-badge"><span class="ex-pro-dot" aria-hidden="true"></span>{{ availability_badge }}</p>
+      {% endif %}
+      <h1>{{ first_name }} <em>{{ last_name }}</em></h1>
+      <p class="ex-pro-hero-sub">{{ hero_lead }}</p>
+      <div class="ex-pro-hero-actions">
+        <a class="ex-pro-btn ex-pro-btn-primary" href="#projects">View projects</a>
+        <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ resume_pdf_url }}" download>Download PDF</a>
+        <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ github_url }}">GitHub</a>
+        <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
+      </div>
+      {% if hero_stats %}
+      <div class="ex-pro-hero-stats" role="list">
+        {% for stat in hero_stats %}
+        <div class="ex-pro-hero-stat" role="listitem">
+          <strong>{{ stat.value }}</strong>
+          <span>{{ stat.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="ex-pro-hero-scroll" aria-hidden="true">Scroll</div>
+  </header>
+
+  {% if trust_items %}
+  <div class="ex-pro-trust">
+    <div class="ex-pro-wrap ex-pro-trust-inner">
+      <span class="ex-pro-trust-label">Background</span>
+      <div class="ex-pro-trust-items">
+        {% for item in trust_items %}
+        {% if not loop.first %}<span class="ex-pro-trust-dot" aria-hidden="true"></span>{% endif %}
+        <span class="ex-pro-trust-item">{{ item }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if recruiter_snapshot %}
+  <div class="ex-pro-recruiter">
+    <div class="ex-pro-wrap ex-pro-recruiter-inner">
+      <span><strong>Recruiter snapshot</strong> {{ recruiter_snapshot }}</span>
+      <span class="ex-pro-recruiter-dot" aria-hidden="true"></span>
+      <a href="{{ resume_pdf_url }}" download>Resume PDF</a>
+      <span class="ex-pro-recruiter-dot" aria-hidden="true"></span>
+      <a href="mailto:{{ email }}">Email</a>
+    </div>
+  </div>
+  {% endif %}
+
+  <main class="ex-pro-main" id="main">
+    <section id="about" class="ex-pro-wrap ex-pro-section">
+      <p class="ex-pro-label">About</p>
+      <h2 class="ex-pro-title">{{ about_heading or "About" }}</h2>
+      <div class="ex-pro-about-grid">
+        <div class="ex-pro-about-body">
+          <p>{{ about }}</p>
+          {% if role_tags %}
+          <div class="ex-pro-tags">
+            {% for tag in role_tags %}<span class="ex-pro-tag">{{ tag }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% if focus_areas %}
+        <aside class="ex-pro-about-card">
+          <h3>Core focus areas</h3>
+          <ul>{% for item in focus_areas %}<li>{{ item }}</li>{% endfor %}</ul>
+        </aside>
+        {% endif %}
+      </div>
+    </section>
+
+    {% if approach_steps %}
+    <section class="ex-pro-method">
+      <div class="ex-pro-wrap">
+        <p class="ex-pro-label">Approach</p>
+        <h2 class="ex-pro-title">{{ approach_title }}</h2>
+        {% if approach_lead %}<p class="ex-pro-lead">{{ approach_lead }}</p>{% endif %}
+        <div class="ex-pro-method-grid">
+          {% for step in approach_steps %}
+          <article class="ex-pro-method-card">
+            <p class="ex-pro-method-num">{{ step.number }} · {{ step.title }}</p>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.body }}</p>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if experience %}
+    <section id="experience" class="ex-pro-wrap ex-pro-section">
+      <p class="ex-pro-label">Experience</p>
+      <h2 class="ex-pro-title">{{ experience_heading }}</h2>
+      {% if experience_lead %}<p class="ex-pro-lead">{{ experience_lead }}</p>{% endif %}
+      <div class="ex-pro-timeline">
+        {% for job in experience %}
+        <article class="ex-pro-timeline-item">
+          <div class="ex-pro-timeline-dates">{{ job.dates }}</div>
+          <div>
+            <h3 class="ex-pro-timeline-role">{{ job.title }}</h3>
+            <p class="ex-pro-timeline-org">{{ job.org }}{% if job.meta %} · {{ job.meta }}{% endif %}</p>
+            {% if job.bullets %}
+            <ul class="ex-pro-timeline-bullets">
+              {% for bullet in job.bullets %}<li>{{ bullet }}</li>{% endfor %}
+            </ul>
+            {% elif job.detail %}<p class="ex-pro-timeline-detail">{{ job.detail }}</p>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <section id="projects" class="ex-pro-section ex-pro-work">
+      <div class="ex-pro-wrap">
+        <p class="ex-pro-label">Projects</p>
+        <h2 class="ex-pro-title">{{ project_section_title or "Selected work" }}</h2>
+        {% if project_section_lead %}<p class="ex-pro-lead">{{ project_section_lead }}</p>{% endif %}
+        <div class="ex-pro-project-grid">
+          {% for card in project_cards %}
+          <article class="ex-pro-project-card{% if loop.first %} is-featured{% endif %}">
+            {% if loop.first %}
+            <div class="ex-pro-project-copy">
+              <p class="ex-pro-project-type">{{ card.project.stack }}</p>
+              <h3 class="ex-pro-project-title">{{ card.project.title }}</h3>
+              <p class="ex-pro-project-desc">{{ card.project.summary }}</p>
+              <p class="ex-pro-project-outcome"><strong>Outcome:</strong> {{ card.project.outcome }}</p>
+              <div class="ex-pro-project-links">
+                <a class="ex-pro-project-link" href="{{ card.primary_url }}">{{ card.project.primary_cta }} →</a>
+                <a class="ex-pro-project-link" href="{{ card.secondary_url }}">{{ card.project.secondary_cta }} →</a>
+              </div>
+            </div>
+            <div class="ex-pro-project-visual ex-pro-project-visual--{{ card.project.visual_tone }}">
+              <span class="ex-pro-project-visual-label">{{ card.project.visual_label }}</span>
+              <pre class="ex-pro-code-preview">{% for bullet in card.project.readme_bullets[:3] %}# {{ bullet }}
+{% endfor %}</pre>
+            </div>
+            {% else %}
+            <p class="ex-pro-project-type">{{ card.project.stack }}</p>
+            <h3 class="ex-pro-project-title">{{ card.project.title }}</h3>
+            <p class="ex-pro-project-desc">{{ card.project.summary }}</p>
+            <p class="ex-pro-project-outcome"><strong>Outcome:</strong> {{ card.project.outcome }}</p>
+            <div class="ex-pro-project-links">
+              <a class="ex-pro-project-link" href="{{ card.primary_url }}">{{ card.project.primary_cta }} →</a>
+              <a class="ex-pro-project-link" href="{{ card.secondary_url }}">{{ card.project.secondary_cta }} →</a>
+            </div>
+            {% endif %}
+          </article>
+          {% endfor %}
+        </div>
+        {% if project_highlights %}
+        <div class="ex-pro-outcomes-grid">
+          {% for highlight in project_highlights %}
+          <article class="ex-pro-outcome-card">
+            <h3>{{ highlight.title }}</h3>
+            <p>{{ highlight.body }}</p>
+          </article>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section id="skills" class="ex-pro-wrap ex-pro-section">
+      <p class="ex-pro-label">Capabilities</p>
+      <h2 class="ex-pro-title">{{ skills_heading or "Skills" }}</h2>
+      {% if skills_lead %}<p class="ex-pro-lead">{{ skills_lead }}</p>{% endif %}
+      {% if skill_groups %}
+      <div class="ex-pro-skills-grid">
+        {% for group in skill_groups %}
+        <article class="ex-pro-skill-group">
+          <h3>{{ group.name }}</h3>
+          <ul>{% for skill in group.skills %}<li>{{ skill }}</li>{% endfor %}</ul>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <ul class="ex-pro-tags ex-pro-tags--skills">{% for skill in skills %}<li class="ex-pro-tag">{{ skill }}</li>{% endfor %}</ul>
+      {% endif %}
+    </section>
+
+    <section class="ex-pro-wrap ex-pro-section ex-pro-credentials">
+      <p class="ex-pro-label">Credentials</p>
+      <h2 class="ex-pro-title">{{ credentials_heading or "Education & credentials" }}</h2>
+      {% if credentials_lead %}<p class="ex-pro-lead">{{ credentials_lead }}</p>{% endif %}
+      <div class="ex-pro-cred-grid">
+        {% if certifications %}
+        <div class="ex-pro-cred-block">
+          <h3>Certifications</h3>
+          <ul class="ex-pro-cred-list">{% for cert in certifications %}<li>{{ cert }}</li>{% endfor %}</ul>
+        </div>
+        {% endif %}
+        <div class="ex-pro-cred-block">
+          <h3>Education</h3>
+          <ul class="ex-pro-cred-list">
+            <li><strong>{{ education.degree }}</strong> — {{ education.school }} · {{ education.dates }}. {{ education.detail }}</li>
+            {% if extra_education %}
+            <li><strong>{{ extra_education.degree }}</strong> — {{ extra_education.school }} · {{ extra_education.dates }}. {{ extra_education.detail }}</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="ex-pro-wrap ex-pro-section ex-pro-contact">
+      <p class="ex-pro-label">Contact</p>
+      <h2 class="ex-pro-title">{{ contact_heading or "Let's connect" }}</h2>
+      <p class="ex-pro-lead">{{ contact_blurb }}{% if location_note %} {{ location_note }}{% endif %}</p>
+      <div class="ex-pro-hero-actions">
+        <a class="ex-pro-btn ex-pro-btn-primary" href="mailto:{{ email }}">{{ email }}</a>
+        <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
+        <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ resume_pdf_url }}" download>Resume PDF</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ex-pro-site-footer">
+    <div class="ex-pro-wrap">
+      <p>© {{ person_name }} · {{ target_role }} · {{ mock_domain }}</p>
+      <p class="meta">Example delivery · {{ site_name }} {{ package_label }}</p>
+    </div>
+  </footer>
+  <script src="/static/examples.js?v=2" defer></script>
+</body>
+</html>
