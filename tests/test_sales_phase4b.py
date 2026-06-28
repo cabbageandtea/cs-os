@@ -20,13 +20,15 @@ def test_landing_page_returns_200(client: TestClient) -> None:
     assert "Foundation" in response.text
     assert "Launch" in response.text
     assert "Accelerator" in response.text
-    assert "GitHub Education" in response.text or ".edu" in response.text
+    assert "yourname.me" in response.text
+    assert "why-me" in response.text
 
 
 def test_start_hub_lists_edu_prerequisites(client: TestClient) -> None:
     response = client.get("/start")
     assert response.status_code == 200
     assert "Students (.edu)" in response.text
+    assert "Why students claim a .me" in response.text
     assert "education.github.com/pack" in response.text
     assert "nc.me/github/auth" in response.text
 

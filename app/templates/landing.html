@@ -29,7 +29,7 @@
       <p class="section-label">Live examples</p>
       <h2>See the deliverable before you buy</h2>
     </div>
-    <p class="meta section-lead">Fictional clients · mock .me sites · click through portfolio + resume.</p>
+    <p class="meta section-lead">Sample .me portfolios — click through site, resume, code, and LinkedIn.</p>
   </div>
   <div class="proof-preview-grid">
     {% for case_study in case_studies %}
@@ -44,6 +44,37 @@
       <span class="proof-preview-cta">View example site →</span>
     </a>
     {% endfor %}
+  </div>
+</section>
+
+<section class="band band--me-why" id="why-me" data-reveal>
+  <div class="me-why-head">
+    <p class="section-label">{{ me_domain_why.section_label }}</p>
+    <h2>{{ me_domain_why.headline }}</h2>
+    <p class="meta section-lead">{{ me_domain_why.lead }}</p>
+  </div>
+  <div class="me-why-compare" aria-label="URL comparison">
+    <div class="me-why-url me-why-url--weak">
+      <span class="me-why-url-label">Default</span>
+      <code>{{ me_domain_why.compare_weak }}</code>
+    </div>
+    <div class="me-why-url me-why-url--strong">
+      <span class="me-why-url-label">Career Systems delivery</span>
+      <code>{{ me_domain_why.compare_strong }}</code>
+    </div>
+  </div>
+  <div class="me-why-grid">
+    {% for point in me_domain_why.points %}
+    <article class="me-why-card">
+      <h3>{{ point.title }}</h3>
+      <p>{{ point.body }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="meta me-why-foot">{{ me_domain_why.footnote }}</p>
+  <div class="me-why-actions">
+    <a href="{{ me_domain_why.cta_url }}" class="btn btn-secondary">{{ me_domain_why.cta_label }}</a>
+    <a href="/example/alex-rivera" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">See alexrivera.me example →</a>
   </div>
 </section>
 
@@ -69,7 +100,9 @@
     <div class="proof-case-top">
       <div>
         <h3>{{ case_study.name }} · {{ case_study.role }}</h3>
+        {% if case_study.disclaimer %}
         <p class="meta proof-disclaimer">{{ case_study.disclaimer }}</p>
+        {% endif %}
       </div>
       <p class="proof-metric-pill">{{ case_study.outcome_metric }}</p>
     </div>

@@ -39,11 +39,14 @@ CLIENT_PREREQUISITES: tuple[ClientPrerequisite, ...] = (
     ClientPrerequisite(
         slug="student-me-domain",
         title="Free .me domain (students, after pack approval)",
-        why="Claim a personal domain (e.g. yourname.me) through the GitHub Student offer — we connect DNS to your portfolio at handoff.",
+        why=(
+            "yourname.me is the link recruiters remember — one URL for resume, LinkedIn, and email. "
+            "Students: often free for a year via GitHub Education + nc.me after pack approval."
+        ),
         signup_url="https://nc.me/github/auth",
         time_minutes=10,
         required_for=_ALL,
-        note="Requires approved GitHub Education. Optional — github.io works for every package.",
+        note="We connect DNS at handoff. No student perk? github.io works — .me is the professional upgrade.",
     ),
     ClientPrerequisite(
         slug="google",

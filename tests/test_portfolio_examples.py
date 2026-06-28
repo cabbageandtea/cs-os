@@ -15,7 +15,7 @@ def test_alex_portfolio_example(client) -> None:
     assert "example-suite-nav" in body
     assert 'href="/example/alex-rivera/repo/campus-dining"' in body
     assert "https://github.com" not in body
-    assert "← Portfolio" not in body  # no self-link on home
+    assert "Fictional" not in body
 
 
 def test_jordan_portfolio_example(client) -> None:
@@ -31,9 +31,11 @@ def test_jordan_portfolio_example(client) -> None:
 def test_resume_example(client) -> None:
     response = client.get("/example/alex-rivera/resume")
     assert response.status_code == 200
-    assert "Fictional example" in response.text
-    assert "Download PDF" in response.text
-    assert "Education" in response.text
+    body = response.text
+    assert "alexrivera.me" in body
+    assert "Download PDF" in body
+    assert "Education" in body
+    assert "Fictional" not in body
 
 
 def test_resume_pdf_download(client) -> None:

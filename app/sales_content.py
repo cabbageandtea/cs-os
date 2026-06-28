@@ -68,7 +68,7 @@ PROCESS_STEPS: tuple[dict[str, str], ...] = (
 CASE_STUDY = {
     "kicker": "Illustrative delivery",
     "name": "Alex Rivera",
-    "disclaimer": "Fictional example — not a real client.",
+    "disclaimer": "",
     "role": "Data Analyst Intern",
     "package": "Launch",
     "example_slug": "alex-rivera",
@@ -89,7 +89,7 @@ CASE_STUDY = {
 CASE_STUDY_CAREER_CHANGE = {
     "kicker": "Illustrative delivery",
     "name": "Jordan Kim",
-    "disclaimer": "Fictional example — not a real client.",
+    "disclaimer": "",
     "role": "Junior Software Engineer (career change)",
     "package": "Accelerator",
     "example_slug": "jordan-kim",
@@ -111,8 +111,55 @@ CASE_STUDIES: tuple[dict, ...] = (CASE_STUDY, CASE_STUDY_CAREER_CHANGE)
 
 # Near primary CTA — reduces last-click friction (placement zone 3).
 CTA_PROOF_LINE = (
-    "See a fictional Launch delivery before checkout — mock .me portfolio with resume sample."
+    "See a full Launch delivery before checkout — portfolio, resume, GitHub, and LinkedIn samples.",
 )
+
+ME_DOMAIN_WHY = {
+    "section_label": "Your URL",
+    "headline": "Recruiters click one link. Make it yours.",
+    "lead": (
+        "A personal .me domain is the shortest path from your resume to proof-of-work. "
+        "It reads as intentional — not a class repo buried on GitHub Pages."
+    ),
+    "points": (
+        {
+            "title": "One link everywhere",
+            "body": (
+                "Same URL on resume PDF, LinkedIn featured section, email signature, and applications. "
+                "No explaining which repo or which branch."
+            ),
+        },
+        {
+            "title": "Passes the six-second scan",
+            "body": (
+                "alexrivera.me is instant context. yourname.github.io/capstone-fall-2025 "
+                "forces a recruiter to decode paths before they see your work."
+            ),
+        },
+        {
+            "title": "Signals you ship for hiring",
+            "body": (
+                ".me literally means “about me” — built for personal brands. "
+                "Custom domain + live portfolio reads as more serious than a default host URL."
+            ),
+        },
+        {
+            "title": "Students: often free",
+            "body": (
+                "GitHub Education + the Student Pack can include a free .me for a year. "
+                "You claim it; we wire DNS to your deployed portfolio at handoff."
+            ),
+        },
+    ),
+    "compare_weak": "yourname.github.io/portfolio-repo",
+    "compare_strong": "yourname.me",
+    "footnote": (
+        "github.io works for every package. .me is the upgrade when you want one memorable link "
+        "— especially if you already qualify for the student offer."
+    ),
+    "cta_label": "Student setup guide",
+    "cta_url": "/start",
+}
 
 PRINCIPLES: tuple[str, ...] = (
     "Not web design. Not resume writing alone. Structured career system delivery.",
@@ -185,10 +232,18 @@ LANDING_FAQ = [
         "Students: verify GitHub Education (school .edu email) for optional free .me domain setup — see /start.",
     ),
     (
+        "Why does a .me domain matter?",
+        "Recruiters decide in seconds. yourname.me is one memorable link on your resume, LinkedIn, "
+        "and applications — it loads your portfolio, not a GitHub path they have to decode. "
+        "Students with GitHub Education can often claim a free .me; we connect it to your site at handoff. "
+        "Not required — github.io works — but .me is the difference between “I have projects” and "
+        "“I have a professional presence.”",
+    ),
+    (
         "I'm a student — anything special?",
-        "If you're enrolled, apply for the GitHub Student Developer Pack with your .edu email. "
-        "After approval you can claim a free .me domain; we wire it to your portfolio. "
-        "Not required — every package works on github.io.",
+        "Verify GitHub Education with your .edu email, then claim a free .me if eligible. "
+        "See /start for the checklist. We handle DNS so your portfolio loads at yourname.me — "
+        "the same URL we put on your resume and LinkedIn.",
     ),
     (
         "How is this different from separate vendors?",

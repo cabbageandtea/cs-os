@@ -484,6 +484,57 @@
     color: var(--accent-bright);
   }
 
+  .band--me-why { max-width: 56rem; margin-inline: auto; }
+  .me-why-head { margin-block-end: var(--space-5); }
+  .me-why-compare {
+    display: grid;
+    gap: var(--space-3);
+    margin-block-end: var(--space-6);
+  }
+  @media (min-width: 40rem) {
+    .me-why-compare { grid-template-columns: 1fr 1fr; }
+  }
+  .me-why-url {
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+  }
+  .me-why-url--weak { opacity: 0.85; border-style: dashed; }
+  .me-why-url--strong { border-color: color-mix(in oklch, var(--accent) 40%, var(--line)); }
+  .me-why-url-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    margin-block-end: var(--space-2);
+  }
+  .me-why-url code {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    word-break: break-all;
+  }
+  .me-why-grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-end: var(--space-5);
+  }
+  @media (min-width: 48rem) {
+    .me-why-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .me-why-card {
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--bg-raised);
+  }
+  .me-why-card h3 { margin: 0 0 var(--space-2); font-size: var(--text-base); }
+  .me-why-card p { margin: 0; font-size: var(--text-sm); color: var(--ink-muted); line-height: 1.55; }
+  .me-why-foot { margin-block-end: var(--space-4); }
+  .me-why-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
   .proof-case-top {
     display: flex;
     flex-wrap: wrap;
@@ -878,6 +929,17 @@
   .prerequisite-time { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-faint); margin-inline-start: var(--space-2); }
 
   .band--start { max-width: 52rem; margin-inline: auto; }
+  .start-me-why {
+    margin-block: var(--space-5) var(--space-6);
+    padding: var(--space-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-raised);
+  }
+  .start-me-why h2 { margin: 0 0 var(--space-3); font-size: var(--text-lg); }
+  .start-me-why p { margin: 0 0 var(--space-3); line-height: 1.6; color: var(--ink-muted); }
+  .start-me-why ul { margin: 0; padding-inline-start: 1.2rem; line-height: 1.6; color: var(--ink-muted); }
+  .start-me-why li { margin-block: var(--space-2); }
   .start-grid { display: grid; gap: var(--space-6); margin-block-start: var(--space-6); }
   @media (min-width: 48rem) { .start-grid { grid-template-columns: 1fr 1fr; } }
   .start-card {

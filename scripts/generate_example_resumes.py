@@ -19,7 +19,7 @@ class ResumePDF(FPDF):
         self.set_y(-12)
         self.set_font("Helvetica", "I", 8)
         self.set_text_color(120, 120, 120)
-        self.cell(0, 8, "Fictional example - Career Systems delivery mock", align="C")
+        self.cell(0, 8, "Career Systems - sample delivery", align="C")
 
 
 def _section(pdf: ResumePDF, title: str) -> None:

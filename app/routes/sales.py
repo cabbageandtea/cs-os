@@ -32,6 +32,7 @@ from app.sales_content import (
     HERO_HEADLINE,
     HERO_LEAD,
     LANDING_FAQ,
+    ME_DOMAIN_WHY,
     PRINCIPLES,
     PROCESS_STEPS,
     SIGNAL_GAPS,
@@ -64,6 +65,7 @@ def landing_page(request: Request):
             "process_steps": PROCESS_STEPS,
             "case_studies": CASE_STUDIES,
             "cta_proof_line": CTA_PROOF_LINE,
+            "me_domain_why": ME_DOMAIN_WHY,
             "principles": PRINCIPLES,
         },
     )
