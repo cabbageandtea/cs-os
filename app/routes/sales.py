@@ -36,6 +36,8 @@ from app.sales_content import (
     HERO_LEAD,
     LANDING_FAQ,
     ME_DOMAIN_WHY,
+    MARKET_PITFALLS,
+    COMPARISON_ROWS,
     PRINCIPLES,
     PROCESS_STEPS,
     SIGNAL_GAPS,
@@ -110,6 +112,8 @@ def landing_page(request: Request):
             "cta_proof_line": CTA_PROOF_LINE,
             "me_domain_why": ME_DOMAIN_WHY,
             "principles": PRINCIPLES,
+            "market_pitfalls": MARKET_PITFALLS,
+            "comparison_rows": COMPARISON_ROWS,
         },
     )
 

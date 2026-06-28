@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from app.package_config import PACKAGES
+from app.package_config import PACKAGES, REVISION_ROUND_DEFINITION, SCOPE_CREEP_EXAMPLES
 
 # ── Hero: outcome + audience + single conversion path ──
 HERO_HEADLINE = "Take it with you."
@@ -167,6 +167,117 @@ PRINCIPLES: tuple[str, ...] = (
     "You own every account, URL, and file at handoff.",
 )
 
+# Customer-facing contrast vs common alternatives (categories only — no competitor names on site).
+MARKET_PITFALLS: tuple[dict[str, str], ...] = (
+    {
+        "title": "“Unlimited” revisions",
+        "problem": (
+            "Many resume services advertise unlimited edits, then contradict that in email — "
+            "or cap you after a short window."
+        ),
+        "answer": (
+            "Exact caps at checkout: Foundation 1, Launch 2, Accelerator 3 rounds. "
+            "One consolidated feedback message per round."
+        ),
+    },
+    {
+        "title": "PDF-only deliverables",
+        "problem": (
+            "Typical resume writers ($150–$600) return documents. Recruiters still cannot see "
+            "deployed projects when they search your name."
+        ),
+        "answer": (
+            "Every package ships a live portfolio on infrastructure you own — not a file trapped in email."
+        ),
+    },
+    {
+        "title": "Three vendors, three stories",
+        "problem": (
+            "Separate resume writer, LinkedIn coach, and site builder rarely align copy, "
+            "metrics, or target role."
+        ),
+        "answer": (
+            "One intake, one pipeline. Launch and Accelerator align portfolio, resume, and LinkedIn to one role."
+        ),
+    },
+    {
+        "title": "Interview guarantees",
+        "problem": (
+            "Guaranteed interviews sound safe but set false expectations — hiring outcomes "
+            "are not controllable by any vendor."
+        ),
+        "answer": (
+            "We do not guarantee interviews or offers. We guarantee defined deliverables, "
+            "fixed scope, and honest revision limits — see /terms."
+        ),
+    },
+    {
+        "title": "Builder lock-in",
+        "problem": (
+            "Cheap portfolio tools ($19–$50) host on their subdomain. You do not own the repo, "
+            "DNS, or deployment."
+        ),
+        "answer": (
+            "GitHub, email, LinkedIn, and domain stay in your name. We build on your accounts and hand off."
+        ),
+    },
+    {
+        "title": "Scope discovered after payment",
+        "problem": (
+            "Hidden upsells, vague bundles (“5 resumes + mock interviews”), and unclear "
+            "what is actually included."
+        ),
+        "answer": (
+            "Checkout lists every included and excluded item before Stripe. Scope is fixed at purchase."
+        ),
+    },
+)
+
+COMPARISON_ROWS: tuple[dict[str, str], ...] = (
+    {
+        "factor": "Live portfolio deployed",
+        "resume_writers": "Rarely — PDF/email",
+        "diy_builders": "Template on their host",
+        "doggybagg": "Yes — your GitHub / domain",
+    },
+    {
+        "factor": "Resume + LinkedIn aligned",
+        "resume_writers": "Often add-on tiers",
+        "diy_builders": "Self-serve only",
+        "doggybagg": "Launch & Accelerator",
+    },
+    {
+        "factor": "Scope before you pay",
+        "resume_writers": "Often vague until writer assigned",
+        "diy_builders": "Feature list only",
+        "doggybagg": "Full list at /checkout",
+    },
+    {
+        "factor": "Revision policy",
+        "resume_writers": "“Unlimited” or conflicting terms",
+        "diy_builders": "N/A — DIY",
+        "doggybagg": "1 / 2 / 3 explicit rounds",
+    },
+    {
+        "factor": "You own accounts",
+        "resume_writers": "N/A",
+        "diy_builders": "Often platform lock-in",
+        "doggybagg": "100% client-owned",
+    },
+    {
+        "factor": "See example delivery first",
+        "resume_writers": "Generic samples",
+        "diy_builders": "Blank templates",
+        "doggybagg": "Full mock delivery on site",
+    },
+    {
+        "factor": "Interview guarantee",
+        "resume_writers": "Common — high dispute risk",
+        "diy_builders": "None",
+        "doggybagg": "None — honest scope",
+    },
+)
+
 
 @dataclass(frozen=True)
 class PackageSalesInfo:
@@ -181,34 +292,21 @@ class PackageSalesInfo:
 
 
 PACKAGE_SALES: dict[str, PackageSalesInfo] = {
-    "foundation": PackageSalesInfo(
-        slug="foundation",
-        display_name="Foundation",
-        price_display="$99",
-        who_for="Proof-of-work online — students, bootcamp grads, and changers with projects but no live site.",
-        deliverables=PACKAGES["foundation"].deliverables,
-        turnaround="5–10 business days after intake",
-        revision_rounds=1,
-    ),
-    "launch": PackageSalesInfo(
-        slug="launch",
-        display_name="Launch",
-        price_display="$199",
-        who_for="Active search — portfolio, resume, and LinkedIn operating as one system.",
-        deliverables=PACKAGES["launch"].deliverables,
-        turnaround="7–14 business days after intake",
-        revision_rounds=2,
-        featured=True,
-    ),
-    "accelerator": PackageSalesInfo(
-        slug="accelerator",
-        display_name="Accelerator",
-        price_display="$349",
-        who_for="Competitive roles and pivots — narrative strategy and premium support.",
-        deliverables=PACKAGES["accelerator"].deliverables,
-        turnaround="10–21 business days after intake",
-        revision_rounds=3,
-    ),
+    slug: PackageSalesInfo(
+        slug=slug,
+        display_name=pkg.display_name,
+        price_display=f"${pkg.default_price_cents // 100}",
+        who_for={
+            "foundation": "Proof-of-work online — students, bootcamp grads, and changers with projects but no live site.",
+            "launch": "Active search — portfolio, resume, and LinkedIn operating as one system.",
+            "accelerator": "Competitive roles and pivots — narrative strategy and premium support.",
+        }[slug],
+        deliverables=pkg.deliverables,
+        turnaround=pkg.turnaround_display,
+        revision_rounds=pkg.revision_rounds,
+        featured=(slug == "launch"),
+    )
+    for slug, pkg in PACKAGES.items()
 }
 
 LANDING_FAQ = [
@@ -250,8 +348,40 @@ LANDING_FAQ = [
         "One delivery pipeline — not a designer, a resume writer, and a LinkedIn coach telling three stories.",
     ),
     (
+        "How is this different from resume writing services?",
+        "Most resume writers deliver PDFs and optional LinkedIn guides — not a live portfolio on your GitHub. "
+        "We coordinate deploy + resume + LinkedIn (Launch+) with fixed revision caps, no interview guarantees, "
+        "and examples you can click through before checkout.",
+    ),
+    (
+        "Why no interview guarantee?",
+        "No ethical vendor can guarantee interviews. Services that promise them often create refund disputes "
+        "when outcomes do not materialize. We commit to defined deliverables, published revision limits, "
+        "and transparent scope — not hiring outcomes.",
+    ),
+    (
+        "Why not unlimited revisions?",
+        "Unlimited policies rarely survive contact with reality — they either get capped quietly or "
+        "encourage endless scope creep. Fixed rounds (1 / 2 / 3 by tier) keep delivery predictable for "
+        "you and sustainable for us. Extra work outside scope is quoted separately.",
+    ),
+    (
         "When does delivery start?",
         "After payment and complete intake. Payment alone does not start the clock.",
+    ),
+    (
+        "How many revisions are included?",
+        "Foundation includes 1 revision round; Launch 2; Accelerator 3. "
+        + REVISION_ROUND_DEFINITION
+        + " Extra rounds or scope changes require a new purchase or written quote — see /terms.",
+    ),
+    (
+        "What is not included?",
+        "Job placement, guaranteed interviews, ongoing maintenance, application submission on your behalf, "
+        "or work outside your package (e.g. resume on Foundation, strategy session on Launch). "
+        "Examples: "
+        + "; ".join(SCOPE_CREEP_EXAMPLES[:3])
+        + ". Full list at checkout and in Terms §2 and §5.",
     ),
     (
         "Can I talk to someone before paying?",

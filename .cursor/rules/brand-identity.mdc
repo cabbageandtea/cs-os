@@ -1,0 +1,55 @@
+---
+description: Doggybagg public identity — names, emails, env vars, bans, verification
+alwaysApply: true
+---
+
+# Brand identity (Doggybagg)
+
+## Canonical values (production)
+
+| Role | Value | Source |
+|------|-------|--------|
+| Trade name | **Doggybagg** | `SITE_NAME` |
+| Legal entity | **DoggyBagg LLC** | `LEGAL_ENTITY_NAME` |
+| Domain | **doggybagg.cc** | `SITE_DOMAIN` |
+| Public inbox | **hello@doggybagg.cc** | `SUPPORT_EMAIL` or `support_email()` |
+| Outbound sender | **Doggybagg \<hello@doggybagg.cc\>** | `EMAIL_FROM_NAME` + `EMAIL_FROM` |
+| Tagline | **Take it with you** | `SITE_TAGLINE` |
+
+Never hardcode these in templates or routes. Import from `app.site_branding` (`site_name`, `site_domain`, `support_email`, `template_globals`).
+
+## Banned in customer-facing surfaces
+
+- Personal names: `Malik Lomax`, `maliklomax`, `@maliklomax`
+- Legacy product name: `Career Systems` (repo name CS-OS is internal only)
+- Private recovery email: `doggybag422@gmail.com` — never in HTML, footers, Stripe, or Resend
+- Old support patterns: `support@`, personal Gmail as contact
+
+Enforced by `scripts/audit_site.py` (`BANNED_PHRASES`) and `tests/test_legal.py`.
+
+## Email rules
+
+1. **From address:** mailbox only in `EMAIL_FROM`; display name only in `EMAIL_FROM_NAME` or `SITE_NAME`. `_email_from()` strips any personal name embedded in `EMAIL_FROM`.
+2. **Support inbox:** all public mailto/footer/contact copy uses `support_email()`, not a literal string.
+3. **Contact notifications:** `send_contact_lead_notification()` → `send_email(..., reply_to=prospect_email)` so Reply hits the lead, not hello@.
+4. **Resend:** `_send_resend()` must accept and forward `reply_to`; never reference `reply_to` without it being a parameter.
+5. **Domain:** Resend sends only from verified `doggybagg.cc` (DKIM/SPF on `send.doggybagg.cc`). Inbound to hello@ is Zoho, not Resend receiving.
+
+## External stack (do not reconfigure without explicit ask)
+
+| Service | Account / mailbox | Notes |
+|---------|-------------------|-------|
+| Resend | cabbageandtea | Domain `doggybagg.cc` must stay **Verified** |
+| Zoho Mail | Primary mailbox `hello@doggybagg.cc` | `maliklomax@` is internal admin login only — out of scope |
+| Stripe Checkout | Brand icon/logo via `app/stripe_branding.py` | Sync with `scripts/sync_stripe_branding.py` |
+| Render | `cs-os` service | Env: see `render.yaml` keys `SITE_*`, `EMAIL_*`, `SUPPORT_EMAIL` |
+
+## Before shipping copy or email changes
+
+```bash
+python scripts/audit_site.py --base https://doggybagg.cc
+python -m pytest tests/test_legal.py tests/test_email_service.py -q
+curl -s https://doggybagg.cc/health   # email_resend: true
+```
+
+Contact POST must return 200 with thank-you text, not 500. Check Resend Logs for `Doggybagg <hello@doggybagg.cc>`.

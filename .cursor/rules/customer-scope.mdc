@@ -1,0 +1,54 @@
+---
+description: Customer package scope, revisions, and what is never included
+alwaysApply: true
+---
+
+# Customer scope and revisions
+
+Canonical source: `app/package_config.py` + `/terms` §2 and §5.
+
+## Revision rounds (hard caps — never promise more)
+
+| Package | Rounds | Turnaround (after intake) |
+|---------|--------|---------------------------|
+| Foundation | **1** | 5–10 business days |
+| Launch | **2** | 7–14 business days |
+| Accelerator | **3** | 10–21 business days |
+
+**One round** = one consolidated client feedback message on in-scope deliverables. Multiple emails ≠ extra rounds.
+
+## Not included in any package
+
+- Job placement, guaranteed interviews, or hiring outcomes
+- Application submission on the client's behalf
+- Ongoing maintenance or retainers
+- Interview coaching as a standalone service
+
+## Scope creep → quote or upgrade (not a revision)
+
+- Target role change after build started
+- Projects/experience not in intake
+- Full redesign or template switch after first draft
+- Deliverables outside the purchased tier (e.g. resume on Foundation)
+
+## When editing customer-facing copy
+
+- Pull deliverables, `revision_rounds`, and `excludes_display` from `package_config.py` — do not hardcode counts in templates.
+- Checkout and landing must show revision caps before payment.
+- If a client asks for "10 revisions" or open-ended changes: cite Terms §5 and their package cap; offer upgrade or paid add-on — do not expand scope informally.
+
+## Operator reference (internal)
+
+`docs/PAID_CLIENT_OPERATIONS.md`, `docs/PRICING_MODEL.md`, `docs/COMPETITIVE_POSITIONING.md`
+
+## Do not copy competitor failures
+
+| Their mistake | Our rule |
+|---------------|----------|
+| “Unlimited revisions” | Fixed 1 / 2 / 3 — never promise unlimited |
+| Interview guarantees | Never guarantee interviews or offers |
+| PDF-only delivery | Every tier includes live portfolio deploy |
+| Platform lock-in | Client owns GitHub, domain, LinkedIn |
+| Vague post-payment scope | Full included/excluded list on `/checkout` |
+| Free-review upsell funnel | No bait-and-switch; `/contact` for fit questions |
+| Conflicting revision FAQ vs email | One definition: `REVISION_ROUND_DEFINITION` in `package_config.py` |

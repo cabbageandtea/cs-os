@@ -14,7 +14,7 @@ from app.intake_context import intake_form_context
 from app.intake_notify import intake_url_for_token, maybe_send_intake_reminder_email
 from app.intake_validation import IntakeValidationError, resolve_client_package_slug
 from app.models import Client, IntakeStatus, Purchase, PurchaseStatus
-from app.package_config import PACKAGES, PackageConfigError
+from app.package_config import PACKAGES, PackageConfigError, checkout_package_rows
 from app.services import IntakeAccessError, PersistenceError, complete_token_intake
 from app.stripe_branding import StripeBrandingError, checkout_branding_settings
 from app.stripe_checkout import StripeCheckoutError, base_url, create_checkout_session
@@ -106,19 +106,13 @@ def _find_client_by_token(db: Session, token: str) -> Client | None:
 
 @router.get("/checkout", response_class=HTMLResponse)
 def checkout_page(request: Request):
-    packages = [
-        {
-            "slug": slug,
-            "display_name": PACKAGES[slug].display_name,
-            "tagline": PACKAGES[slug].tagline,
-            "default_price_cents": PACKAGES[slug].default_price_cents,
-            "featured": slug == "launch",
-        }
-        for slug in ("foundation", "launch", "accelerator")
-    ]
     return templates.TemplateResponse(
         "checkout.html",
-        {"request": request, "packages": packages, "error": None},
+        {
+            "request": request,
+            "packages": checkout_package_rows(),
+            "error": None,
+        },
     )
 
 
@@ -129,16 +123,7 @@ def checkout_create(
     terms_accepted: str | None = Form(None),
     db: Session = Depends(get_db),
 ):
-    packages = [
-        {
-            "slug": slug,
-            "display_name": PACKAGES[slug].display_name,
-            "tagline": PACKAGES[slug].tagline,
-            "default_price_cents": PACKAGES[slug].default_price_cents,
-            "featured": slug == "launch",
-        }
-        for slug in ("foundation", "launch", "accelerator")
-    ]
+    packages = checkout_package_rows()
     try:
         validate_terms_accepted((terms_accepted or "").strip().lower() == "on")
         _, redirect_url = create_checkout_session(db, package_slug)

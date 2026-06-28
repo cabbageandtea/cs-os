@@ -27,7 +27,7 @@ By completing checkout (agreement checkbox) and submitting intake, you agree to 
 1. **Service** — Career positioning deliverables (portfolio, resume, LinkedIn alignment). **Not job placement.** No guaranteed hiring outcomes.
 2. **Clock starts** — After complete intake, not payment alone.
 3. **Refunds** — Before work: full minus processing fees; after build: generally none; see /terms §6.
-4. **Revisions** — Foundation 1 / Launch 2 / Accelerator 3 rounds included.
+4. **Revisions** — Foundation **1** / Launch **2** / Accelerator **3** consolidated rounds. One round = one feedback message. Role changes, new projects, redesigns, and out-of-package deliverables are **not** revisions.
 5. **Liability cap** — Amount paid for the package giving rise to the claim.
 6. **Your duty** — Accurate information; you indemnify us for misrepresentation.
 7. **IP** — Your content stays yours; our templates and frameworks remain ours.

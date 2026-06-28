@@ -60,6 +60,26 @@ def test_checkout_requires_terms_acceptance(client: TestClient) -> None:
     assert "Terms of Service" in response.text
 
 
+def test_checkout_lists_revision_caps(client: TestClient) -> None:
+    response = client.get("/checkout")
+    assert response.status_code == 200
+    html = response.text.lower()
+    assert "1 revision round" in html or "1 revision rounds" in html
+    assert "2 revision round" in html
+    assert "3 revision round" in html
+    assert "not included" in html
+    assert 'href="/terms#revisions"' in response.text
+
+
+def test_terms_revision_section_is_specific(client: TestClient) -> None:
+    response = client.get("/terms")
+    assert response.status_code == 200
+    html = response.text
+    assert 'id="revisions"' in html
+    assert "consolidated feedback" in html.lower()
+    assert "Foundation" in html and "1 round" in html
+
+
 def test_contact_requires_privacy_consent(client: TestClient) -> None:
     response = client.post(
         "/contact",

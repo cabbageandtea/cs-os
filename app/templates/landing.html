@@ -158,6 +158,61 @@
   {% endfor %}
 </section>
 
+<section class="band band--compare-market" id="why-us" data-reveal>
+  <p class="section-label">Why {{ site_name }}</p>
+  <h2>What the market gets wrong — and how we fix it</h2>
+  <p class="section-lead meta">
+    Resume writers, DIY builders, and vague bundles dominate this space. We built the opposite:
+    fixed scope, honest revision caps, live delivery on your accounts.
+  </p>
+
+  <div class="market-pitfall-grid">
+    {% for item in market_pitfalls %}
+    <article class="market-pitfall-card">
+      <h3>{{ item.title }}</h3>
+      <p class="market-pitfall-problem"><strong>Their mistake:</strong> {{ item.problem }}</p>
+      <p class="market-pitfall-answer"><strong>Our standard:</strong> {{ item.answer }}</p>
+    </article>
+    {% endfor %}
+  </div>
+
+  <div class="compare-shell compare-shell--market">
+    <table class="compare-table compare-table--market">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Resume writers</th>
+          <th scope="col">DIY builders</th>
+          <th scope="col">{{ site_name }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in comparison_rows %}
+        <tr>
+          <th scope="row">{{ row.factor }}</th>
+          <td>{{ row.resume_writers }}</td>
+          <td>{{ row.diy_builders }}</td>
+          <td><strong>{{ row.doggybagg }}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="compare-cards compare-cards--market">
+      {% for row in comparison_rows %}
+      <article class="compare-card">
+        <h3>{{ row.factor }}</h3>
+        <dl>
+          <div><dt>Resume writers</dt><dd>{{ row.resume_writers }}</dd></div>
+          <div><dt>DIY builders</dt><dd>{{ row.diy_builders }}</dd></div>
+          <div><dt>{{ site_name }}</dt><dd><strong>{{ row.doggybagg }}</strong></dd></div>
+        </dl>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
 <section class="band" id="packages" data-reveal>
   <p class="section-label">Packages</p>
   <h2>Scope locked before work begins</h2>
@@ -171,6 +226,7 @@
           <th scope="col">Price</th>
           <th scope="col">Best for</th>
           <th scope="col">Turnaround</th>
+          <th scope="col">Revisions</th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -184,6 +240,7 @@
           <td class="tabular">{{ pkg.price_display }}</td>
           <td>{{ pkg.who_for }}</td>
           <td class="tabular">{{ pkg.turnaround }}</td>
+          <td class="tabular">{{ pkg.revision_rounds }} round{% if pkg.revision_rounds != 1 %}s{% endif %}</td>
           <td><a href="/checkout" class="btn {% if pkg.featured %}btn-primary{% else %}btn-ghost{% endif %} btn-sm">Select</a></td>
         </tr>
         {% endfor %}

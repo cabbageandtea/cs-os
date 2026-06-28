@@ -16,6 +16,8 @@ def test_landing_page_returns_200(client: TestClient) -> None:
     assert "Take it with you" in response.text
     assert "Doggybagg" in response.text
     assert "career changers" in response.text.lower()
+    assert 'id="why-us"' in response.text
+    assert "revision round" in response.text.lower()
     assert "Alex Rivera" in response.text
     assert "Jordan Kim" in response.text
     assert "Foundation" in response.text
