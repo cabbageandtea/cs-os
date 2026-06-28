@@ -6,6 +6,7 @@ import logging
 import os
 import smtplib
 from email.message import EmailMessage
+from email.utils import formataddr, parseaddr
 from typing import Any
 
 import httpx
@@ -20,9 +21,26 @@ class EmailDeliveryError(RuntimeError):
 from app.site_branding import site_domain, site_name
 
 
+def _email_from_address() -> str:
+    """Mailbox address only — ignores any display name in EMAIL_FROM."""
+    raw = os.environ.get("EMAIL_FROM", "").strip()
+    if not raw:
+        return f"hello@{site_domain()}"
+    _, addr = parseaddr(raw)
+    if addr and "@" in addr:
+        return addr.strip().lower()
+    if "@" in raw and "<" not in raw:
+        return raw.strip().lower()
+    return f"hello@{site_domain()}"
+
+
+def _email_from_display_name() -> str:
+    custom = os.environ.get("EMAIL_FROM_NAME", "").strip()
+    return custom or site_name()
+
+
 def _email_from() -> str:
-    default = f"{site_name()} <hello@{site_domain()}>"
-    return os.environ.get("EMAIL_FROM", default).strip()
+    return formataddr((_email_from_display_name(), _email_from_address()))
 
 
 def _support_email() -> str:

@@ -51,7 +51,9 @@ services:
       - key: RESEND_API_KEY
         sync: false
       - key: EMAIL_FROM
-        value: Doggybagg <hello@doggybagg.cc>
+        value: hello@doggybagg.cc
+      - key: EMAIL_FROM_NAME
+        value: Doggybagg
       - key: SUPPORT_EMAIL
         value: hello@doggybagg.cc
       - key: STRIPE_BRAND_ICON_FILE
