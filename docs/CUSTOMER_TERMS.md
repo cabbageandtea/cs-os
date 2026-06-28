@@ -11,7 +11,7 @@
 | **Trade / operating name** | Doggybagg |
 | **Support email** | `hello@doggybagg.cc` (or `SUPPORT_EMAIL` env) |
 | **Website** | https://doggybagg.cc |
-| **Governing jurisdiction** | Set `LEGAL_JURISDICTION` in production env (confirm with counsel) |
+| **Governing jurisdiction** | Commonwealth of Pennsylvania, United States |
 
 **Service provider:** DoggyBagg LLC, doing business as Doggybagg (“we,” “us”)  
 **Customer:** You (“Client,” “you”)

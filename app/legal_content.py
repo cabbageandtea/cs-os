@@ -20,7 +20,7 @@ def legal_jurisdiction() -> str:
     custom = (os.getenv("LEGAL_JURISDICTION") or "").strip()
     if custom:
         return custom
-    return "the state in which the Company is organized, United States"
+    return "Commonwealth of Pennsylvania, United States"
 
 
 def support_email() -> str:
