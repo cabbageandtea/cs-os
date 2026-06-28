@@ -47,11 +47,12 @@ You do **not** need to paste `whsec_...` manually anymore — `start_local.ps1` 
 
 ## Your job as liaison (after setup)
 
-1. Share checkout URL with clients  
-2. After they pay — **nothing** (intake opens automatically)  
-3. After they submit — **do the delivery work** on the dashboard  
+1. Share checkout URL with paying clients (`/checkout`)
+2. Comp showcase / referral — **ops** `/intake` (no Stripe); see [SHOWCASE_CLIENT_WORKFLOW.md](./SHOWCASE_CLIENT_WORKFLOW.md)
+3. After paid checkout — intake opens automatically
+4. After intake submit — **do the delivery work** on the dashboard
 
-Details: [LIAISON.md](./LIAISON.md)
+Details: [LIAISON.md](./LIAISON.md) · [ICP.md](./ICP.md)
 
 ---
 

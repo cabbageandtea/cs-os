@@ -8,7 +8,10 @@ from app.package_config import PACKAGES
 
 # ── Hero: outcome + audience + single conversion path ──
 HERO_HEADLINE = "Career signal engineered as one system."
-HERO_AUDIENCE = "Students and early-career professionals entering technical recruiting."
+HERO_AUDIENCE = (
+    "Early-career and career changers entering technical hiring — "
+    "software, data, analytics, and adjacent roles."
+)
 HERO_LEAD = (
     "We convert fragmented projects and experience into a live portfolio, aligned resume, "
     "and coherent professional presence — deployed on infrastructure you own."
@@ -33,7 +36,7 @@ SIGNAL_GAPS: tuple[dict[str, str], ...] = (
     },
     {
         "title": "Execution competes with applications",
-        "body": "Deployment, copy structure, and revision cycles are a second job on top of school or work.",
+        "body": "Deployment, copy structure, and revision cycles are a second job on top of coursework or a career change.",
     },
 )
 
@@ -70,13 +73,31 @@ CASE_STUDY = {
     "package": "Launch",
     "problem": "Strong coursework, no searchable portfolio. Resume and LinkedIn pointed at different roles.",
     "contribution": "Single intake → deployed portfolio, impact-based resume, LinkedIn aligned to data analyst positioning.",
-    "outcome": "One narrative across GitHub, PDF, and profile — ready for campus recruiting season.",
+    "outcome": "One narrative across GitHub, PDF, and profile — ready for technical recruiting.",
     "deliverables": (
         ("Portfolio", "alexrivera.github.io"),
         ("Resume", "Impact-structured PDF"),
         ("LinkedIn", "Headline + summary aligned"),
     ),
 }
+
+CASE_STUDY_CAREER_CHANGE = {
+    "kicker": "Illustrative delivery",
+    "name": "Jordan Kim",
+    "disclaimer": "Fictional example — not a real client.",
+    "role": "Junior Software Engineer (career change)",
+    "package": "Accelerator",
+    "problem": "Bootcamp projects on GitHub, but resume still read like prior field. No pivot story recruiters could scan.",
+    "contribution": "Intake → deployed portfolio, resume rewritten for SWE targeting, LinkedIn and narrative aligned to the pivot.",
+    "outcome": "One technical story across GitHub, PDF, and profile — credible for entry-level SWE screens.",
+    "deliverables": (
+        ("Portfolio", "jordankim.github.io"),
+        ("Resume", "Pivot-focused PDF"),
+        ("LinkedIn", "Headline + about aligned to SWE"),
+    ),
+}
+
+CASE_STUDIES: tuple[dict, ...] = (CASE_STUDY, CASE_STUDY_CAREER_CHANGE)
 
 PRINCIPLES: tuple[str, ...] = (
     "Not web design. Not resume writing alone. Structured career system delivery.",
@@ -102,7 +123,7 @@ PACKAGE_SALES: dict[str, PackageSalesInfo] = {
         slug="foundation",
         display_name="Foundation",
         price_display="$99",
-        who_for="Portfolio online from real projects — minimum viable recruiter signal.",
+        who_for="Proof-of-work online — students, bootcamp grads, and changers with projects but no live site.",
         deliverables=PACKAGES["foundation"].deliverables,
         turnaround="5–10 business days after intake",
         revision_rounds=1,
@@ -129,6 +150,11 @@ PACKAGE_SALES: dict[str, PackageSalesInfo] = {
 }
 
 LANDING_FAQ = [
+    (
+        "Who is this for?",
+        "Early-career candidates and career changers targeting technical roles — students, bootcamp grads, "
+        "and anyone who needs proof-of-work online plus aligned resume and LinkedIn.",
+    ),
     (
         "Why not build this myself?",
         "You can — budget 20+ hours for setup, writing, and cross-platform consistency. "

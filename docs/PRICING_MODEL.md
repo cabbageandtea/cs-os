@@ -69,7 +69,7 @@ See [`packages.config.example.yaml`](./packages.config.example.yaml) for the ful
 
 > For candidates who need a professional portfolio deployed and GitHub aligned with their target role. You bring your projects and experience; we structure, build, and ship a live portfolio site.
 
-**Best for:** Students and early-career builders with projects but no web presence.
+**Best for:** Students, bootcamp grads, career changers into technical roles, and early-career builders with projects but no web presence.
 
 **Not included:** Resume rewrite, LinkedIn optimization, strategy session.
 

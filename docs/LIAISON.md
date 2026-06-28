@@ -48,4 +48,12 @@ You are the **human between clients and the system**. Everything else is automat
 
 **3 real clients** from payment → intake → delivered, with zero “where is my data?” messages.
 
+## Showcase / comp client (no charge)
+
+First real delivery in the **technical-entry wedge** — no Stripe. Full checklist: [SHOWCASE_CLIENT_WORKFLOW.md](./SHOWCASE_CLIENT_WORKFLOW.md)
+
+## Ideal clients #2–#3
+
+Target the same wedge before expanding scope. Qualification checklist: [ICP.md](./ICP.md)
+
 See `EXECUTION.md` for full business scope.

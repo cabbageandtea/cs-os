@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% block body_class %}page-dashboard{% endblock %}
-{% block title %}Dashboard — CS-OS{% endblock %}
+{% block title %}Dashboard — Career Systems{% endblock %}
 {% block content %}
 
 <div class="bento-grid">
+
+  {% if real_count == 0 %}
+  <section class="bento-card bento-span-full ops-onboard">
+    <h2>First real client</h2>
+    <p>Comp showcase or referral: <a href="/intake">+ New Client</a> (skip Stripe). Paid path: share <a href="/checkout">checkout</a>.</p>
+    <p class="meta">ICP: students, bootcamp grads, and career changers targeting SWE, data, or analytics roles.</p>
+  </section>
+  {% endif %}
 
   <header class="bento-card bento-span-full dash-header">
     <div>

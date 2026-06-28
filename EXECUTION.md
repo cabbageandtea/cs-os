@@ -12,7 +12,7 @@
 **Career Systems OS (CS-OS)**
 
 ### Core Problem
-Students and early-career professionals fail to convert skills into interviews because:
+Students, bootcamp grads, and career changers entering technical hiring fail to convert skills into interviews because:
 - Resumes are generic
 - Portfolios are inconsistent or non-existent
 - LinkedIn is unoptimized
@@ -28,7 +28,7 @@ A structured career positioning system that builds:
 - Career narrative consistency
 
 ### Value Proposition
-> We convert fragmented student experience into a structured, recruiter-ready digital profile that increases interview conversion rate.
+> We convert fragmented experience into a structured, recruiter-ready digital profile that increases interview conversion rate.
 
 ### Offer Structure
 
@@ -159,9 +159,7 @@ SUCCESS CRITERIA:
 
 ## 5. Immediate Next Actions
 
-1. Run `pip install -r requirements.txt`
-2. Run `uvicorn app.main:app --reload`
-3. Open `http://127.0.0.1:8000`
-4. Submit intake for Client 1
-5. Advance through pipeline; add tasks and deliverables
-6. Repeat for Clients 2 and 3 — validate acceptance criterion
+1. **Showcase client** — ops `/intake` on production; Launch package; deliver end-to-end (see `docs/SHOWCASE_CLIENT_WORKFLOW.md`)
+2. **Clients #2–#3** — same wedge per `docs/ICP.md`; decline generic job-seekers outside technical entry
+3. **Production polish** — set `RESEND_API_KEY` on Render for intake emails; swap Stripe test → live when ready for real payments
+4. **Validate** — 3 real clients through `Delivered` without confusion (acceptance criterion above)

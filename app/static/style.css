@@ -992,6 +992,29 @@ section { margin-top: 2rem; }
   padding: 0.5rem 0;
 }
 
+.ops-onboard {
+  border: 1px solid rgba(196, 92, 74, 0.35);
+  background: linear-gradient(135deg, rgba(196, 92, 74, 0.12) 0%, rgba(184, 149, 106, 0.08) 100%);
+}
+
+.ops-onboard h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.ops-onboard p {
+  margin: 0 0 0.35rem;
+}
+
+.ops-onboard p:last-child {
+  margin-bottom: 0;
+}
+
+.ops-onboard a {
+  color: var(--ops-accent-hover);
+  font-weight: 600;
+}
+
 /* Dark-mode badges */
 .page-dashboard .badge-intake { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
 .page-dashboard .badge-analysis { background: rgba(255, 107, 74, 0.2); color: var(--ops-accent-hover); }

@@ -379,6 +379,26 @@
 
   .proof-disclaimer { margin-block: var(--space-2) var(--space-5); }
 
+  .proof-case + .proof-case {
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-8);
+    border-top: 1px solid var(--line);
+  }
+
+  .proof-case h3 {
+    font-size: var(--text-xl);
+    margin-block-end: var(--space-2);
+  }
+
+  .proof-case h4 {
+    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
   .proof-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

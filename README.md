@@ -2,6 +2,8 @@
 
 Minimal internal operations system for career portfolio client delivery.
 
+**Production:** https://cs-os.onrender.com · **Wedge:** technical-entry hiring (students, bootcamp grads, career changers into SWE/data/analytics).
+
 ## Quick Start
 
 ```bash
@@ -24,6 +26,8 @@ stripe listen --forward-to localhost:8003/webhooks/stripe
 Copy the `whsec_...` value into `.env` as `STRIPE_WEBHOOK_SECRET` and restart the server.
 
 **Liaison playbook:** [docs/LIAISON.md](docs/LIAISON.md) — minimal human steps only.
+
+**Operator guides:** [docs/ICP.md](docs/ICP.md) (who to pursue) · [docs/SHOWCASE_CLIENT_WORKFLOW.md](docs/SHOWCASE_CLIENT_WORKFLOW.md) (comp showcase, no Stripe)
 
 **One-command local start (Windows):**
 

@@ -1,49 +1,49 @@
-{% extends "base_public.html" %}
-{% block title %}Contact — Career Systems{% endblock %}
-{% block content %}
-
-<header class="page-header">
-  <p class="kicker">Contact</p>
-  <h1>Discuss fit before checkout</h1>
-  <p class="meta">Share your target role — we will recommend a package.</p>
-</header>
-
-{% if success %}
-<div class="alert alert-success">
-  Thank you, {{ success_name }}. We will reply within one business day.
-</div>
-{% endif %}
-
-{% if error %}
-<div class="alert alert-error">{{ error }}</div>
-{% endif %}
-
-<div class="public-card contact-shell">
-  <form method="post" action="/contact">
-    <label for="name">Full name</label>
-    <input type="text" id="name" name="name" required value="{{ form.name | default('') }}">
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required value="{{ form.email | default('') }}">
-
-    <label for="target_role">Target role</label>
-    <input type="text" id="target_role" name="target_role" placeholder="e.g. Data Analyst Intern" required value="{{ form.target_role | default('') }}">
-
-    <label for="current_status">Current status</label>
-    <input type="text" id="current_status" name="current_status" placeholder="e.g. Undergraduate, graduating 2027" required value="{{ form.current_status | default('') }}">
-
-    <label for="interested_package">Package interest</label>
-    <select id="interested_package" name="interested_package">
-      <option value="unsure" {% if form.interested_package | default('unsure') == 'unsure' %}selected{% endif %}>Undecided</option>
-      <option value="foundation" {% if form.interested_package | default('') == 'foundation' %}selected{% endif %}>Foundation ($99)</option>
-      <option value="launch" {% if form.interested_package | default('') == 'launch' %}selected{% endif %}>Launch ($199)</option>
-      <option value="accelerator" {% if form.interested_package | default('') == 'accelerator' %}selected{% endif %}>Accelerator ($349)</option>
-    </select>
-
-    <button type="submit" class="btn btn-primary btn-lg">Send message</button>
-  </form>
-</div>
-
-<p class="meta" style="margin-top: var(--space-5);"><a href="/checkout">Proceed to checkout</a></p>
-
-{% endblock %}
+{% extends "base_public.html" %}
+{% block title %}Contact — Career Systems{% endblock %}
+{% block content %}
+
+<header class="page-header">
+  <p class="kicker">Contact</p>
+  <h1>Discuss fit before checkout</h1>
+  <p class="meta">Students, bootcamp grads, and career changers into technical hiring — share your target role and we will recommend a package.</p>
+</header>
+
+{% if success %}
+<div class="alert alert-success">
+  Thank you, {{ success_name }}. We will reply within one business day.
+</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="public-card contact-shell">
+  <form method="post" action="/contact">
+    <label for="name">Full name</label>
+    <input type="text" id="name" name="name" required value="{{ form.name | default('') }}">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required value="{{ form.email | default('') }}">
+
+    <label for="target_role">Target role</label>
+    <input type="text" id="target_role" name="target_role" placeholder="e.g. Junior SWE, Data Analyst intern" required value="{{ form.target_role | default('') }}">
+
+    <label for="current_status">Current status</label>
+    <input type="text" id="current_status" name="current_status" placeholder="e.g. CS senior, bootcamp grad, career changer from finance" required value="{{ form.current_status | default('') }}">
+
+    <label for="interested_package">Package interest</label>
+    <select id="interested_package" name="interested_package">
+      <option value="unsure" {% if form.interested_package | default('unsure') == 'unsure' %}selected{% endif %}>Undecided</option>
+      <option value="foundation" {% if form.interested_package | default('') == 'foundation' %}selected{% endif %}>Foundation ($99)</option>
+      <option value="launch" {% if form.interested_package | default('') == 'launch' %}selected{% endif %}>Launch ($199)</option>
+      <option value="accelerator" {% if form.interested_package | default('') == 'accelerator' %}selected{% endif %}>Accelerator ($349)</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary btn-lg">Send message</button>
+  </form>
+</div>
+
+<p class="meta" style="margin-top: var(--space-5);"><a href="/checkout">Proceed to checkout</a></p>
+
+{% endblock %}

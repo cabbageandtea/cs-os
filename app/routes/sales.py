@@ -13,7 +13,7 @@ from app.database import get_db
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
 from app.sales_content import (
-    CASE_STUDY,
+    CASE_STUDIES,
     CREDIBILITY_STATS,
     DEMO_EXAMPLE_CLIENT,
     DEMO_JOURNEY_STEPS,
@@ -52,7 +52,7 @@ def landing_page(request: Request):
             "signal_gaps": SIGNAL_GAPS,
             "value_bullets": VALUE_BULLETS,
             "process_steps": PROCESS_STEPS,
-            "case_study": CASE_STUDY,
+            "case_studies": CASE_STUDIES,
             "principles": PRINCIPLES,
         },
     )

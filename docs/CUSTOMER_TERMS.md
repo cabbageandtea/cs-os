@@ -24,7 +24,7 @@ At checkout, you will be asked to confirm: *“I have read and agree to the [Cus
 
 ## 1. Service Overview
 
-Career Systems OS helps early-career professionals and students present a clear, recruiter-ready digital profile. We convert your background, skills, and goals into structured deliverables—portfolio site, resume, LinkedIn alignment, and related assets—using a defined delivery process.
+Career Systems OS helps early-career professionals, career changers, and students entering **technical hiring** present a clear, recruiter-ready digital profile. We convert your background, skills, and goals into structured deliverables—portfolio site, resume, LinkedIn alignment, and related assets—using a defined delivery process.
 
 **Our process:**
 
@@ -45,7 +45,7 @@ We deliver **career positioning services**, not job placement. We do not guarant
 
 **Purpose:** Get your proof of work online.
 
-**Best for:** Candidates who need a professional portfolio deployed and GitHub aligned with a target role.
+**Best for:** Students, bootcamp grads, career changers into technical roles, and early-career builders with projects but no live web presence.
 
 **Includes:**
 

@@ -14,6 +14,9 @@ def test_landing_page_returns_200(client: TestClient) -> None:
     response = client.get("/")
     assert response.status_code == 200
     assert "Career signal" in response.text
+    assert "career changers" in response.text.lower()
+    assert "Alex Rivera" in response.text
+    assert "Jordan Kim" in response.text
     assert "Foundation" in response.text
     assert "Launch" in response.text
     assert "Accelerator" in response.text
