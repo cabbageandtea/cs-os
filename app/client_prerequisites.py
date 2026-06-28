@@ -46,7 +46,7 @@ CLIENT_PREREQUISITES: tuple[ClientPrerequisite, ...] = (
         signup_url="https://nc.me/github/auth",
         time_minutes=10,
         required_for=_ALL,
-        note="We connect DNS at handoff. No student perk? github.io works — .me is the professional upgrade.",
+        note="We connect DNS at handoff. No pack domain? github.io works — .me is the professional upgrade.",
     ),
     ClientPrerequisite(
         slug="google",
