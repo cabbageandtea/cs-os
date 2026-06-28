@@ -13,7 +13,8 @@ from tests.conftest import OPS_AUTH
 def test_landing_page_returns_200(client: TestClient) -> None:
     response = client.get("/")
     assert response.status_code == 200
-    assert "Career signal" in response.text
+    assert "Take it with you" in response.text
+    assert "Doggybagg" in response.text
     assert "career changers" in response.text.lower()
     assert "Alex Rivera" in response.text
     assert "Jordan Kim" in response.text

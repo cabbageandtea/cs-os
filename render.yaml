@@ -10,8 +10,8 @@ services:
     plan: free
     region: oregon
     domains:
-      - doggybag.cc
-      - www.doggybag.cc
+      - doggybagg.cc
+      - www.doggybagg.cc
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -25,9 +25,11 @@ services:
       - key: BASE_URL
         sync: false
       - key: SITE_NAME
-        value: Doggybag
+        value: Doggybagg
       - key: SITE_DOMAIN
-        value: doggybag.cc
+        value: doggybagg.cc
+      - key: SITE_TAGLINE
+        value: Take it with you
       - key: OPS_PASSWORD
         sync: false
       - key: STRIPE_SECRET_KEY

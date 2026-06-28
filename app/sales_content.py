@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from app.package_config import PACKAGES
 
 # ── Hero: outcome + audience + single conversion path ──
-HERO_HEADLINE = "Career signal engineered as one system."
+HERO_HEADLINE = "Take it with you."
 HERO_AUDIENCE = (
     "Early-career and career changers entering technical hiring — "
     "software, data, analytics, and adjacent roles."

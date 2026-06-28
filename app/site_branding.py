@@ -1,13 +1,13 @@
-"""Public site name and domain — driven by env (Doggybag / doggybag.cc in production)."""
+"""Public site name and domain — driven by env (Doggybagg / doggybagg.cc in production)."""
 
 from __future__ import annotations
 
 import os
 from urllib.parse import urlparse
 
-DEFAULT_SITE_NAME = "Doggybag"
-DEFAULT_SITE_DOMAIN = "doggybag.cc"
-DEFAULT_SITE_TAGLINE = "Career signal engineering"
+DEFAULT_SITE_NAME = "Doggybagg"
+DEFAULT_SITE_DOMAIN = "doggybagg.cc"
+DEFAULT_SITE_TAGLINE = "Take it with you"
 
 
 def site_name() -> str:
@@ -39,8 +39,8 @@ def site_meta_description() -> str:
     if custom:
         return custom
     return (
-        f"{site_name()} engineers portfolio, resume, and professional presence "
-        "as one coordinated system — on accounts you own."
+        f"{site_name()} — {site_tagline().rstrip('.')}. "
+        "Portfolio, resume, and professional presence as one system on accounts you own."
     )
 
 
