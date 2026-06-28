@@ -17,6 +17,7 @@ from app.models import (
 )
 from app.outcome_service import get_outcome_for_client
 from app.intake_validation import resolve_client_package_slug
+from app.portfolio_scaffold import portfolio_scaffold_repo_path
 from app.template_config import (
     get_portfolio_template,
     parse_template_preference_from_summary,
@@ -174,6 +175,7 @@ def build_client_detail_context(
         client_choice=template_pref,
     )
     recommended_template = get_portfolio_template(recommended_slug)
+    scaffold_path = portfolio_scaffold_repo_path(recommended_slug)
 
     return {
         "client": client,
@@ -206,5 +208,6 @@ def build_client_detail_context(
         "display_skills": _safe_text(client.skills, "No skills on file."),
         "recommended_template": recommended_template,
         "template_client_preference": template_pref,
+        "portfolio_scaffold_path": scaffold_path,
         "outcome": get_outcome_for_client(db, client.id),
     }

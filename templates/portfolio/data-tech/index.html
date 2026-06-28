@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{FULL_NAME}} — {{TARGET_ROLE}}</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <p class="eyebrow">Portfolio</p>
+    <h1>{{FULL_NAME}}</h1>
+    <p class="role">{{TARGET_ROLE}}</p>
+    <ul class="links">
+      <li><a href="{{GITHUB_URL}}">GitHub</a></li>
+      <li><a href="{{LINKEDIN_URL}}">LinkedIn</a></li>
+      <li><a href="mailto:{{EMAIL}}">Email</a></li>
+    </ul>
+    <div class="stack">
+      <h2>Stack</h2>
+      <ul>
+        <li>{{STACK_1}}</li>
+        <li>{{STACK_2}}</li>
+        <li>{{STACK_3}}</li>
+        <li>{{STACK_4}}</li>
+      </ul>
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <h2>{{HERO_HEADLINE}}</h2>
+      <p>{{HERO_SUMMARY}}</p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <article class="project">
+        <header>
+          <h3>{{PROJECT_1_TITLE}}</h3>
+          <span class="tag">{{PROJECT_1_TAG}}</span>
+        </header>
+        <p>{{PROJECT_1_PROBLEM}}</p>
+        <p><strong>Outcome:</strong> {{PROJECT_1_OUTCOME}}</p>
+        <p class="meta">{{PROJECT_1_STACK}}</p>
+        <a href="{{PROJECT_1_DEMO}}">Live demo</a> · <a href="{{PROJECT_1_REPO}}">Code</a>
+      </article>
+      <article class="project">
+        <header>
+          <h3>{{PROJECT_2_TITLE}}</h3>
+          <span class="tag">{{PROJECT_2_TAG}}</span>
+        </header>
+        <p>{{PROJECT_2_PROBLEM}}</p>
+        <p><strong>Outcome:</strong> {{PROJECT_2_OUTCOME}}</p>
+        <p class="meta">{{PROJECT_2_STACK}}</p>
+        <a href="{{PROJECT_2_DEMO}}">Live demo</a> · <a href="{{PROJECT_2_REPO}}">Code</a>
+      </article>
+    </section>
+
+    <section id="experience">
+      <h2>Experience</h2>
+      <p>{{EXPERIENCE_SUMMARY}}</p>
+    </section>
+  </main>
+</body>
+</html>

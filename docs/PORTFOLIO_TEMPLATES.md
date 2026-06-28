@@ -34,6 +34,6 @@ Career Systems uses **three portfolio shells**. Clients get tailored **content**
 1. Intake captures optional **Portfolio template preference**
 2. On intake complete, project auto-moves to **Analysis**
 3. Complete task **Select portfolio template** (use recommendation in client detail when wired)
-4. Build from `templates/portfolio/` starter (scaffold when ready)
+4. Build from `templates/portfolio/` starter (see client detail **Build kit**)
 
 Registry: `app/template_config.py`

@@ -81,6 +81,13 @@
     — {{ recommended_template.best_for }}
   </p>
   {% endif %}
+  {% if portfolio_scaffold_path %}
+  <div class="ops-delivery-kit">
+    <h3>Build kit</h3>
+    <p class="meta">Starter path: <code>{{ portfolio_scaffold_path }}</code></p>
+    <p class="meta">Sections: {{ recommended_template.sections | join(' · ') }}</p>
+  </div>
+  {% endif %}
   <pre class="experience-block">{{ display_experience | default('No intake experience on file.') }}</pre>
   <p><strong>Skills</strong></p>
   <p>{{ display_skills | default('No skills on file.') }}</p>

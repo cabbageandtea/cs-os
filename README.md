@@ -27,7 +27,17 @@ Copy the `whsec_...` value into `.env` as `STRIPE_WEBHOOK_SECRET` and restart th
 
 **Liaison playbook:** [docs/LIAISON.md](docs/LIAISON.md) — minimal human steps only.
 
-**Operator guides:** [docs/ICP.md](docs/ICP.md) (who to pursue) · [docs/SHOWCASE_CLIENT_WORKFLOW.md](docs/SHOWCASE_CLIENT_WORKFLOW.md) (comp showcase, no Stripe)
+**Operator guides:** [docs/ICP.md](docs/ICP.md) (who to pursue) · [docs/SHOWCASE_CLIENT_WORKFLOW.md](docs/SHOWCASE_CLIENT_WORKFLOW.md) (comp showcase, no Stripe) · [docs/ACCEPTANCE_CHECKLIST.md](docs/ACCEPTANCE_CHECKLIST.md) (deploy gate)
+
+## Quality gate
+
+```powershell
+python -m pytest tests/ -q
+python scripts/verify_acceptance.py
+.\scripts\run_e2e.ps1
+```
+
+Portfolio starters: `templates/portfolio/minimal/` and `templates/portfolio/data-tech/` — linked from client detail **Build kit**.
 
 **One-command local start (Windows):**
 

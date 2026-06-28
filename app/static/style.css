@@ -992,6 +992,25 @@ section { margin-top: 2rem; }
   padding: 0.5rem 0;
 }
 
+.ops-delivery-kit {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  border-radius: var(--ops-radius);
+  border: 1px solid rgba(255, 107, 74, 0.25);
+  background: rgba(255, 107, 74, 0.08);
+}
+
+.ops-delivery-kit h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.ops-delivery-kit code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.85rem;
+  color: #fcd34d;
+}
+
 .ops-onboard {
   border: 1px solid rgba(196, 92, 74, 0.35);
   background: linear-gradient(135deg, rgba(196, 92, 74, 0.12) 0%, rgba(184, 149, 106, 0.08) 100%);

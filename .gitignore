@@ -3,7 +3,8 @@ __pycache__/
 .env
 .venv/
 venv/
-cs_os.db
+# E2E sqlite scratch db
+cs_os_e2e.db
 *.db
 node_modules/
 playwright-report/

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pytest
+        run: python -m pytest tests/ -q
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright
+        run: |
+          npm install
+          npx playwright install chromium --with-deps
+
+      - name: E2E smoke + operator journey
+        env:
+          CI: "true"
+          OPS_PASSWORD: csos-local
+        run: npx playwright test
+
+      - name: Acceptance verifier (local)
+        env:
+          BASE_URL: http://127.0.0.1:8010
+        run: python scripts/verify_acceptance.py

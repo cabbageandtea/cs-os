@@ -23,6 +23,7 @@ from app.lead_views import build_lead_pipeline_context
 from app.metrics_service import build_metrics_summary
 from app.outcome_service import OutcomePersistenceError, OutcomeValidationError, upsert_client_outcome
 from app.database import Base, engine, get_db
+from app.health import build_health_payload
 from app.intake_context import intake_form_context
 from app.intake_tokens import assign_intake_token
 from app.intake_validation import IntakeValidationError
@@ -66,6 +67,15 @@ app.include_router(revenue_router)
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+
+
+@app.get("/health")
+def health_check(db: Session = Depends(get_db)):
+    from fastapi.responses import JSONResponse
+
+    payload = build_health_payload(db)
+    status_code = 200 if payload["status"] != "unhealthy" else 503
+    return JSONResponse(content=payload, status_code=status_code)
 
 
 @app.exception_handler(HTTPException)
