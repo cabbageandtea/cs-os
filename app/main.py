@@ -92,6 +92,12 @@ async def ops_login_redirect(request: Request, exc: HTTPException):
     return await http_exception_handler(request, exc)
 
 
+@app.get("/ops")
+def ops_entry() -> RedirectResponse:
+    """Bookmark-friendly entry to the password-protected delivery dashboard."""
+    return RedirectResponse(url="/login?next=/dashboard", status_code=302)
+
+
 @app.get("/login", response_class=HTMLResponse)
 def login_page(request: Request, next: str = Query("/dashboard")):
     safe_next = next if next.startswith("/") and not next.startswith("//") else "/dashboard"

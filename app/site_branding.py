@@ -44,12 +44,38 @@ def site_meta_description() -> str:
     )
 
 
+def site_base_url() -> str:
+    """Canonical origin for SEO tags (no trailing slash)."""
+    base = (os.getenv("BASE_URL") or "").strip().rstrip("/")
+    if base:
+        return base
+    return f"https://{site_domain()}"
+
+
+def site_og_image_url() -> str:
+    """Absolute URL for Open Graph / Twitter preview image."""
+    return f"{site_base_url()}/static/logo.png"
+
+
+# Public marketing paths included in sitemap.xml (no auth, no PII flows).
+PUBLIC_SITEMAP_PATHS: tuple[str, ...] = (
+    "/",
+    "/demo",
+    "/contact",
+    "/checkout",
+    "/start",
+    "/status",
+)
+
+
 def template_globals() -> dict[str, str]:
     return {
         "site_name": site_name(),
         "site_domain": site_domain(),
         "site_tagline": site_tagline(),
         "site_meta_description": site_meta_description(),
+        "site_base_url": site_base_url(),
+        "site_og_image_url": site_og_image_url(),
     }
 
 

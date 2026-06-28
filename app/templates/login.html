@@ -1,13 +1,14 @@
 {% extends "base_public.html" %}
-{% block title %}Operator sign in — {{ site_name }}{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
+{% block title %}Sign in — {{ site_name }}{% endblock %}
 {% block body_class %}page-auth-public{% endblock %}
 {% block content %}
 <div class="auth-shell">
   <div class="public-card auth-card">
     <header class="page-header" style="border: none; padding-bottom: var(--space-4); margin-bottom: 0;">
-      <p class="kicker">Operator</p>
+      <p class="kicker">Delivery</p>
       <h1>Sign in</h1>
-      <p class="meta">Dashboard, intake, and client delivery.</p>
+      <p class="meta">Pipeline, clients, and intake.</p>
     </header>
     {% if error %}
     <div class="alert alert-error">{{ error }}</div>

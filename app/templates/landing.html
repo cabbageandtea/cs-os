@@ -1,6 +1,25 @@
 {% extends "base_public.html" %}
-{% block title %}{{ site_name }} — {{ site_tagline }}{% endblock %}
 {% block content %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": {{ site_name | tojson }},
+      "url": {{ site_base_url | tojson }},
+      "logo": {{ (site_base_url ~ "/static/logo-icon.png") | tojson }}
+    },
+    {
+      "@type": "WebSite",
+      "name": {{ site_name | tojson }},
+      "url": {{ site_base_url | tojson }},
+      "description": {{ site_meta_description | tojson }}
+    }
+  ]
+}
+</script>
 
 <section class="hero-convert is-visible" data-reveal>
   <div class="hero-convert__copy">

@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse, RedirectResponse, Response
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -20,6 +20,7 @@ from app.example_portfolios import (
     resume_pdf_url,
 )
 from app.health import build_status_page_context
+from app.site_branding import PUBLIC_SITEMAP_PATHS, site_base_url
 from app.sales_content import (
     CASE_STUDIES,
     CREDIBILITY_STATS,
@@ -43,6 +44,47 @@ from app.sales_content import (
 router = APIRouter()
 BASE_DIR = Path(__file__).resolve().parent.parent
 RESUME_PDF_DIR = BASE_DIR / "static" / "examples" / "resumes"
+
+_ROBOTS_DISALLOW_PREFIXES = (
+    "/login",
+    "/ops",
+    "/dashboard",
+    "/clients",
+    "/intake",
+    "/purchase",
+    "/webhooks",
+    "/example/",
+    "/examples/",
+)
+
+
+@router.get("/robots.txt", response_class=PlainTextResponse)
+def robots_txt() -> str:
+    origin = site_base_url()
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        *(f"Disallow: {prefix}" for prefix in _ROBOTS_DISALLOW_PREFIXES),
+        f"Sitemap: {origin}/sitemap.xml",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+@router.get("/sitemap.xml")
+def sitemap_xml() -> Response:
+    origin = site_base_url()
+    urls = "\n".join(
+        f"  <url><loc>{origin}{path}</loc></url>"
+        for path in PUBLIC_SITEMAP_PATHS
+    )
+    body = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{urls}\n"
+        "</urlset>\n"
+    )
+    return Response(content=body, media_type="application/xml")
 
 
 @router.get("/", response_class=HTMLResponse)

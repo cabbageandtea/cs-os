@@ -1,12 +1,12 @@
 {% extends "base_public.html" %}
-{% block title %}System status — Career Systems{% endblock %}
+{% block title %}System status — {{ site_name }}{% endblock %}
 {% block body_class %}page-status{% endblock %}
 {% block content %}
 
 <header class="page-header">
   <p class="kicker">System status</p>
-  <h1>Live checks</h1>
-  <p class="meta">Production health for operators and deploy verification. JSON probe: <a href="/health">/health</a></p>
+  <h1>Service health</h1>
+  <p class="meta">Live checks for checkout, intake, and the public site.</p>
 </header>
 
 <div class="public-card status-hero status-hero-{{ overall_status }}">
@@ -26,11 +26,11 @@
 </ul>
 
 <div class="public-card" style="margin-top: var(--space-5);">
-  <h2>Where to look</h2>
+  <h2>Need help?</h2>
   <ul class="start-steps">
-    <li><strong>Public site</strong> — <a href="/">landing</a>, packages, contact</li>
-    <li><strong>Operator</strong> — <a href="/login?next=/dashboard">sign in</a> for dashboard, intake, build kit</li>
-    <li><strong>Portfolio starters</strong> — in repo at <code>templates/portfolio/</code> (shown on client detail after intake)</li>
+    <li><strong>Just paid?</strong> — <a href="/start">Client guide</a> or <a href="/purchase/return">resume intake</a></li>
+    <li><strong>Questions before buying?</strong> — <a href="/contact">Contact</a> or <a href="/#packages">view packages</a></li>
+    <li><strong>Checkout or intake issue?</strong> — <a href="/contact">Contact us</a></li>
   </ul>
 </div>
 
