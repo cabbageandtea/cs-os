@@ -13,6 +13,7 @@ from typing import Any
 import httpx
 
 BANNED_PUBLIC_PHRASES: tuple[str, ...] = (
+    "career systems",
     "student perk",
     "setup fee",
     "perk arbitrage",
@@ -30,6 +31,9 @@ PUBLIC_ROUTES: tuple[str, ...] = (
     "/contact",
     "/checkout",
     "/start",
+    "/status",
+    "/terms",
+    "/privacy",
     "/purchase/return",
     "/purchase/cancelled",
     "/login",

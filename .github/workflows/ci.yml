@@ -30,9 +30,34 @@ jobs:
           npm install
           npx playwright install chromium --with-deps
 
+      - name: Start test server
+        env:
+          DATABASE_URL: sqlite:///./cs_os_ci.db
+          OPS_PASSWORD: csos-local
+          STRIPE_SECRET_KEY: sk_test_ci
+          STRIPE_WEBHOOK_SECRET: whsec_ci
+          STRIPE_PRICE_FOUNDATION: price_foundation_ci
+          STRIPE_PRICE_LAUNCH: price_launch_ci
+          STRIPE_PRICE_ACCELERATOR: price_accelerator_ci
+          BASE_URL: http://127.0.0.1:8010
+          INTAKE_TOKEN_PEPPER: ci-pepper
+        run: |
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8010 &
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8010/health >/dev/null; then
+              echo "Server ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server failed to start" >&2
+          exit 1
+
       - name: E2E smoke + operator journey
         env:
           CI: "true"
+          E2E_NO_SERVER: "1"
+          BASE_URL: http://127.0.0.1:8010
           OPS_PASSWORD: csos-local
         run: npx playwright test
 
