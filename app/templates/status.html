@@ -12,8 +12,21 @@
 <div class="public-card status-hero status-hero-{{ overall_status }}">
   <p class="status-grade">{{ grade }}</p>
   <p class="status-score">{{ score }}/100</p>
-  <p class="meta">Version {{ version }} · {{ overall_status | upper }}</p>
+  <p class="meta">Version {{ version }} · {{ overall_status | upper }} · Stripe {{ stripe_mode }}</p>
 </div>
+
+{% if not collect_money_ready %}
+<div class="alert alert-warning" style="margin-top: var(--space-4);">
+  <strong>Not yet accepting live payments.</strong>
+  Stripe is in <strong>{{ stripe_mode }}</strong> mode. Switch Render env vars to live keys
+  (<code>sk_live_…</code>, live price IDs, live webhook secret) before charging customers.
+  Everything else is ready.
+</div>
+{% else %}
+<div class="alert alert-success" style="margin-top: var(--space-4);">
+  <strong>Ready to collect payments.</strong> Checkout, email, and provisioning are live.
+</div>
+{% endif %}
 
 <ul class="status-list">
   {% for row in check_rows %}

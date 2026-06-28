@@ -32,6 +32,18 @@ def main() -> int:
         "audit_site",
         [sys.executable, "scripts/audit_site.py", "--base", base],
     )
+    try:
+        import httpx
+
+        health = httpx.get(f"{base.rstrip('/')}/health", timeout=20.0).json()
+        if not health.get("collect_money_ready"):
+            print(
+                f"\nNOTE: collect_money_ready=false (stripe_mode={health.get('stripe_mode')}). "
+                "Set live Stripe keys on Render to charge customers."
+            )
+    except Exception as exc:
+        print(f"\nWARN: could not read /health: {exc}")
+        failures += 1
     if failures:
         print(f"\nLaunch gate: BLOCKED ({failures} step(s) failed)")
         return 1

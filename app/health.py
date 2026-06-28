@@ -15,6 +15,17 @@ def _env_configured(key: str) -> bool:
     return bool(os.environ.get(key, "").strip())
 
 
+def _stripe_mode() -> str:
+    key = os.environ.get("STRIPE_SECRET_KEY", "").strip()
+    if key.startswith("sk_live_"):
+        return "live"
+    if key.startswith("sk_test_"):
+        return "test"
+    if not key:
+        return "missing"
+    return "unknown"
+
+
 def build_health_payload(db: Session) -> dict[str, Any]:
     db_ok = False
     try:
@@ -33,6 +44,15 @@ def build_health_payload(db: Session) -> dict[str, Any]:
         "email_smtp": _env_configured("SMTP_HOST"),
     }
     email_ready = checks["email_resend"] or checks["email_smtp"]
+    stripe_mode = _stripe_mode()
+    collect_money_ready = (
+        db_ok
+        and checks["stripe"]
+        and checks["stripe_webhook"]
+        and checks["base_url"]
+        and email_ready
+        and stripe_mode == "live"
+    )
 
     critical_ok = db_ok and checks["ops_auth"] and checks["stripe"]
     status = "ok" if critical_ok else "degraded"
@@ -43,6 +63,8 @@ def build_health_payload(db: Session) -> dict[str, Any]:
         "status": status,
         "version": APP_VERSION,
         "email_configured": email_ready,
+        "stripe_mode": stripe_mode,
+        "collect_money_ready": collect_money_ready,
         "checks": checks,
     }
 
@@ -52,7 +74,7 @@ def build_status_page_context(db: Session) -> dict[str, Any]:
     checks = payload["checks"]
     rows = [
         ("Database", checks["database"], "Client and pipeline data"),
-        ("Stripe checkout", checks["stripe"], "Payment sessions"),
+        ("Stripe checkout", checks["stripe"], f"Mode: {payload['stripe_mode']}"),
         ("Stripe webhooks", checks["stripe_webhook"], "Post-payment provisioning"),
         ("Operator auth", checks["ops_auth"], "Dashboard and intake"),
         ("Base URL", checks["base_url"], "Email links and redirects"),
@@ -68,6 +90,8 @@ def build_status_page_context(db: Session) -> dict[str, Any]:
         "version": payload["version"],
         "score": score,
         "grade": grade,
+        "stripe_mode": payload["stripe_mode"],
+        "collect_money_ready": payload["collect_money_ready"],
         "check_rows": [
             {"label": label, "ok": ok, "detail": detail}
             for (label, ok, detail) in rows
