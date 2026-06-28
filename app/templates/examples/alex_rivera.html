@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ person_name }} — {{ target_role }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=1">
+</head>
+<body class="example-site">
+  <div class="example-chrome" aria-hidden="true">
+    <span class="example-chrome-lock">&#128274;</span>
+    <span class="example-chrome-url">{{ mock_domain }}</span>
+    <span class="example-chrome-badge">Demo</span>
+  </div>
+  <p class="example-banner">Fictional example — not a real client. <a href="/">Career Systems</a></p>
+
+  <div class="example-wrap">
+    <header class="example-hero">
+      <p class="example-eyebrow">{{ target_role }}</p>
+      <h1>{{ person_name }}</h1>
+      <p class="example-lead">CS student turning coursework and side projects into recruiter-ready data stories — SQL, Python, and clear business outcomes.</p>
+      <div class="example-actions">
+        <a class="example-btn example-btn-primary" href="#projects">View projects</a>
+        <a class="example-btn example-btn-secondary" href="/example/alex-rivera/resume">Sample resume</a>
+        <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </header>
+
+    <section class="example-section" id="about">
+      <h2>About</h2>
+      <p>Information Systems senior with hands-on analytics projects. I translate messy datasets into dashboards and recommendations hiring managers can scan in under a minute.</p>
+    </section>
+
+    <section class="example-section" id="projects">
+      <h2>Projects</h2>
+      <article class="example-card" id="project-1">
+        <h3>Campus Dining Insights</h3>
+        <p class="meta">Python · Pandas · Plotly · SQLite</p>
+        <p>Built an ETL pipeline on 40k+ meal-swipe records. Surfaced peak hours and waste patterns — presented findings to student government.</p>
+        <div class="example-card-actions">
+          <a class="example-btn example-btn-primary" href="https://github.com" target="_blank" rel="noopener noreferrer">View code</a>
+          <a class="example-btn example-btn-secondary" href="#project-1">Case study</a>
+        </div>
+      </article>
+      <article class="example-card" id="project-2">
+        <h3>Healthcare Wait-Time Dashboard</h3>
+        <p class="meta">SQL · Tableau · open clinic dataset</p>
+        <p>Modeled ER wait times by triage level. Identified two bottlenecks that explained 18% of delays in the capstone report.</p>
+        <div class="example-card-actions">
+          <a class="example-btn example-btn-primary" href="https://github.com" target="_blank" rel="noopener noreferrer">View code</a>
+          <a class="example-btn example-btn-secondary" href="#project-2">Case study</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="example-section" id="skills">
+      <h2>Skills</h2>
+      <ul class="example-pills">
+        <li>Python</li>
+        <li>SQL</li>
+        <li>Excel</li>
+        <li>Tableau</li>
+        <li>Pandas</li>
+        <li>Statistics</li>
+      </ul>
+    </section>
+
+    <section class="example-section" id="contact">
+      <h2>Contact</h2>
+      <div class="example-actions">
+        <a class="example-btn example-btn-primary" href="mailto:alex.rivera@example.com">Email Alex</a>
+        <a class="example-btn example-btn-secondary" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </section>
+  </div>
+
+  <footer class="example-footer">Mock portfolio · {{ mock_domain }} · Career Systems Launch package example</footer>
+</body>
+</html>

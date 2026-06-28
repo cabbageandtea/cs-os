@@ -107,7 +107,7 @@
 <section class="band band--proof" id="proof" data-reveal>
   <p class="section-label">Proof</p>
   <h2>Illustrative deliveries</h2>
-  <p class="meta section-lead">Fictional examples — same pipeline, different entry paths.</p>
+  <p class="meta section-lead">Fictional examples — click through mock .me portfolios (hosted demos, not real domains).</p>
   {% for case_study in case_studies %}
   <article class="proof-case">
     <h3>{{ case_study.name }} · {{ case_study.role }}</h3>
@@ -134,6 +134,11 @@
       </div>
       {% endfor %}
     </dl>
+    <div class="proof-actions">
+      <a href="{{ case_study.example_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View example site</a>
+      <a href="{{ case_study.example_url }}/resume" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Sample resume</a>
+      <span class="proof-mock-domain meta">{{ case_study.mock_domain }} · mock delivery</span>
+    </div>
   </article>
   {% endfor %}
 </section>

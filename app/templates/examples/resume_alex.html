@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ person_name }} — Resume (example)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=1">
+</head>
+<body class="example-site">
+  <div class="example-chrome" aria-hidden="true">
+    <span class="example-chrome-lock">&#128274;</span>
+    <span class="example-chrome-url">{{ mock_domain }}/resume.pdf</span>
+    <span class="example-chrome-badge">Demo</span>
+  </div>
+  <p class="example-banner">Fictional resume sample — not a real person. <a href="{{ portfolio_url }}">Back to portfolio</a></p>
+
+  <article class="example-resume">
+    <h1>{{ person_name }}</h1>
+    <p class="meta">{{ target_role }} · {{ mock_domain }} · alex.rivera@example.com</p>
+
+    <h2>Summary</h2>
+    <p>Information Systems student seeking a data analyst internship. Combines SQL and Python with clear written recommendations — portfolio and LinkedIn aligned to healthcare analytics.</p>
+
+    <h2>Projects</h2>
+    <ul>
+      <li><strong>Campus Dining Insights</strong> — ETL pipeline, 40k+ records, executive summary for student government.</li>
+      <li><strong>Healthcare Wait-Time Dashboard</strong> — SQL models + Tableau; capstone on ER triage delays.</li>
+    </ul>
+
+    <h2>Skills</h2>
+    <p>Python, SQL, Excel, Tableau, Pandas, statistics, technical writing.</p>
+
+    <h2>Education</h2>
+    <p>B.S. Information Systems (expected 2027) — GPA 3.7</p>
+  </article>
+
+  <footer class="example-footer">Mock resume · Career Systems Launch deliverable example</footer>
+</body>
+</html>

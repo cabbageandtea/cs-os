@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Form, Query, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
+from app.example_portfolios import get_portfolio_example
 from app.health import build_status_page_context
 from app.sales_content import (
     CASE_STUDIES,
@@ -152,6 +153,46 @@ def system_status_page(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse(
         "status.html",
         {"request": request, **build_status_page_context(db)},
+    )
+
+
+@router.get("/example/{slug}", response_class=HTMLResponse)
+def portfolio_example(request: Request, slug: str):
+    example = get_portfolio_example(slug)
+    if example is None:
+        raise HTTPException(status_code=404, detail="Example not found.")
+    return templates.TemplateResponse(
+        example.template_name,
+        {
+            "request": request,
+            "mock_domain": example.mock_domain,
+            "person_name": example.person_name,
+            "target_role": example.target_role,
+        },
+    )
+
+
+@router.get("/example/{slug}/resume", response_class=HTMLResponse)
+def portfolio_example_resume(request: Request, slug: str):
+    example = get_portfolio_example(slug)
+    if example is None:
+        raise HTTPException(status_code=404, detail="Example not found.")
+    resume_templates = {
+        "alex-rivera": "examples/resume_alex.html",
+        "jordan-kim": "examples/resume_jordan.html",
+    }
+    template_name = resume_templates.get(example.slug)
+    if not template_name:
+        raise HTTPException(status_code=404, detail="Resume example not found.")
+    return templates.TemplateResponse(
+        template_name,
+        {
+            "request": request,
+            "mock_domain": example.mock_domain,
+            "person_name": example.person_name,
+            "target_role": example.target_role,
+            "portfolio_url": f"/example/{example.slug}",
+        },
     )
 
 

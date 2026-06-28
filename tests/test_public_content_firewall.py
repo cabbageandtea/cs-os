@@ -28,6 +28,8 @@ PUBLIC_ROUTES = [
   "/checkout",
   "/start",
   "/status",
+  "/example/alex-rivera",
+  "/example/jordan-kim",
   "/purchase/return",
   "/purchase/cancelled",
   "/login",

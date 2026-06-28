@@ -445,6 +445,26 @@
     font-size: var(--text-base);
   }
 
+  .proof-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-block-start: var(--space-5);
+  }
+
+  .proof-mock-domain {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 48rem) {
+    .proof-grid,
+    .proof-deliverables {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .principle-list {
     list-style: none;
     margin: var(--space-5) 0 0;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ person_name }} — {{ target_role }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=1">
+</head>
+<body class="example-site example-site--dark">
+  <div class="example-chrome" aria-hidden="true">
+    <span class="example-chrome-lock">&#128274;</span>
+    <span class="example-chrome-url">{{ mock_domain }}</span>
+    <span class="example-chrome-badge">Demo</span>
+  </div>
+  <p class="example-banner">Fictional example — not a real client. <a href="/">Career Systems</a></p>
+
+  <div class="example-layout-dark">
+    <aside class="example-sidebar">
+      <p class="example-eyebrow">Portfolio</p>
+      <h1>{{ person_name }}</h1>
+      <p class="role">{{ target_role }} · career change</p>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#stack">Stack</a>
+        <a href="/example/jordan-kim/resume">Resume</a>
+        <a href="mailto:jordan.kim@example.com">Contact</a>
+      </nav>
+      <p class="meta" style="font-size:0.8rem;color:var(--ex-muted);">Retail operations → bootcamp → SWE targeting. Pivot narrative aligned across site, PDF, and LinkedIn.</p>
+    </aside>
+
+    <main class="example-main">
+      <header class="example-hero">
+        <h2 style="font-family:var(--ex-display);font-size:1.75rem;margin:0 0 0.75rem;">Shipped tools, not tutorial clones.</h2>
+        <p class="example-lead" style="max-width:none;">Former team lead who automated inventory reporting — now building full-stack projects with tests, deploys, and readable commit history.</p>
+        <div class="example-actions">
+          <a class="example-btn example-btn-primary" href="#projects">Featured work</a>
+          <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </header>
+
+      <section class="example-section" id="projects">
+        <h2>Projects</h2>
+        <article class="example-card">
+          <h3>ShiftSync API</h3>
+          <p class="meta">FastAPI · PostgreSQL · React</p>
+          <p><strong>Problem:</strong> Small retailers juggle spreadsheets for shift swaps.</p>
+          <p><strong>Outcome:</strong> REST API + UI prototype; cut scheduling conflicts in pilot store tests.</p>
+          <div class="example-card-actions">
+            <a class="example-btn example-btn-primary" href="https://github.com" target="_blank" rel="noopener noreferrer">Live demo</a>
+            <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
+          </div>
+        </article>
+        <article class="example-card">
+          <h3>Inventory Anomaly Detector</h3>
+          <p class="meta">Python · scikit-learn · pandas</p>
+          <p><strong>Problem:</strong> Shrink patterns buried in nightly CSV exports.</p>
+          <p><strong>Outcome:</strong> Flagged SKU clusters worth manual audit — tied to real ops experience.</p>
+          <div class="example-card-actions">
+            <a class="example-btn example-btn-primary" href="https://github.com" target="_blank" rel="noopener noreferrer">Notebook</a>
+            <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">Repo</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="example-section" id="stack">
+        <h2>Stack</h2>
+        <ul class="example-pills">
+          <li>Python</li>
+          <li>TypeScript</li>
+          <li>React</li>
+          <li>FastAPI</li>
+          <li>SQL</li>
+          <li>Git</li>
+          <li>Docker</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="example-footer">Mock portfolio · {{ mock_domain }} · Career Systems Accelerator package example</footer>
+</body>
+</html>

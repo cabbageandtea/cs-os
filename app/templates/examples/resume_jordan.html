@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ person_name }} — Resume (example)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=1">
+</head>
+<body class="example-site example-site--dark">
+  <div class="example-chrome" aria-hidden="true">
+    <span class="example-chrome-lock">&#128274;</span>
+    <span class="example-chrome-url">{{ mock_domain }}/resume.pdf</span>
+    <span class="example-chrome-badge">Demo</span>
+  </div>
+  <p class="example-banner">Fictional resume sample — not a real person. <a href="{{ portfolio_url }}">Back to portfolio</a></p>
+
+  <article class="example-resume">
+    <h1>{{ person_name }}</h1>
+    <p class="meta">{{ target_role }} · {{ mock_domain }} · jordan.kim@example.com</p>
+
+    <h2>Summary</h2>
+    <p>Operations background + full-stack bootcamp. Targeting junior SWE roles with deployed projects, test coverage, and a pivot narrative consistent across GitHub, resume, and LinkedIn.</p>
+
+    <h2>Technical projects</h2>
+    <ul>
+      <li><strong>ShiftSync API</strong> — FastAPI + React scheduling tool; pilot with local retailer.</li>
+      <li><strong>Inventory Anomaly Detector</strong> — Python ML pipeline on real shrink patterns from prior role.</li>
+    </ul>
+
+    <h2>Experience</h2>
+    <p><strong>Floor Lead</strong> — National retail chain (4 years). Owned inventory audits, trained associates, built Excel reports adopted by district manager.</p>
+
+    <h2>Education</h2>
+    <p>Full-stack engineering certificate — 2025</p>
+  </article>
+
+  <footer class="example-footer">Mock resume · Career Systems Accelerator deliverable example</footer>
+</body>
+</html>

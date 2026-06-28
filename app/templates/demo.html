@@ -34,7 +34,7 @@
       <tr>
         <td>{{ name }}</td>
         <td>
-          {% if status.startswith('http') %}
+          {% if status.startswith('http') or status.startswith('/') %}
           <a href="{{ status }}" target="_blank" rel="noopener">{{ status }}</a>
           {% else %}
           {{ status }}
@@ -55,7 +55,8 @@
 </section>
 
 <div class="hero-cta">
-  <a href="/checkout" class="btn btn-primary">View packages</a>
+  <a href="{{ example.portfolio_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View Alex's example site</a>
+  <a href="/checkout" class="btn btn-secondary">View packages</a>
   <a href="/" class="btn btn-secondary">Home</a>
 </div>
 
