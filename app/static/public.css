@@ -792,6 +792,17 @@
     background: color-mix(in oklch, var(--ink) 90%, var(--accent));
   }
 
+  .page-public .btn-secondary {
+    background: var(--bg-raised);
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+
+  .page-public .btn-secondary:hover {
+    background: var(--bg-surface);
+    border-color: color-mix(in oklch, var(--line-strong) 70%, var(--accent));
+  }
+
   .page-public .btn-ghost {
     background: transparent;
     color: var(--ink-muted);

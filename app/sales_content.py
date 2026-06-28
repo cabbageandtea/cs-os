@@ -111,7 +111,7 @@ CASE_STUDIES: tuple[dict, ...] = (CASE_STUDY, CASE_STUDY_CAREER_CHANGE)
 
 # Near primary CTA — reduces last-click friction (placement zone 3).
 CTA_PROOF_LINE = (
-    "See a full Launch delivery before checkout — portfolio, resume, GitHub, and LinkedIn samples.",
+    "See a full Launch delivery before checkout — portfolio, resume, GitHub, and LinkedIn samples."
 )
 
 ME_DOMAIN_WHY = {

@@ -2,13 +2,14 @@
 {% block title %}Career Systems — Career signal engineering{% endblock %}
 {% block content %}
 
-<section class="hero-convert" data-reveal>
+<section class="hero-convert is-visible" data-reveal>
   <div class="hero-convert__copy">
     <p class="kicker">{{ hero_audience }}</p>
     <h1>{{ hero_headline }}</h1>
     <p class="hero-lead">{{ hero_lead }}</p>
     <div class="hero-cta hero-cta--single">
       <a href="{{ hero_cta_primary[1] }}" class="btn btn-primary btn-lg">{{ hero_cta_primary[0] }} — $199</a>
+      <a href="#examples" class="btn btn-secondary btn-lg">See live examples</a>
       <a href="{{ hero_cta_secondary[1] }}" class="btn btn-ghost">{{ hero_cta_secondary[0] }}</a>
     </div>
   </div>
@@ -23,7 +24,7 @@
 </section>
 
 {# Zone 1 — proof within first scroll: outcome + live mock, not buried at bottom #}
-<section class="band band--proof-preview" id="examples" data-reveal>
+<section class="band band--proof-preview is-visible" id="examples" data-reveal>
   <div class="proof-preview-head">
     <div>
       <p class="section-label">Live examples</p>
@@ -47,7 +48,7 @@
   </div>
 </section>
 
-<section class="band band--me-why" id="why-me" data-reveal>
+<section class="band band--me-why is-visible" id="why-me" data-reveal>
   <div class="me-why-head">
     <p class="section-label">{{ me_domain_why.section_label }}</p>
     <h2>{{ me_domain_why.headline }}</h2>
