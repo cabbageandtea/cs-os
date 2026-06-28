@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.jinja_env import templates
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
+from app.legal_validation import LegalConsentError, validate_privacy_consent
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
 from app.example_portfolios import (
     example_template_context,
@@ -146,6 +147,7 @@ def submit_contact(
     target_role: str = Form(...),
     current_status: str = Form(...),
     interested_package: str = Form("unsure"),
+    privacy_consent: str | None = Form(None),
     db: Session = Depends(get_db),
 ):
     form_data = {
@@ -156,6 +158,7 @@ def submit_contact(
         "interested_package": interested_package,
     }
     try:
+        validate_privacy_consent((privacy_consent or "").strip().lower() == "on")
         lead = create_lead(
             db,
             name=name,
@@ -165,6 +168,12 @@ def submit_contact(
             interested_package=interested_package,
         )
     except LeadValidationError as exc:
+        return templates.TemplateResponse(
+            "contact.html",
+            {"request": request, "error": str(exc), "success": False, "success_name": None, "form": form_data},
+            status_code=422,
+        )
+    except LegalConsentError as exc:
         return templates.TemplateResponse(
             "contact.html",
             {"request": request, "error": str(exc), "success": False, "success_name": None, "form": form_data},
@@ -206,6 +215,16 @@ def system_status_page(request: Request, db: Session = Depends(get_db)):
         "status.html",
         {"request": request, **build_status_page_context(db)},
     )
+
+
+@router.get("/terms", response_class=HTMLResponse)
+def terms_page(request: Request):
+    return templates.TemplateResponse("terms.html", {"request": request})
+
+
+@router.get("/privacy", response_class=HTMLResponse)
+def privacy_page(request: Request):
+    return templates.TemplateResponse("privacy.html", {"request": request})
 
 
 def _render_example(request: Request, slug: str, template_name: str, **extra):

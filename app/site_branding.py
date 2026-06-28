@@ -65,6 +65,8 @@ PUBLIC_SITEMAP_PATHS: tuple[str, ...] = (
     "/checkout",
     "/start",
     "/status",
+    "/terms",
+    "/privacy",
 )
 
 

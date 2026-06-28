@@ -16,8 +16,9 @@ from app.intake_validation import IntakeValidationError, resolve_client_package_
 from app.models import Client, IntakeStatus, Purchase, PurchaseStatus
 from app.package_config import PACKAGES, PackageConfigError
 from app.services import IntakeAccessError, PersistenceError, complete_token_intake
-from app.stripe_branding import StripeBrandingError
+from app.stripe_branding import StripeBrandingError, checkout_branding_settings
 from app.stripe_checkout import StripeCheckoutError, base_url, create_checkout_session
+from app.legal_validation import LegalConsentError, validate_terms_accepted
 from app.stripe_webhook import (
     WebhookConfigError,
     WebhookSignatureError,
@@ -125,21 +126,29 @@ def checkout_page(request: Request):
 def checkout_create(
     request: Request,
     package_slug: str = Form(...),
+    terms_accepted: str | None = Form(None),
     db: Session = Depends(get_db),
 ):
+    packages = [
+        {
+            "slug": slug,
+            "display_name": PACKAGES[slug].display_name,
+            "tagline": PACKAGES[slug].tagline,
+            "default_price_cents": PACKAGES[slug].default_price_cents,
+            "featured": slug == "launch",
+        }
+        for slug in ("foundation", "launch", "accelerator")
+    ]
     try:
+        validate_terms_accepted((terms_accepted or "").strip().lower() == "on")
         _, redirect_url = create_checkout_session(db, package_slug)
+    except LegalConsentError as exc:
+        return templates.TemplateResponse(
+            "checkout.html",
+            {"request": request, "packages": packages, "error": str(exc)},
+            status_code=422,
+        )
     except (PackageConfigError, StripeCheckoutError, StripeBrandingError) as exc:
-        packages = [
-            {
-                "slug": slug,
-                "display_name": PACKAGES[slug].display_name,
-                "tagline": PACKAGES[slug].tagline,
-                "default_price_cents": PACKAGES[slug].default_price_cents,
-                "featured": slug == "launch",
-            }
-            for slug in ("foundation", "launch", "accelerator")
-        ]
         return templates.TemplateResponse(
             "checkout.html",
             {"request": request, "packages": packages, "error": str(exc)},

@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from app.models import Purchase, PurchaseStatus, utcnow
 from app.metrics_service import record_checkout_started
 from app.package_config import PackageConfigError, get_package, resolve_price_cents, resolve_stripe_price_id
+from app.legal_content import TERMS_VERSION
 from app.stripe_branding import StripeBrandingError, checkout_branding_settings
 
 
@@ -59,6 +60,8 @@ def create_checkout_session(db: Session, package_slug: str) -> tuple[Purchase, s
             "package_slug": package.slug,
             "source": "csos_checkout",
             "purchase_id": str(purchase.id),
+            "terms_version": TERMS_VERSION,
+            "terms_accepted": "true",
         },
     )
 

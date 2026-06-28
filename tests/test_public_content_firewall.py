@@ -29,6 +29,8 @@ PUBLIC_ROUTES = [
   "/checkout",
   "/start",
   "/status",
+  "/terms",
+  "/privacy",
   "/example/alex-rivera",
   "/example/jordan-kim",
   "/example/alex-rivera/linkedin",

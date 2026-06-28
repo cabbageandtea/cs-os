@@ -50,6 +50,7 @@ def test_contact_form_stores_lead(client: TestClient, db_session: Session) -> No
             "target_role": "Software Engineer Intern",
             "current_status": "Strayer student, graduating 2026",
             "interested_package": "launch",
+            "privacy_consent": "on",
         },
     )
     assert response.status_code == 200
@@ -92,6 +93,7 @@ def test_lead_status_update(client: TestClient, db_session: Session) -> None:
             "target_role": "Data Analyst",
             "current_status": "Career changer",
             "interested_package": "foundation",
+            "privacy_consent": "on",
         },
     )
     lead = db_session.scalar(select(Lead).where(Lead.email == "sam@example.com"))
@@ -119,6 +121,7 @@ def test_dashboard_shows_lead_pipeline_counts(client: TestClient) -> None:
             "target_role": "Business Analyst",
             "current_status": "Student",
             "interested_package": "launch",
+            "privacy_consent": "on",
         },
     )
     response = client.get("/dashboard", auth=OPS_AUTH)

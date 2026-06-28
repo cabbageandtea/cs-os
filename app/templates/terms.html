@@ -1,0 +1,113 @@
+{% extends "base_public.html" %}
+{% block title %}Terms of Service — {{ site_name }}{% endblock %}
+{% block meta_description %}Terms of Service for {{ site_name }} career positioning packages operated by {{ legal_entity }}.{% endblock %}
+{% block content %}
+
+<article class="legal-doc">
+  <header class="page-header">
+    <p class="kicker">Legal</p>
+    <h1>Terms of Service</h1>
+    <p class="meta">Version {{ terms_version }} · Last updated {{ legal_last_updated }} · {{ legal_entity }}</p>
+  </header>
+
+  <div class="public-card legal-body">
+    <p>
+      These Terms of Service (“<strong>Terms</strong>”) govern your purchase and use of services offered by
+      <strong>{{ legal_entity }}</strong> (“<strong>Company</strong>,” “<strong>we</strong>,” “<strong>us</strong>”)
+      through <strong>{{ site_name }}</strong> at <a href="{{ site_base_url }}">{{ site_domain }}</a>
+      (the “<strong>Service</strong>”). {{ site_name }} is our trade name.
+    </p>
+    <p>
+      By completing checkout (including checking the agreement box) and/or submitting an intake form, you
+      (“<strong>Client</strong>,” “<strong>you</strong>”) agree to these Terms and our
+      <a href="/privacy">Privacy Policy</a>. If you do not agree, do not purchase or use the Service.
+    </p>
+    <p class="legal-callout">
+      <strong>Not legal advice.</strong> These Terms are provided for business clarity. They are not a substitute
+      for advice from a licensed attorney in your jurisdiction.
+    </p>
+
+    <h2>1. What we provide</h2>
+    <p>
+      We deliver <strong>career positioning services</strong>: structured intake, template-based portfolio sites,
+      resumes, LinkedIn alignment notes, and related deliverables described at checkout. We help you present your
+      background clearly on platforms you own.
+    </p>
+    <p>
+      <strong>We do not provide job placement, recruiting, employment, or interview coaching as a guaranteed outcome.</strong>
+      We do not guarantee interviews, offers, compensation, or hiring results. Examples on our site are illustrative
+      only and do not represent promised outcomes.
+    </p>
+
+    <h2>2. Packages and scope</h2>
+    <p>Package inclusions and exclusions are described on our checkout page and in your purchase confirmation. Scope is fixed at purchase. Work outside your package (new target role after build, extra revision rounds, redesigns, ongoing maintenance, or application submission on your behalf) requires a new purchase or written quote.</p>
+
+    <h2>3. When delivery starts</h2>
+    <p>Your delivery timeline begins only after you submit a <strong>complete, validated intake form</strong>. Payment alone does not start the clock. Submit intake within <strong>7 calendar days</strong> of purchase. If intake is not received within <strong>14 calendar days</strong>, we may contact you; continued delay may affect eligibility or timeline.</p>
+    <p>Target delivery windows (business days, after intake acceptance): Foundation 5 (max 10); Launch 7 (max 14); Accelerator 10 (max 21). Targets are goals, not guarantees. Timelines pause while we wait on you (incomplete intake, missing links, no review feedback within 5 business days, or missed strategy scheduling for Accelerator).</p>
+
+    <h2>4. Your responsibilities</h2>
+    <ul>
+      <li>Provide accurate, complete information you have the right to represent.</li>
+      <li>Maintain your own GitHub, email, LinkedIn, and domain accounts.</li>
+      <li>Respond to review requests within <strong>5 business days</strong> with consolidated feedback.</li>
+      <li>Comply with third-party platform terms (GitHub, LinkedIn, registrars, etc.).</li>
+    </ul>
+    <p>You are solely responsible for how you use deliverables in applications. Misrepresenting experience may produce materials you cannot ethically use.</p>
+
+    <h2>5. Revisions</h2>
+    <p>Included revision rounds: Foundation 1; Launch 2; Accelerator 3. A revision round is one consolidated feedback cycle. Requests that amount to new scope (role change, new projects not in intake, full redesign) are not included.</p>
+
+    <h2>6. Refunds and chargebacks</h2>
+    <ul>
+      <li><strong>Before work begins:</strong> Full refund minus non-refundable payment processing fees if requested before analysis/build starts and before draft deliverables are sent.</li>
+      <li><strong>After work begins:</strong> Partial refund or credit at our discretion once analysis or build has started; no refund once build-phase drafting has begun.</li>
+      <li><strong>After delivery:</strong> No refund once final handoff is complete and you accept (written approval, use in applications without dispute within 7 days, or 14 days pass without written material dispute).</li>
+      <li><strong>Abandoned intake:</strong> If intake is incomplete after 14 days and you are unresponsive, we may issue a partial refund minus an administrative fee, at our discretion.</li>
+      <li><strong>Chargebacks:</strong> Contact us before disputing with your bank. Chargebacks without good-faith contact may result in service suspension and declined future engagements.</li>
+    </ul>
+    <p>Refund requests: <a href="mailto:{{ legal_support_email }}">{{ legal_support_email }}</a>.</p>
+
+    <h2>7. Acceptance of deliverables</h2>
+    <p>Delivery is complete when we provide all package deliverables and a handoff summary. You accept deliverables when you confirm in writing, use them in applications without requesting corrections within 7 days of delivery, or 14 days pass without written notice of material scope issues. Factual errors we introduced may still be corrected if reported promptly.</p>
+
+    <h2>8. Intellectual property</h2>
+    <ul>
+      <li><strong>Your content</strong> (bio, project descriptions, logos you supply, etc.) remains yours. You grant us a limited license to use it solely to perform the Service.</li>
+      <li><strong>Our materials</strong> (templates, layouts, code frameworks, processes, and pre-existing tools) remain Company property. You receive a non-exclusive license to use deployed deliverables for your personal career presence.</li>
+      <li>You may not resell, sublicense, or white-label our templates or internal materials.</li>
+    </ul>
+
+    <h2>9. Disclaimer of warranties</h2>
+    <p>
+      THE SERVICE AND DELIVERABLES ARE PROVIDED <strong>“AS IS” AND “AS AVAILABLE.”</strong> TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT WARRANT UNINTERRUPTED HOSTING, ERROR-FREE COPY, OR HIRING OUTCOMES.
+    </p>
+
+    <h2>10. Limitation of liability</h2>
+    <p>
+      TO THE MAXIMUM EXTENT PERMITTED BY LAW, OUR TOTAL LIABILITY FOR ANY CLAIM ARISING FROM THESE TERMS OR THE SERVICE IS LIMITED TO THE <strong>AMOUNT YOU PAID US FOR THE SPECIFIC PACKAGE</strong> GIVING RISE TO THE CLAIM IN THE TWELVE (12) MONTHS BEFORE THE CLAIM. WE ARE NOT LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, LOST PROFITS, LOST OPPORTUNITIES, OR REPUTATIONAL HARM, EVEN IF ADVISED OF THE POSSIBILITY.
+    </p>
+    <p>Some jurisdictions do not allow certain limitations; in those cases our liability is limited to the fullest extent permitted by law.</p>
+
+    <h2>11. Indemnification</h2>
+    <p>You agree to defend, indemnify, and hold harmless the Company and its members, employees, and contractors from claims, damages, and expenses (including reasonable attorneys’ fees) arising from: (a) inaccurate or unauthorized information you provide; (b) your use of deliverables in violation of law or third-party rights; (c) your breach of these Terms; or (d) disputes with employers, schools, or platforms related to content you approved.</p>
+
+    <h2>12. Termination</h2>
+    <p>We may suspend or terminate service for fraud, abusive conduct, chargebacks, or material breach. You may stop using the Service; refund rights are governed by Section 6. Sections that by nature should survive (payment obligations, IP, disclaimers, liability limits, indemnity, governing law) survive termination.</p>
+
+    <h2>13. Governing law and disputes</h2>
+    <p>These Terms are governed by the laws of <strong>{{ legal_jurisdiction }}</strong>, without regard to conflict-of-law rules. Exclusive venue for disputes shall be courts located in that jurisdiction, unless applicable law requires otherwise. You and the Company agree to attempt good-faith resolution by email before filing suit.</p>
+
+    <h2>14. Changes</h2>
+    <p>We may update these Terms by posting a new version at <a href="/terms">/terms</a> with an updated version date. Material changes do not apply retroactively to purchases completed before the change without notice to affected clients.</p>
+
+    <h2>15. Contact</h2>
+    <p>
+      <strong>{{ legal_entity }}</strong> ({{ site_name }})<br>
+      Email: <a href="mailto:{{ legal_support_email }}">{{ legal_support_email }}</a><br>
+      Web: <a href="{{ site_base_url }}">{{ site_domain }}</a>
+    </p>
+  </div>
+</article>
+
+{% endblock %}
