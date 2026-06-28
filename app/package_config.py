@@ -35,6 +35,7 @@ class PackageDefinition:
     revision_rounds: int
     turnaround_display: str
     excludes_display: tuple[str, ...]
+    excluded_task_titles: tuple[str, ...] = ()
 
 
 PACKAGES: dict[str, PackageDefinition] = {
@@ -49,6 +50,7 @@ PACKAGES: dict[str, PackageDefinition] = {
         revision_rounds=1,
         turnaround_display="5–10 business days after intake",
         excludes_display=("Resume rewrite", "LinkedIn optimization", "Strategy session"),
+        excluded_task_titles=("Resume rewrite",),
     ),
     "launch": PackageDefinition(
         slug="launch",
@@ -134,6 +136,19 @@ def resolve_price_cents(slug: str) -> int:
 
 def package_display_order() -> tuple[str, ...]:
     return ("foundation", "launch", "accelerator")
+
+
+def tasks_for_package(package_slug: str) -> list[tuple[str, str]]:
+    """Pipeline tasks included for a package (title, stage value)."""
+    from app.pipeline_config import default_tasks_for_project
+
+    pkg = get_package(package_slug)
+    excluded = set(pkg.excluded_task_titles)
+    return [
+        (title, stage.value)
+        for title, stage in default_tasks_for_project()
+        if title not in excluded
+    ]
 
 
 def checkout_package_rows(*, featured_slug: str = "launch") -> list[dict[str, object]]:

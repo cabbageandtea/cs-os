@@ -36,6 +36,20 @@
 <div class="alert alert-error">{{ error }}</div>
 {% endif %}
 
+{% if package_revision_rounds is defined %}
+<div class="bento-card ops-scope-card">
+  <h2>Package scope</h2>
+  <p class="meta">
+    <strong>{{ package_revision_rounds }}</strong> revision round{% if package_revision_rounds != 1 %}s{% endif %} included
+    · {{ package_turnaround }}
+  </p>
+  <p class="meta"><strong>Deliver:</strong> {{ package_deliverables | join(' · ') }}</p>
+  {% if package_excludes %}
+  <p class="meta"><strong>Out of scope:</strong> {{ package_excludes | join(' · ') }}</p>
+  {% endif %}
+</div>
+{% endif %}
+
 {% for warning in warnings | default([]) %}
 <div class="alert alert-warning">{{ warning }}</div>
 {% endfor %}

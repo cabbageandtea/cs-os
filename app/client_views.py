@@ -17,6 +17,7 @@ from app.models import (
 )
 from app.outcome_service import get_outcome_for_client
 from app.intake_validation import resolve_client_package_slug
+from app.package_config import get_package
 from app.portfolio_scaffold import portfolio_scaffold_repo_path
 from app.template_config import (
     get_portfolio_template,
@@ -176,6 +177,11 @@ def build_client_detail_context(
     )
     recommended_template = get_portfolio_template(recommended_slug)
     scaffold_path = portfolio_scaffold_repo_path(recommended_slug)
+    package = get_package(package_slug)
+    package_revision_rounds = package.revision_rounds
+    package_turnaround = package.turnaround_display
+    package_deliverables = package.deliverables
+    package_excludes = package.excludes_display
 
     return {
         "client": client,
@@ -210,4 +216,8 @@ def build_client_detail_context(
         "template_client_preference": template_pref,
         "portfolio_scaffold_path": scaffold_path,
         "outcome": get_outcome_for_client(db, client.id),
+        "package_revision_rounds": package_revision_rounds,
+        "package_turnaround": package_turnaround,
+        "package_deliverables": package_deliverables,
+        "package_excludes": package_excludes,
     }

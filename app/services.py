@@ -47,7 +47,7 @@ from app.models import (
 
 )
 
-from app.package_config import get_package
+from app.package_config import get_package, tasks_for_package
 from app.metrics_service import record_delivered, record_intake_completed
 from app.pipeline_config import default_tasks_for_project, log_state_label, transition_error
 
@@ -143,20 +143,20 @@ def _ensure_client_not_archived(client: Client) -> None:
 
 def seed_project_defaults(db: Session, project: Project, *, package_slug: str | None = None) -> None:
 
-    for title, stage in default_tasks_for_project():
+    if package_slug:
+        task_specs = tasks_for_package(package_slug)
+    else:
+        task_specs = [
+            (title, stage.value) for title, stage in default_tasks_for_project()
+        ]
 
+    for title, stage_name in task_specs:
         db.add(
-
             Task(
-
                 project_id=project.id,
-
                 title=title,
-
-                stage_name=stage.value,
-
+                stage_name=stage_name,
             )
-
         )
 
 
