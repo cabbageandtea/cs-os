@@ -27,7 +27,7 @@ Copy the `whsec_...` value into `.env` as `STRIPE_WEBHOOK_SECRET` and restart th
 
 **Liaison playbook:** [docs/LIAISON.md](docs/LIAISON.md) — minimal human steps only.
 
-**Operator guides:** [docs/ICP.md](docs/ICP.md) (who to pursue) · [docs/SHOWCASE_CLIENT_WORKFLOW.md](docs/SHOWCASE_CLIENT_WORKFLOW.md) (comp showcase, no Stripe) · [docs/ACCEPTANCE_CHECKLIST.md](docs/ACCEPTANCE_CHECKLIST.md) (deploy gate)
+**Operator guides:** [docs/ICP.md](docs/ICP.md) (who to pursue) · [docs/SHOWCASE_CLIENT_WORKFLOW.md](docs/SHOWCASE_CLIENT_WORKFLOW.md) (comp showcase, no Stripe) · [docs/ACCEPTANCE_CHECKLIST.md](docs/ACCEPTANCE_CHECKLIST.md) (deploy gate) · [docs/PLACEMENT.md](docs/PLACEMENT.md) (landing + portfolio placement)
 
 ## Quality gate
 

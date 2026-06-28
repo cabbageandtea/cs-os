@@ -17,6 +17,7 @@ from app.health import build_status_page_context
 from app.sales_content import (
     CASE_STUDIES,
     CREDIBILITY_STATS,
+    CTA_PROOF_LINE,
     DEMO_EXAMPLE_CLIENT,
     DEMO_JOURNEY_STEPS,
     HERO_AUDIENCE,
@@ -55,6 +56,7 @@ def landing_page(request: Request):
             "value_bullets": VALUE_BULLETS,
             "process_steps": PROCESS_STEPS,
             "case_studies": CASE_STUDIES,
+            "cta_proof_line": CTA_PROOF_LINE,
             "principles": PRINCIPLES,
         },
     )

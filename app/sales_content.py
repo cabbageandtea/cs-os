@@ -74,6 +74,8 @@ CASE_STUDY = {
     "example_slug": "alex-rivera",
     "mock_domain": "alexrivera.me",
     "example_url": "/example/alex-rivera",
+    "outcome_metric": "40k+ rows · 2 shipped dashboards",
+    "preview_tone": "data",
     "problem": "Strong coursework, no searchable portfolio. Resume and LinkedIn pointed at different roles.",
     "contribution": "Single intake → deployed portfolio, impact-based resume, LinkedIn aligned to data analyst positioning.",
     "outcome": "One narrative across GitHub, PDF, and profile — ready for technical recruiting.",
@@ -93,6 +95,8 @@ CASE_STUDY_CAREER_CHANGE = {
     "example_slug": "jordan-kim",
     "mock_domain": "jordankim.me",
     "example_url": "/example/jordan-kim",
+    "outcome_metric": "2 deployed apps · pivot narrative aligned",
+    "preview_tone": "code",
     "problem": "Bootcamp projects on GitHub, but resume still read like prior field. No pivot story recruiters could scan.",
     "contribution": "Intake → deployed portfolio, resume rewritten for SWE targeting, LinkedIn and narrative aligned to the pivot.",
     "outcome": "One technical story across GitHub, PDF, and profile — credible for entry-level SWE screens.",
@@ -104,6 +108,11 @@ CASE_STUDY_CAREER_CHANGE = {
 }
 
 CASE_STUDIES: tuple[dict, ...] = (CASE_STUDY, CASE_STUDY_CAREER_CHANGE)
+
+# Near primary CTA — reduces last-click friction (placement zone 3).
+CTA_PROOF_LINE = (
+    "See a fictional Launch delivery before checkout — mock .me portfolio with resume sample."
+)
 
 PRINCIPLES: tuple[str, ...] = (
     "Not web design. Not resume writing alone. Structured career system delivery.",
