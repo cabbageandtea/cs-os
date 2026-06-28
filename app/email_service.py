@@ -121,6 +121,7 @@ def send_email(
             subject=subject,
             plain=plain,
             html=html,
+            reply_to=reply_to,
         )
 
     smtp = _smtp_config()
@@ -217,6 +218,7 @@ def _send_resend(
     subject: str,
     plain: str,
     html: str,
+    reply_to: str | None = None,
 ) -> bool:
     try:
         payload: dict[str, Any] = {
