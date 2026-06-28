@@ -138,7 +138,11 @@ def run_checks(base_url: str, timeout: float) -> list[CheckResult]:
                 )
 
         try:
-            dash = client.get(f"{root}/dashboard", follow_redirects=False)
+            dash = client.get(
+                f"{root}/dashboard",
+                follow_redirects=False,
+                headers={"Accept": "text/html,application/xhtml+xml"},
+            )
             location = (dash.headers.get("location") or "").lower()
             passed = dash.status_code in (301, 302, 303, 307, 308) and "/login" in location
             results.append(
