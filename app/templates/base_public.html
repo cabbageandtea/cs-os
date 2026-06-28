@@ -28,7 +28,13 @@
 
   <meta property="og:image" content="{{ site_og_image_url }}">
 
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image:width" content="1024">
+
+  <meta property="og:image:height" content="1024">
+
+  <meta property="og:image:alt" content="{{ site_name }} — {{ site_tagline }}">
+
+  <meta name="twitter:card" content="summary_large_image">
 
   <meta name="twitter:title" content="{% block twitter_title %}{{ site_name }} — {{ site_tagline }}{% endblock %}">
 
@@ -42,13 +48,13 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
 
-  <link rel="icon" href="/static/logo-icon.png?v=3" type="image/png">
+  <link rel="icon" href="/static/logo-icon.png?v=4" type="image/png">
 
   <meta name="theme-color" content="#141418">
 
-  <link rel="apple-touch-icon" href="/static/logo-icon.png?v=3">
+  <link rel="apple-touch-icon" href="/static/logo-icon.png?v=4">
 
-  <link rel="stylesheet" href="/static/public.css?v=6">
+  <link rel="stylesheet" href="/static/public.css?v=7">
 
 </head>
 
@@ -56,15 +62,9 @@
 
   <header class="public-header">
 
-    <a href="/" class="brand">
+    <a href="/" class="brand" aria-label="{{ site_name }} — home">
 
-      <span class="brand-logo-wrap" aria-hidden="true">
-
-        <img src="/static/logo-icon.png?v=3" alt="" class="brand-logo" width="32" height="32">
-
-      </span>
-
-      {{ site_name }}
+      <img src="/static/logo-header.png?v=4" alt="{{ site_name }}" class="brand-mark" width="160" height="45" decoding="async">
 
     </a>
 

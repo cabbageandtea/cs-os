@@ -12,8 +12,8 @@ import stripe
 from app.site_branding import site_name
 
 BRAND_DISPLAY_NAME = site_name()
-BRAND_BUTTON_COLOR = "#ff6b4a"
-BRAND_BACKGROUND_COLOR = "#f7f5f0"
+BRAND_BUTTON_COLOR = "#e86f3a"
+BRAND_BACKGROUND_COLOR = "#141416"
 _APP_ROOT = Path(__file__).resolve().parent
 BRAND_ICON_PATH = _APP_ROOT / "static" / "logo-icon.png"
 BRAND_LOGO_PATH = _APP_ROOT / "static" / "logo.png"

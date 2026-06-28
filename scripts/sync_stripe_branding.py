@@ -13,18 +13,23 @@ from pathlib import Path
 import stripe
 
 ROOT = Path(__file__).resolve().parents[1]
-ICON = ROOT / "app" / "static" / "logo-icon.png"
-from app.site_branding import site_name
+sys.path.insert(0, str(ROOT))
 
-BRAND_NAME = site_name()
-BRAND_BUTTON_COLOR = "#ff6b4a"
-BRAND_BACKGROUND_COLOR = "#f7f5f0"
+from app.stripe_branding import (  # noqa: E402
+    BRAND_BACKGROUND_COLOR,
+    BRAND_BUTTON_COLOR,
+    BRAND_DISPLAY_NAME,
+    BRAND_ICON_PATH,
+    BRAND_LOGO_PATH,
+)
+
+BRAND_NAME = BRAND_DISPLAY_NAME
 
 
 def _upload_files() -> tuple[str, str]:
-    with ICON.open("rb") as icon_file:
+    with BRAND_ICON_PATH.open("rb") as icon_file:
         icon = stripe.File.create(file=icon_file, purpose="business_icon")
-    with ICON.open("rb") as logo_file:
+    with BRAND_LOGO_PATH.open("rb") as logo_file:
         logo = stripe.File.create(file=logo_file, purpose="business_logo")
     return icon.id, logo.id
 
@@ -62,7 +67,8 @@ def _print_dashboard_links() -> None:
     print("  Business name: https://dashboard.stripe.com/test/settings/business-details")
     print("  Checkout branding: https://dashboard.stripe.com/test/settings/branding/checkout")
     print(f"  Set business name to: {BRAND_NAME}")
-    print(f"  Upload icon/logo from: {ICON}")
+    print(f"  Upload icon from: {BRAND_ICON_PATH}")
+    print(f"  Upload logo from: {BRAND_LOGO_PATH}")
     print(f"  Button/accent color: {BRAND_BUTTON_COLOR}")
 
 
@@ -71,8 +77,11 @@ def main() -> int:
     if not api_key.startswith("sk_test_") and not api_key.startswith("sk_live_"):
         print("Set STRIPE_SECRET_KEY to your Stripe secret key.", file=sys.stderr)
         return 1
-    if not ICON.is_file():
-        print(f"Missing brand icon: {ICON}", file=sys.stderr)
+    if not BRAND_ICON_PATH.is_file():
+        print(f"Missing brand icon: {BRAND_ICON_PATH}", file=sys.stderr)
+        return 1
+    if not BRAND_LOGO_PATH.is_file():
+        print(f"Missing brand logo: {BRAND_LOGO_PATH}", file=sys.stderr)
         return 1
 
     stripe.api_key = api_key

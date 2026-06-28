@@ -123,13 +123,17 @@
   .public-header .brand {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
     text-decoration: none;
     color: var(--ink);
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--text-sm);
-    letter-spacing: -0.02em;
+  }
+
+  .public-header .brand-mark {
+    display: block;
+    width: auto;
+    height: 2.75rem;
+    max-width: min(11rem, 42vw);
+    object-fit: contain;
+    object-position: left center;
   }
 
   .public-header .brand-logo-wrap {
