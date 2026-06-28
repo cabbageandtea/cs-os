@@ -22,6 +22,7 @@ const PUBLIC_ROUTES = [
   "/contact",
   "/checkout",
   "/start",
+  "/status",
   "/purchase/return",
   "/purchase/cancelled",
   "/login",

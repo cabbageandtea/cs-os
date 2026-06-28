@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
+from app.health import build_status_page_context
 from app.sales_content import (
     CASE_STUDIES,
     CREDIBILITY_STATS,
@@ -143,6 +144,14 @@ def client_start_hub(request: Request):
             "request": request,
             "prerequisites": CLIENT_PREREQUISITES,
         },
+    )
+
+
+@router.get("/status", response_class=HTMLResponse)
+def system_status_page(request: Request, db: Session = Depends(get_db)):
+    return templates.TemplateResponse(
+        "status.html",
+        {"request": request, **build_status_page_context(db)},
     )
 
 

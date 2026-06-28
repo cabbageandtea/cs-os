@@ -70,8 +70,12 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 
 
 @app.get("/health")
-def health_check(db: Session = Depends(get_db)):
+def health_check(request: Request, db: Session = Depends(get_db)):
     from fastapi.responses import JSONResponse
+
+    accept = (request.headers.get("accept") or "").lower()
+    if "text/html" in accept and "application/json" not in accept.split(",")[0].strip():
+        return RedirectResponse(url="/status", status_code=302)
 
     payload = build_health_payload(db)
     status_code = 200 if payload["status"] != "unhealthy" else 503

@@ -1,0 +1,37 @@
+{% extends "base_public.html" %}
+{% block title %}System status — Career Systems{% endblock %}
+{% block body_class %}page-status{% endblock %}
+{% block content %}
+
+<header class="page-header">
+  <p class="kicker">System status</p>
+  <h1>Live checks</h1>
+  <p class="meta">Production health for operators and deploy verification. JSON probe: <a href="/health">/health</a></p>
+</header>
+
+<div class="public-card status-hero status-hero-{{ overall_status }}">
+  <p class="status-grade">{{ grade }}</p>
+  <p class="status-score">{{ score }}/100</p>
+  <p class="meta">Version {{ version }} · {{ overall_status | upper }}</p>
+</div>
+
+<ul class="status-list">
+  {% for row in check_rows %}
+  <li class="status-row status-row-{{ 'pass' if row.ok else 'fail' }}">
+    <span class="status-mark" aria-hidden="true">{{ '✓' if row.ok else '·' }}</span>
+    <span class="status-label">{{ row.label }}</span>
+    <span class="status-detail meta">{{ row.detail }}</span>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="public-card" style="margin-top: var(--space-5);">
+  <h2>Where to look</h2>
+  <ul class="start-steps">
+    <li><strong>Public site</strong> — <a href="/">landing</a>, packages, contact</li>
+    <li><strong>Operator</strong> — <a href="/login?next=/dashboard">sign in</a> for dashboard, intake, build kit</li>
+    <li><strong>Portfolio starters</strong> — in repo at <code>templates/portfolio/</code> (shown on client detail after intake)</li>
+  </ul>
+</div>
+
+{% endblock %}

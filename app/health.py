@@ -45,3 +45,31 @@ def build_health_payload(db: Session) -> dict[str, Any]:
         "email_configured": email_ready,
         "checks": checks,
     }
+
+
+def build_status_page_context(db: Session) -> dict[str, Any]:
+    payload = build_health_payload(db)
+    checks = payload["checks"]
+    rows = [
+        ("Database", checks["database"], "Client and pipeline data"),
+        ("Stripe checkout", checks["stripe"], "Payment sessions"),
+        ("Stripe webhooks", checks["stripe_webhook"], "Post-payment provisioning"),
+        ("Operator auth", checks["ops_auth"], "Dashboard and intake"),
+        ("Base URL", checks["base_url"], "Email links and redirects"),
+        ("Transactional email", payload["email_configured"], "Resend or SMTP"),
+    ]
+    weights = (15, 10, 5, 10, 5, 5)
+    total = sum(weights)
+    earned = sum(w for (_, ok, _), w in zip(rows, weights) if ok)
+    score = round((earned / total) * 100) if total else 0
+    grade = "A" if score >= 95 else "B+" if score >= 85 else "B" if score >= 80 else "C" if score >= 70 else "D"
+    return {
+        "overall_status": payload["status"],
+        "version": payload["version"],
+        "score": score,
+        "grade": grade,
+        "check_rows": [
+            {"label": label, "ok": ok, "detail": detail}
+            for (label, ok, detail) in rows
+        ],
+    }

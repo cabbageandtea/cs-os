@@ -755,4 +755,42 @@
     .page-intake-public .ops-form-grid { grid-template-columns: 1fr; }
     .page-intake-public .form-span-2 { grid-column: span 1; }
   }
+
+  .status-hero {
+    display: grid;
+    gap: var(--space-2);
+    text-align: center;
+    margin-block-end: var(--space-5);
+  }
+
+  .status-grade {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 8cqi, 4rem);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .status-score { font-family: var(--font-mono); font-size: var(--text-lg); margin: 0; color: var(--ink-muted); }
+
+  .status-hero-ok { border-color: color-mix(in oklch, #6ee7b7 35%, var(--line)); }
+  .status-hero-degraded { border-color: color-mix(in oklch, #fcd34d 35%, var(--line)); }
+  .status-hero-unhealthy { border-color: color-mix(in oklch, #f87171 35%, var(--line)); }
+
+  .status-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .status-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg-raised);
+  }
+
+  .status-row-pass .status-mark { color: #6ee7b7; }
+  .status-row-fail .status-mark { color: #f87171; }
+  .status-label { font-weight: 600; }
+  .status-detail { text-align: end; }
 }
