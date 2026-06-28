@@ -12,7 +12,9 @@ import stripe
 BRAND_DISPLAY_NAME = "Career Systems"
 BRAND_BUTTON_COLOR = "#ff6b4a"
 BRAND_BACKGROUND_COLOR = "#f7f5f0"
-BRAND_ICON_PATH = Path(__file__).resolve().parent / "static" / "logo-icon.png"
+_APP_ROOT = Path(__file__).resolve().parent
+BRAND_ICON_PATH = _APP_ROOT / "static" / "logo-icon.png"
+BRAND_LOGO_PATH = _APP_ROOT / "static" / "logo.png"
 
 
 class StripeBrandingError(RuntimeError):
@@ -24,39 +26,52 @@ def _configure_stripe() -> None:
     if not api_key:
         raise StripeBrandingError("STRIPE_SECRET_KEY is not configured.")
     stripe.api_key = api_key
-BRAND_BUTTON_COLOR = "#ff6b4a"
-BRAND_BACKGROUND_COLOR = "#f7f5f0"
-BRAND_ICON_PATH = Path(__file__).resolve().parent / "static" / "logo-icon.png"
 
 
-@lru_cache(maxsize=2)
-def _upload_brand_file(purpose: str) -> str:
+def _is_stripe_file_id(value: str) -> bool:
+    return value.startswith("file_")
+
+
+def _resolve_local_path(configured: str, default: Path) -> Path:
+    if not configured:
+        return default
+    candidate = Path(configured)
+    if not candidate.is_absolute():
+        candidate = Path(__file__).resolve().parents[1] / configured
+    return candidate if candidate.is_file() else default
+
+
+@lru_cache(maxsize=4)
+def _upload_brand_file(path_key: str, purpose: str) -> str:
     _configure_stripe()
-    if not BRAND_ICON_PATH.is_file():
-        raise StripeBrandingError(f"Brand icon not found at {BRAND_ICON_PATH}")
-    size = BRAND_ICON_PATH.stat().st_size
+    path = Path(path_key)
+    if not path.is_file():
+        raise StripeBrandingError(f"Brand asset not found at {path}")
+    size = path.stat().st_size
     if size > 512 * 1024:
-        raise StripeBrandingError("Brand icon must be under 512 KB for Stripe Checkout.")
-    with BRAND_ICON_PATH.open("rb") as icon_file:
-        uploaded = stripe.File.create(file=icon_file, purpose=purpose)
+        raise StripeBrandingError("Brand asset must be under 512 KB for Stripe Checkout.")
+    with path.open("rb") as asset_file:
+        uploaded = stripe.File.create(file=asset_file, purpose=purpose)
     file_id = getattr(uploaded, "id", None)
     if not file_id:
-        raise StripeBrandingError("Stripe did not return a file id for the brand icon.")
+        raise StripeBrandingError("Stripe did not return a file id for the brand asset.")
     return file_id
 
 
-def resolve_brand_icon_file_id() -> str:
-    configured = os.environ.get("STRIPE_BRAND_ICON_FILE", "").strip()
-    if configured:
+def _resolve_brand_file_id(env_key: str, default_path: Path, purpose: str) -> str:
+    configured = os.environ.get(env_key, "").strip()
+    if configured and _is_stripe_file_id(configured):
         return configured
-    return _upload_brand_file("business_icon")
+    path = _resolve_local_path(configured, default_path)
+    return _upload_brand_file(str(path.resolve()), purpose)
+
+
+def resolve_brand_icon_file_id() -> str:
+    return _resolve_brand_file_id("STRIPE_BRAND_ICON_FILE", BRAND_ICON_PATH, "business_icon")
 
 
 def resolve_brand_logo_file_id() -> str:
-    configured = os.environ.get("STRIPE_BRAND_LOGO_FILE", "").strip()
-    if configured:
-        return configured
-    return _upload_brand_file("business_logo")
+    return _resolve_brand_file_id("STRIPE_BRAND_LOGO_FILE", BRAND_LOGO_PATH, "business_logo")
 
 
 def checkout_branding_settings() -> dict[str, Any]:
