@@ -148,16 +148,20 @@ def _send_resend(
     html: str,
 ) -> bool:
     try:
+        payload: dict[str, Any] = {
+            "from": from_addr,
+            "to": [to_email],
+            "subject": subject,
+            "text": plain,
+            "html": html,
+        }
+        reply_to = _support_email()
+        if reply_to and "@" in reply_to:
+            payload["reply_to"] = reply_to
         response = httpx.post(
             "https://api.resend.com/emails",
             headers={"Authorization": f"Bearer {api_key}"},
-            json={
-                "from": from_addr,
-                "to": [to_email],
-                "subject": subject,
-                "text": plain,
-                "html": html,
-            },
+            json=payload,
             timeout=15.0,
         )
         response.raise_for_status()
