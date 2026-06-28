@@ -8,10 +8,10 @@ Minimal internal operations system for career portfolio client delivery.
 python -m venv .venv
 .venv\Scripts\activate        # Windows
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8003
 ```
 
-Open http://127.0.0.1:8000
+Open http://127.0.0.1:8003 — sign in at `/login` with your `OPS_PASSWORD` from `.env` (default local: `csos-local`).
 
 ## Stripe Test Mode (Phase 4A)
 
