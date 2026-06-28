@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful — CS-OS{% endblock %}
+{% block content %}
+<h1>Payment Received</h1>
+<p class="meta">Setting up your client record…</p>
+
+<div id="status-panel" class="card">
+  <p id="status-message">Confirming payment…</p>
+  <p id="intake-link-wrap" style="display:none;">
+    <strong>Next step:</strong> <a id="intake-link" href="#">Complete your intake</a>
+  </p>
+</div>
+
+<script>
+(function () {
+  const sessionId = {{ session_id | tojson }};
+  const message = document.getElementById('status-message');
+  const linkWrap = document.getElementById('intake-link-wrap');
+  const link = document.getElementById('intake-link');
+  let attempts = 0;
+  const maxAttempts = 30;
+
+  function poll() {
+    fetch('/purchase/status?session_id=' + encodeURIComponent(sessionId))
+      .then(r => r.json())
+      .then(data => {
+        if (data.ready) {
+          message.textContent = 'Your account is ready.';
+          if (data.intake_complete) {
+            message.textContent = 'Intake already complete. Thank you!';
+          } else if (data.intake_url) {
+            link.href = data.intake_url;
+            linkWrap.style.display = 'block';
+          } else {
+            message.textContent = 'Account ready. Use the intake link you saved, or contact support.';
+          }
+          return;
+        }
+        attempts += 1;
+        if (attempts >= maxAttempts) {
+          message.textContent = 'Payment is still processing. Refresh this page in a moment.';
+          return;
+        }
+        setTimeout(poll, 2000);
+      })
+      .catch(() => {
+        message.textContent = 'Unable to check status. Refresh this page.';
+      });
+  }
+  poll();
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}{{ display_name | default('Client') }} — CS-OS{% endblock %}
+{% block content %}
+<p><a href="/dashboard">&larr; Dashboard</a></p>
+<h1>{{ display_name | default('Unknown Client') }}</h1>
+<p class="meta">{{ display_role | default('Role not specified') }} · {{ display_package | default('Basic') }} package</p>
+{% if display_lifecycle and display_lifecycle != '—' %}
+<p class="meta">Customer lifecycle: {{ display_lifecycle }} · Intake: {{ display_intake_status }} · Payment: {{ purchase_status }}</p>
+{% endif %}
+
+{% if client and client.name.startswith('[DEMO]') %}
+<div class="alert alert-demo">
+  <strong>Sales demo environment.</strong> This client uses fictional data only. No real accounts or personal information.
+</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+{% for warning in warnings | default([]) %}
+<div class="alert alert-warning">{{ warning }}</div>
+{% endfor %}
+
+{% if project %}
+<div class="card">
+  <h2>Pipeline — {{ project.status.value if project.status else 'Unknown' }}</h2>
+  <div class="pipeline">
+    {% for status in status_list | default([]) %}
+    <span class="pipeline-step {% if loop.index0 < (current_index | default(0)) %}done{% elif loop.index0 == (current_index | default(0)) %}current{% endif %}">
+      {{ status.value }}
+    </span>
+    {% endfor %}
+  </div>
+
+  <p class="meta"><strong>Done criteria:</strong> {{ current_stage.done_criteria | default('No done criteria defined.') }}</p>
+  <p class="meta"><strong>Movement policy:</strong> One stage forward or one stage back ({{ rollback_policy | default('controlled_one_step') }}). No skipping.</p>
+
+  <form method="post" action="/clients/{{ client.id }}/status">
+    <label for="status">Advance or retreat one stage (no skipping)</label>
+    <select id="status" name="status">
+      {% for status in allowed_statuses | default([]) %}
+      <option value="{{ status.value }}" {% if project.status == status %}selected{% endif %}>
+        {{ status.value }}{% if project.status == status %} (current){% endif %}
+      </option>
+      {% endfor %}
+    </select>
+    <button type="submit">Update Status</button>
+  </form>
+</div>
+{% else %}
+<div class="card">
+  <p class="meta">No project linked. Intake data shown below.</p>
+</div>
+{% endif %}
+
+<div class="card">
+  <h2>Intake Data</h2>
+  <pre class="experience-block">{{ display_experience | default('No intake experience on file.') }}</pre>
+  <p><strong>Skills</strong></p>
+  <p>{{ display_skills | default('No skills on file.') }}</p>
+  {% if client and client.linkedin_url %}
+  <p><strong>LinkedIn:</strong> <a href="{{ client.linkedin_url }}" target="_blank">{{ client.linkedin_url }}</a></p>
+  {% endif %}
+  {% if client and client.github_url %}
+  <p><strong>GitHub:</strong> <a href="{{ client.github_url }}" target="_blank">{{ client.github_url }}</a></p>
+  {% endif %}
+</div>
+
+<section id="tasks">
+  <h2>Tasks by Stage</h2>
+  {% for status in status_list | default([]) %}
+  {% set stage_tasks = (tasks_by_stage | default({})).get(status.value, []) %}
+  {% if stage_tasks %}
+  <div class="card">
+    <h3>{{ status.value }}</h3>
+    <table>
+      <thead>
+        <tr><th>Task</th><th>Stage</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for task in stage_tasks %}
+        <tr>
+          <td>{{ task.title | default('Untitled task') }}</td>
+          <td>{{ task.stage_name | default('Intake') }}</td>
+          <td>{{ task.status.value if task.status else 'unknown' }}</td>
+          <td>
+            <form class="inline-form" method="post" action="/tasks/{{ task.id }}/status">
+              <select name="status">
+                {% for ts in task_statuses | default([]) %}
+                <option value="{{ ts.value }}" {% if task.status == ts %}selected{% endif %}>{{ ts.value }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit">Set</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% if project and not has_tasks %}
+  <p class="meta">No tasks on file.</p>
+  {% endif %}
+</section>
+
+<section id="deliverables">
+  <h2>Deliverables</h2>
+  <div class="card">
+    {% if deliverables | default([]) %}
+    <table>
+      <thead>
+        <tr><th>Deliverable</th><th>URL</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for d in deliverables %}
+        <tr>
+          <td>{{ d.name | default('Untitled') }}</td>
+          <td>
+            <form class="inline-form" method="post" action="/deliverables/{{ d.id }}/url">
+              <input type="url" name="url" value="{{ d.url or '' }}" placeholder="https://..." style="width:200px;margin:0">
+              <button type="submit">Save</button>
+            </form>
+          </td>
+          <td>{{ d.status.value if d.status else 'unknown' }}</td>
+          <td>
+            <form class="inline-form" method="post" action="/deliverables/{{ d.id }}/status">
+              <select name="status">
+                {% for ds in deliverable_statuses | default([]) %}
+                <option value="{{ ds.value }}" {% if d.status == ds %}selected{% endif %}>{{ ds.value }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit">Set</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="meta">No deliverables on file.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <h2>Status History</h2>
+  <div class="card">
+    {% if logs | default([]) %}
+      {% for log in logs %}
+      <div class="log-entry">
+        <span class="log-time">
+          {% if log.created_at %}{{ log.created_at.strftime('%Y-%m-%d %H:%M UTC') }}{% else %}—{% endif %}
+        </span>
+        — <strong>{{ log.entity_type | default('entity') }}</strong> #{{ log.entity_id | default('?') }}:
+        {% if log.previous_state %}{{ log.previous_state }} → {% endif %}{{ log.new_state | default('—') }}
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="meta">No status changes logged yet.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% if client and not client.name.startswith('[DEMO]') %}
+<section id="outcome">
+  <h2>Client Outcome</h2>
+  <p class="meta">Record before/after story for future marketing (with permission).</p>
+  <div class="card">
+    <form method="post" action="/clients/{{ client.id }}/outcome">
+      <label for="before_problem">Before — problem</label>
+      <textarea id="before_problem" name="before_problem" required minlength="10">{{ outcome.before_problem if outcome else '' }}</textarea>
+
+      <label for="after_result">After — result</label>
+      <textarea id="after_result" name="after_result" required minlength="10">{{ outcome.after_result if outcome else '' }}</textarea>
+
+      <label for="testimonial">Testimonial quote</label>
+      <textarea id="testimonial" name="testimonial" required minlength="20">{{ outcome.testimonial if outcome else '' }}</textarea>
+
+      <label class="checkbox-label">
+        <input type="checkbox" name="display_permission" value="yes" {% if outcome and outcome.display_permission %}checked{% endif %}>
+        Client granted permission to display publicly
+      </label>
+
+      <button type="submit">Save outcome</button>
+    </form>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

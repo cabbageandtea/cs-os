@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "python .cursor/hooks/after_edit.py"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "python .cursor/hooks/guard_destructive.py",
+        "matcher": "git push --force|git reset --hard|rm -rf|Remove-Item -Recurse"
+      }
+    ]
+  }
+}

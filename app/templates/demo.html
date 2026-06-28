@@ -1,0 +1,61 @@
+{% extends "base_public.html" %}
+{% block title %}Example Customer Journey — CS-OS{% endblock %}
+{% block content %}
+
+<div class="alert alert-demo">
+  <strong>Example customer. Not real data.</strong>
+  This page shows a fictional journey for illustration only. No real people, payments, or deliverables.
+</div>
+
+<h1>What working with us looks like</h1>
+<p class="section-lead">Follow Alex Rivera (fictional Launch client) from payment to handoff.</p>
+
+<section class="landing-section">
+  <h2>The journey</h2>
+  <ol class="process-steps demo-steps">
+    {% for step in journey_steps %}
+    <li>
+      <strong>{{ step.title }}</strong>
+      <span>{{ step.description }}</span>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="landing-section landing-section-alt">
+  <h2>Example deliverables</h2>
+  <p class="meta">Client: {{ example.name }} · {{ example.target_role }} · {{ example.package }} package · Pipeline: {{ example.pipeline_stage }}</p>
+  <table class="demo-table">
+    <thead>
+      <tr><th>Deliverable</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for name, status in example.deliverables %}
+      <tr>
+        <td>{{ name }}</td>
+        <td>
+          {% if status.startswith('http') %}
+          <a href="{{ status }}" target="_blank" rel="noopener">{{ status }}</a>
+          {% else %}
+          {{ status }}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="landing-section">
+  <h2>See it in the operator dashboard</h2>
+  <p>Load demo clients to walk through the full CS-OS pipeline with fictional data marked <code>[DEMO]</code>.</p>
+  <pre class="demo-code">python -m app.demo_seed</pre>
+  <p class="meta">Then open the <a href="/dashboard">operations dashboard</a> and select <strong>[DEMO] Taylor Nguyen (Showcase)</strong>.</p>
+</section>
+
+<div class="hero-cta">
+  <a href="/checkout" class="btn btn-primary">Start your package</a>
+  <a href="/" class="btn btn-secondary">Back to home</a>
+</div>
+
+{% endblock %}

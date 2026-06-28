@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Checkout — CS-OS{% endblock %}
+{% block content %}
+<h1>Choose Your Package</h1>
+<p class="meta">Secure payment via Stripe. After payment you will receive a link to complete intake.</p>
+<p class="meta"><a href="/docs/CUSTOMER_TERMS.md" target="_blank">Customer terms</a> apply to all purchases.</p>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="card-grid">
+  {% for pkg in packages %}
+  <div class="card {% if pkg.featured %}card-featured{% endif %}">
+    {% if pkg.featured %}<p class="meta"><strong>Most Popular</strong></p>{% endif %}
+    <h2>{{ pkg.display_name }}</h2>
+    <p class="meta">${{ (pkg.default_price_cents / 100) | int }}{% if pkg.default_price_cents % 100 != 0 %}.{{ '%02d' | format(pkg.default_price_cents % 100) }}{% endif %}</p>
+    <p>{{ pkg.tagline }}</p>
+    <form method="post" action="/checkout/create">
+      <input type="hidden" name="package_slug" value="{{ pkg.slug }}">
+      <button type="submit" class="btn btn-primary">Continue to Checkout</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

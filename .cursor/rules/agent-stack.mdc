@@ -1,0 +1,24 @@
+---
+description: Agent tooling defaults for CS-OS — MCPs, hooks, tests, deploy
+alwaysApply: true
+---
+
+# CS-OS Agent Stack
+
+## On every code change
+- Hooks auto-run `pytest tests/` after edits under `app/` or `tests/`.
+- If tests fail, fix before moving on.
+
+## MCP priority
+1. **Stripe MCP** — products, prices, webhooks, checkout debugging
+2. **Render MCP** — deploy, logs, env vars (requires `RENDER_API_KEY` in user env)
+3. **Playwright MCP** — live UI flows
+4. **Context7** — library docs
+
+## Deploy
+- Blueprint: `render.yaml` at repo root
+- Production DB: Postgres via `DATABASE_URL` (local dev uses SQLite)
+- Set `sync: false` secrets in Render dashboard before first deploy
+
+## Scope lock
+Read `EXECUTION.md` before adding features. Manual-first. No over-engineering.

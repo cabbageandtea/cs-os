@@ -1,0 +1,37 @@
+databases:
+  - name: cs-os-db
+    plan: free
+    region: oregon
+
+services:
+  - type: web
+    name: cs-os
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cs-os-db
+          property: connectionString
+      - key: BASE_URL
+        sync: false
+      - key: OPS_PASSWORD
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_FOUNDATION
+        sync: false
+      - key: STRIPE_PRICE_LAUNCH
+        sync: false
+      - key: STRIPE_PRICE_ACCELERATOR
+        sync: false
+      - key: INTAKE_TOKEN_PEPPER
+        sync: false

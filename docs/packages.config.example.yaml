@@ -1,0 +1,118 @@
+# CS-OS Package Configuration (example)
+# Copy to packages.config.yaml when implementing checkout.
+# Do NOT commit live Stripe IDs or production prices to git.
+# Application reads env vars at runtime — this file is documentation + template only.
+
+version: "1"
+
+packages:
+  foundation:
+    display_name: Foundation
+    slug: foundation
+    legacy_tier: Basic
+    tagline: Get your proof of work online.
+    price_cents_env: PRICE_FOUNDATION_CENTS
+    default_price_cents: 9900
+    stripe_product_id_env: STRIPE_PRODUCT_FOUNDATION
+    stripe_price_id_env: STRIPE_PRICE_FOUNDATION
+    revision_rounds: 1
+    estimated_hours: 4.5
+    deliverables:
+      - portfolio_website
+      - deployment_url
+      - github_guidance
+    tasks:
+      include:
+        - review_intake_data
+        - audit_github_profile
+        - select_portfolio_template
+        - build_portfolio_site
+        - qa_checklist
+        - client_review_revisions
+        - deploy_handoff
+      exclude:
+        - resume_rewrite
+      linkedin_audit: light
+    dataset_priority: low
+
+  launch:
+    display_name: Launch
+    slug: launch
+    legacy_tier: Standard
+    tagline: Become recruiter-ready across portfolio, resume, and LinkedIn.
+    price_cents_env: PRICE_LAUNCH_CENTS
+    default_price_cents: 19900
+    stripe_product_id_env: STRIPE_PRODUCT_LAUNCH
+    stripe_price_id_env: STRIPE_PRICE_LAUNCH
+    revision_rounds: 2
+    estimated_hours: 7.5
+    deliverables:
+      - portfolio_website
+      - deployment_url
+      - github_guidance
+      - resume_pdf
+      - linkedin_optimization_notes
+    tasks:
+      include:
+        - review_intake_data
+        - audit_linkedin_profile
+        - audit_github_profile
+        - select_portfolio_template
+        - build_portfolio_site
+        - resume_rewrite
+        - qa_checklist
+        - client_review_revisions
+        - deploy_handoff
+    dataset_priority: medium
+
+  accelerator:
+    display_name: Accelerator
+    slug: accelerator
+    legacy_tier: Premium
+    tagline: Full career positioning with strategy, narrative alignment, and premium support.
+    price_cents_env: PRICE_ACCELERATOR_CENTS
+    default_price_cents: 34900
+    stripe_product_id_env: STRIPE_PRODUCT_ACCELERATOR
+    stripe_price_id_env: STRIPE_PRICE_ACCELERATOR
+    revision_rounds: 3
+    estimated_hours: 10.25
+    deliverables:
+      - portfolio_website
+      - deployment_url
+      - github_guidance
+      - resume_pdf
+      - linkedin_optimization_notes
+      - career_narrative_summary
+      - strategy_session
+      - custom_domain_guide
+    tasks:
+      include:
+        - review_intake_data
+        - audit_linkedin_profile
+        - audit_github_profile
+        - select_portfolio_template
+        - build_portfolio_site
+        - resume_rewrite
+        - career_narrative_alignment
+        - qa_checklist
+        - client_review_revisions
+        - deploy_handoff
+        - strategy_session
+    dataset_priority: high
+
+# Internal labor rate for margin calculations (documentation only)
+labor:
+  internal_hourly_rate_usd: 25
+  target_automated_hours:
+    foundation: 2.0
+    launch: 4.0
+    accelerator: 6.0
+
+# Stripe Checkout defaults (Phase 4a)
+stripe:
+  mode: payment
+  currency: usd
+  metadata_keys:
+    - package_slug
+    - csos_version
+    - source

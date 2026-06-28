@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block body_class %}page-dashboard{% endblock %}
+{% block title %}Dashboard — CS-OS{% endblock %}
+{% block content %}
+
+<div class="bento-grid">
+
+  <header class="bento-card bento-span-full dash-header">
+    <div>
+      <h1>Operations Dashboard</h1>
+      <p class="meta">Real clients first · pipeline at a glance</p>
+    </div>
+    <div class="dash-actions">
+      <a href="/intake" class="btn btn-primary">+ New Client</a>
+      {% if demo_count and not hide_demo %}
+      <a href="/dashboard?{% if current_filter %}status={{ current_filter }}&{% endif %}hide_demo=1" class="btn btn-secondary">Hide demo</a>
+      {% elif hide_demo and demo_count %}
+      <a href="/dashboard?{% if current_filter %}status={{ current_filter }}{% endif %}" class="btn btn-secondary">Show demo</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="bento-card bento-kpi">
+    <div class="kpi-num">{{ real_count }}</div>
+    <div class="kpi-label">Real clients</div>
+  </div>
+  <div class="bento-card bento-kpi bento-kpi-accent">
+    <div class="kpi-num">{{ active_count }}</div>
+    <div class="kpi-label">Active delivery</div>
+  </div>
+  <div class="bento-card bento-kpi">
+    <div class="kpi-num">{{ intake_pending_count }}</div>
+    <div class="kpi-label">Intake pending (paid)</div>
+  </div>
+  <div class="bento-card bento-kpi">
+    <div class="kpi-num">{{ delivered_count }}</div>
+    <div class="kpi-label">Delivered</div>
+  </div>
+  <div class="bento-card bento-kpi {% if build_wip_warning %}bento-kpi-warn{% endif %}">
+    <div class="kpi-num">{{ build_count }}</div>
+    <div class="kpi-label">In Build</div>
+  </div>
+  <div class="bento-card bento-kpi">
+    <div class="kpi-num">${{ '%.0f' | format(revenue_cents / 100) }}</div>
+    <div class="kpi-label">Revenue tracked</div>
+  </div>
+
+  <div class="bento-card bento-span-full metrics-summary">
+    <h2>Funnel metrics</h2>
+    <p class="meta">Validation layer — separate from lead pipeline rows above.</p>
+    <div class="metrics-grid">
+      <span><strong>{{ leads_recorded }}</strong> leads</span>
+      <span><strong>{{ checkouts_started }}</strong> checkouts</span>
+      <span><strong>{{ purchases_recorded }}</strong> purchases</span>
+      <span><strong>{{ intakes_completed }}</strong> intakes done</span>
+      <span><strong>{{ deliveries_recorded }}</strong> delivered</span>
+    </div>
+  </div>
+
+  {% if build_wip_warning %}
+  <div class="bento-card bento-span-full alert alert-warning">
+    Build WIP: {{ build_count }} projects (limit {{ build_wip_threshold }}). Finish before starting new builds.
+  </div>
+  {% endif %}
+
+  <div class="bento-card bento-span-full pipeline-board">
+    <div class="pipeline-board-label">Delivery pipeline</div>
+    <div class="pipeline-funnel">
+      {% for status in status_list %}
+      <a href="/dashboard?status={{ status.value }}{% if hide_demo %}&hide_demo=1{% endif %}"
+         class="funnel-step {% if current_filter == status.value %}funnel-active{% endif %} {% if status.value == 'Build' and build_wip_warning %}funnel-warn{% endif %}">
+        <span class="funnel-count">{{ status_counts[status.value] }}</span>
+        <span class="funnel-name">{{ status.value }}</span>
+      </a>
+      {% if not loop.last %}<span class="funnel-arrow">→</span>{% endif %}
+      {% endfor %}
+    </div>
+    {% if current_filter %}
+    <p class="meta filter-clear"><a href="/dashboard{% if hide_demo %}?hide_demo=1{% endif %}">Clear filter · show all</a></p>
+    {% endif %}
+  </div>
+
+  {% if attention_rows %}
+  <div class="bento-card bento-span-full attention-card">
+    <h2>Needs attention</h2>
+    <ul class="attention-list">
+      {% for row in attention_rows %}
+      <li>
+        <a href="/clients/{{ row.client.id }}">{{ row.client.name }}</a>
+        <span class="meta">— {{ row.attention_reason }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <section id="leads" class="bento-card bento-span-full dash-section">
+    <h2>Lead pipeline <span class="count-pill">{{ lead_total }}</span></h2>
+    <p class="meta">Sales pipeline only — separate from delivery. New leads from <a href="/contact">/contact</a>.</p>
+
+    {% if lead_error %}
+    <div class="alert alert-error">{{ lead_error }}</div>
+    {% endif %}
+
+    <div class="pipeline-funnel lead-funnel">
+      {% for status in lead_status_list %}
+      <div class="funnel-step {% if status.value == 'new_lead' and lead_new_count %}funnel-active{% endif %}">
+        <span class="funnel-count">{{ lead_status_counts[status.value] }}</span>
+        <span class="funnel-name">{{ lead_status_labels[status.value] }}</span>
+      </div>
+      {% if not loop.last %}<span class="funnel-arrow">→</span>{% endif %}
+      {% endfor %}
+    </div>
+
+    {% if lead_rows %}
+    <div class="table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Target role</th>
+            <th>Current status</th>
+            <th>Package interest</th>
+            <th>Lead status</th>
+            <th>Created</th>
+            <th>Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in lead_rows %}
+          {% set l = row.lead %}
+          <tr>
+            <td>{{ l.name }}</td>
+            <td><a href="mailto:{{ l.email }}">{{ l.email }}</a></td>
+            <td>{{ l.target_role }}</td>
+            <td>{{ l.current_status }}</td>
+            <td>{{ row.package_label }}</td>
+            <td><span class="badge badge-lead">{{ row.status_label }}</span></td>
+            <td class="meta">{{ l.created_at.strftime('%Y-%m-%d') if l.created_at else '—' }}</td>
+            <td>
+              <form method="post" action="/leads/{{ l.id }}/status" class="inline-form">
+                <select name="lead_status">
+                  {% for status in lead_status_list %}
+                  <option value="{{ status.value }}" {% if l.lead_status == status.value %}selected{% endif %}>
+                    {{ lead_status_labels[status.value] }}
+                  </option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-sm btn-secondary">Save</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="meta empty-msg">No leads yet. Share the landing page or contact form.</p>
+    {% endif %}
+  </section>
+
+  {% macro client_table(rows, empty_msg) %}
+    {% if rows %}
+    <div class="table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Role / Package</th>
+            <th>Stage</th>
+            <th>Progress</th>
+            <th>Age</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          {% set c = row.client %}
+          <tr>
+            <td>
+              <a href="/clients/{{ c.id }}" class="client-link">{{ c.name }}</a>
+              {% if row.is_demo %}<span class="badge badge-demo">DEMO</span>{% endif %}
+            </td>
+            <td>
+              <div class="cell-primary">{{ c.target_role }}</div>
+              <div class="cell-sub">{{ c.package_tier }}</div>
+            </td>
+            <td>
+              <span class="badge badge-{{ row.status_label | lower }}">{{ row.status_label }}</span>
+              <div class="mini-pipeline" title="Pipeline position">
+                {% for status in status_list %}
+                <span class="mini-dot {% if loop.index0 < row.pipeline_index %}done{% elif loop.index0 == row.pipeline_index %}current{% endif %}"></span>
+                {% endfor %}
+              </div>
+            </td>
+            <td>
+              <div class="progress-line">
+                <span class="meta">Tasks</span>
+                <strong>{{ row.tasks_done }}/{{ row.tasks_total }}</strong>
+              </div>
+              <div class="progress-line">
+                <span class="meta">Deliverables</span>
+                <strong>{{ row.deliv_complete }}/{{ row.deliv_total }}</strong>
+              </div>
+            </td>
+            <td class="meta">
+              <div>{{ row.days_in_stage }}d in stage</div>
+              <div>{{ row.days_since_created }}d total</div>
+            </td>
+            <td><a href="/clients/{{ c.id }}" class="btn btn-sm btn-secondary">Open</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="meta empty-msg">{{ empty_msg }}</p>
+    {% endif %}
+  {% endmacro %}
+
+  <section class="bento-card bento-span-full dash-section">
+    <h2>Active delivery <span class="count-pill">{{ active_rows | length }}</span></h2>
+    {{ client_table(active_rows, "No active clients. Start with intake or load demo data.") }}
+  </section>
+
+  {% if delivered_rows %}
+  <section class="bento-card bento-span-full dash-section">
+    <h2>Delivered <span class="count-pill">{{ delivered_rows | length }}</span></h2>
+    {{ client_table(delivered_rows, "") }}
+  </section>
+  {% endif %}
+
+  {% if demo_rows and not hide_demo %}
+  <section class="bento-card bento-span-full dash-section dash-section-demo">
+    <h2>Demo environment <span class="count-pill">{{ demo_rows | length }}</span></h2>
+    <p class="meta">Fictional data for sales walkthroughs — not real clients.</p>
+    {{ client_table(demo_rows, "") }}
+  </section>
+  {% endif %}
+
+</div>
+
+{% endblock %}
