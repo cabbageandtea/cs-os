@@ -7,10 +7,14 @@
   <title>{{ person_name }} — {{ target_role }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {% if layout == 'studio' %}
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  {% else %}
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/examples.css?v=5">
+  {% endif %}
+  <link rel="stylesheet" href="/static/examples.css?v=7">
 </head>
-<body class="example-site ex-pro ex-pro--{{ theme }}">
+<body class="example-site ex-pro ex-pro--{{ theme }} ex-pro-layout-{{ layout }}">
   {% include "examples/_mock_chrome.html" %}
   {% include "examples/_suite_nav.html" %}
 
@@ -23,26 +27,28 @@
       <ul class="ex-pro-nav-links" data-nav-links>
         <li><a href="#about">About</a></li>
         {% if experience %}<li><a href="#experience">Experience</a></li>{% endif %}
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">{% if layout == 'analyst' %}Work{% else %}Projects{% endif %}</a></li>
+        <li><a href="#skills">{% if layout == 'analyst' %}Toolkit{% else %}Skills{% endif %}</a></li>
         <li><a href="#contact" class="ex-pro-nav-cta">Contact</a></li>
       </ul>
     </div>
   </nav>
 
-  <header class="ex-pro-hero">
+  <header class="ex-pro-hero{% if layout == 'studio' %} ex-pro-hero--light ex-pro-hero--centered{% elif layout == 'analyst' %} ex-pro-hero--analyst{% endif %}">
+    {% if layout != 'studio' %}
     <div class="ex-pro-hero-grid" aria-hidden="true"></div>
     <div class="ex-pro-hero-glow ex-pro-hero-glow--right" aria-hidden="true"></div>
     <div class="ex-pro-hero-glow ex-pro-hero-glow--left" aria-hidden="true"></div>
+    {% endif %}
     <div class="ex-pro-wrap ex-pro-hero-content">
       <p class="ex-pro-hero-eyebrow">{{ target_role }} · {{ role_tagline }}</p>
       {% if availability_badge %}
       <p class="ex-pro-hero-badge"><span class="ex-pro-dot" aria-hidden="true"></span>{{ availability_badge }}</p>
       {% endif %}
-      <h1>{{ first_name }} <em>{{ last_name }}</em></h1>
+      <h1>{% if layout == 'studio' %}<em>{{ first_name }}</em> {{ last_name }}{% else %}{{ first_name }} <em>{{ last_name }}</em>{% endif %}</h1>
       <p class="ex-pro-hero-sub">{{ hero_lead }}</p>
       <div class="ex-pro-hero-actions">
-        <a class="ex-pro-btn ex-pro-btn-primary" href="#projects">View projects</a>
+        <a class="ex-pro-btn ex-pro-btn-primary" href="#projects">{% if layout == 'analyst' %}See the data work{% else %}View projects{% endif %}</a>
         <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ resume_pdf_url }}" download>Download PDF</a>
         <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ github_url }}">GitHub</a>
         <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
@@ -58,13 +64,15 @@
       </div>
       {% endif %}
     </div>
+    {% if layout != 'studio' %}
     <div class="ex-pro-hero-scroll" aria-hidden="true">Scroll</div>
+    {% endif %}
   </header>
 
   {% if trust_items %}
   <div class="ex-pro-trust">
     <div class="ex-pro-wrap ex-pro-trust-inner">
-      <span class="ex-pro-trust-label">Background</span>
+      <span class="ex-pro-trust-label">{% if layout == 'analyst' %}Signal{% elif layout == 'studio' %}Highlights{% else %}Background{% endif %}</span>
       <div class="ex-pro-trust-items">
         {% for item in trust_items %}
         {% if not loop.first %}<span class="ex-pro-trust-dot" aria-hidden="true"></span>{% endif %}
@@ -75,7 +83,7 @@
   </div>
   {% endif %}
 
-  {% if recruiter_snapshot %}
+  {% if recruiter_snapshot and layout != 'studio' %}
   <div class="ex-pro-recruiter">
     <div class="ex-pro-wrap ex-pro-recruiter-inner">
       <span><strong>Recruiter snapshot</strong> {{ recruiter_snapshot }}</span>
@@ -87,8 +95,8 @@
   </div>
   {% endif %}
 
-  <main class="ex-pro-main" id="main">
-    <section id="about" class="ex-pro-wrap ex-pro-section">
+  <main class="ex-pro-main ex-pro-main--{{ layout }}" id="main">
+    <section id="about" class="ex-pro-wrap ex-pro-section ex-pro-order-about">
       <p class="ex-pro-label">About</p>
       <h2 class="ex-pro-title">{{ about_heading or "About" }}</h2>
       <div class="ex-pro-about-grid">
@@ -100,19 +108,24 @@
           </div>
           {% endif %}
         </div>
-        {% if focus_areas %}
+        {% if focus_areas and layout != 'studio' %}
         <aside class="ex-pro-about-card">
-          <h3>Core focus areas</h3>
+          <h3>{% if layout == 'analyst' %}Analysis focus{% else %}Core focus areas{% endif %}</h3>
           <ul>{% for item in focus_areas %}<li>{{ item }}</li>{% endfor %}</ul>
         </aside>
         {% endif %}
       </div>
+      {% if focus_areas and layout == 'studio' %}
+      <div class="ex-pro-studio-focus">
+        {% for item in focus_areas %}<span class="ex-pro-studio-focus-item">{{ item }}</span>{% endfor %}
+      </div>
+      {% endif %}
     </section>
 
-    {% if approach_steps %}
-    <section class="ex-pro-method">
+    {% if approach_steps and layout != 'studio' %}
+    <section class="ex-pro-method ex-pro-order-method">
       <div class="ex-pro-wrap">
-        <p class="ex-pro-label">Approach</p>
+        <p class="ex-pro-label">{% if layout == 'analyst' %}Method{% else %}Approach{% endif %}</p>
         <h2 class="ex-pro-title">{{ approach_title }}</h2>
         {% if approach_lead %}<p class="ex-pro-lead">{{ approach_lead }}</p>{% endif %}
         <div class="ex-pro-method-grid">
@@ -129,11 +142,11 @@
     {% endif %}
 
     {% if experience %}
-    <section id="experience" class="ex-pro-wrap ex-pro-section">
+    <section id="experience" class="ex-pro-wrap ex-pro-section ex-pro-order-experience">
       <p class="ex-pro-label">Experience</p>
       <h2 class="ex-pro-title">{{ experience_heading }}</h2>
       {% if experience_lead %}<p class="ex-pro-lead">{{ experience_lead }}</p>{% endif %}
-      <div class="ex-pro-timeline">
+      <div class="ex-pro-timeline{% if layout == 'studio' %} ex-pro-timeline--studio{% endif %}">
         {% for job in experience %}
         <article class="ex-pro-timeline-item">
           <div class="ex-pro-timeline-dates">{{ job.dates }}</div>
@@ -152,15 +165,15 @@
     </section>
     {% endif %}
 
-    <section id="projects" class="ex-pro-section ex-pro-work">
+    <section id="projects" class="ex-pro-section ex-pro-work ex-pro-order-projects">
       <div class="ex-pro-wrap">
-        <p class="ex-pro-label">Projects</p>
+        <p class="ex-pro-label">{% if layout == 'analyst' %}Selected analysis{% else %}Projects{% endif %}</p>
         <h2 class="ex-pro-title">{{ project_section_title or "Selected work" }}</h2>
         {% if project_section_lead %}<p class="ex-pro-lead">{{ project_section_lead }}</p>{% endif %}
-        <div class="ex-pro-project-grid">
+        <div class="ex-pro-project-grid{% if layout == 'studio' %} ex-pro-project-grid--studio{% endif %}">
           {% for card in project_cards %}
-          <article class="ex-pro-project-card{% if loop.first %} is-featured{% endif %}">
-            {% if loop.first %}
+          <article class="ex-pro-project-card{% if layout != 'studio' and loop.first %} is-featured{% endif %}">
+            {% if layout != 'studio' and loop.first %}
             <div class="ex-pro-project-copy">
               <p class="ex-pro-project-type">{{ card.project.stack }}</p>
               <h3 class="ex-pro-project-title">{{ card.project.title }}</h3>
@@ -172,15 +185,36 @@
               </div>
             </div>
             <div class="ex-pro-project-visual ex-pro-project-visual--{{ card.project.visual_tone }}">
+              {% if card.project.visual_tone == 'data' and layout == 'analyst' %}
+              <span class="ex-pro-project-visual-label">{{ card.project.visual_label }}</span>
+              <div class="ex-pro-data-preview" aria-hidden="true">
+                <div class="ex-pro-data-bars">
+                  <span style="--h: 42%"></span><span style="--h: 68%"></span><span style="--h: 55%"></span>
+                  <span style="--h: 82%"></span><span style="--h: 61%"></span><span style="--h: 74%"></span>
+                  <span style="--h: 48%"></span><span style="--h: 90%"></span>
+                </div>
+                <div class="ex-pro-data-legend">
+                  <span>Peak hours</span><span>Waste by station</span>
+                </div>
+              </div>
+              {% else %}
               <span class="ex-pro-project-visual-label">{{ card.project.visual_label }}</span>
               <pre class="ex-pro-code-preview">{% for bullet in card.project.readme_bullets[:3] %}# {{ bullet }}
 {% endfor %}</pre>
+              {% endif %}
             </div>
             {% else %}
             <p class="ex-pro-project-type">{{ card.project.stack }}</p>
             <h3 class="ex-pro-project-title">{{ card.project.title }}</h3>
             <p class="ex-pro-project-desc">{{ card.project.summary }}</p>
             <p class="ex-pro-project-outcome"><strong>Outcome:</strong> {{ card.project.outcome }}</p>
+            {% if layout == 'studio' %}
+            <div class="ex-pro-project-visual ex-pro-project-visual--{{ card.project.visual_tone }} ex-pro-project-visual--compact">
+              <span class="ex-pro-project-visual-label">{{ card.project.visual_label }}</span>
+              <pre class="ex-pro-code-preview">{% for bullet in card.project.readme_bullets[:2] %}// {{ bullet }}
+{% endfor %}</pre>
+            </div>
+            {% endif %}
             <div class="ex-pro-project-links">
               <a class="ex-pro-project-link" href="{{ card.primary_url }}">{{ card.project.primary_cta }} →</a>
               <a class="ex-pro-project-link" href="{{ card.secondary_url }}">{{ card.project.secondary_cta }} →</a>
@@ -190,7 +224,7 @@
           {% endfor %}
         </div>
         {% if project_highlights %}
-        <div class="ex-pro-outcomes-grid">
+        <div class="ex-pro-outcomes-grid{% if layout == 'studio' %} ex-pro-outcomes-grid--studio{% endif %}">
           {% for highlight in project_highlights %}
           <article class="ex-pro-outcome-card">
             <h3>{{ highlight.title }}</h3>
@@ -202,12 +236,12 @@
       </div>
     </section>
 
-    <section id="skills" class="ex-pro-wrap ex-pro-section">
-      <p class="ex-pro-label">Capabilities</p>
+    <section id="skills" class="ex-pro-wrap ex-pro-section ex-pro-order-skills">
+      <p class="ex-pro-label">{% if layout == 'analyst' %}Toolkit{% else %}Capabilities{% endif %}</p>
       <h2 class="ex-pro-title">{{ skills_heading or "Skills" }}</h2>
       {% if skills_lead %}<p class="ex-pro-lead">{{ skills_lead }}</p>{% endif %}
       {% if skill_groups %}
-      <div class="ex-pro-skills-grid">
+      <div class="ex-pro-skills-grid{% if layout == 'studio' %} ex-pro-skills-grid--studio{% endif %}">
         {% for group in skill_groups %}
         <article class="ex-pro-skill-group">
           <h3>{{ group.name }}</h3>
@@ -220,14 +254,14 @@
       {% endif %}
     </section>
 
-    <section class="ex-pro-wrap ex-pro-section ex-pro-credentials">
+    <section class="ex-pro-wrap ex-pro-section ex-pro-credentials ex-pro-order-credentials">
       <p class="ex-pro-label">Credentials</p>
       <h2 class="ex-pro-title">{{ credentials_heading or "Education & credentials" }}</h2>
       {% if credentials_lead %}<p class="ex-pro-lead">{{ credentials_lead }}</p>{% endif %}
-      <div class="ex-pro-cred-grid">
+      <div class="ex-pro-cred-grid{% if layout == 'studio' %} ex-pro-cred-grid--studio{% endif %}">
         {% if certifications %}
         <div class="ex-pro-cred-block">
-          <h3>Certifications</h3>
+          <h3>{% if layout == 'studio' %}Recognition{% else %}Certifications{% endif %}</h3>
           <ul class="ex-pro-cred-list">{% for cert in certifications %}<li>{{ cert }}</li>{% endfor %}</ul>
         </div>
         {% endif %}
@@ -243,10 +277,13 @@
       </div>
     </section>
 
-    <section id="contact" class="ex-pro-wrap ex-pro-section ex-pro-contact">
+    <section id="contact" class="ex-pro-wrap ex-pro-section ex-pro-contact ex-pro-order-contact">
       <p class="ex-pro-label">Contact</p>
       <h2 class="ex-pro-title">{{ contact_heading or "Let's connect" }}</h2>
       <p class="ex-pro-lead">{{ contact_blurb }}{% if location_note %} {{ location_note }}{% endif %}</p>
+      {% if layout == 'studio' and recruiter_snapshot %}
+      <p class="ex-pro-studio-snapshot">{{ recruiter_snapshot }}</p>
+      {% endif %}
       <div class="ex-pro-hero-actions">
         <a class="ex-pro-btn ex-pro-btn-primary" href="mailto:{{ email }}">{{ email }}</a>
         <a class="ex-pro-btn ex-pro-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
@@ -258,7 +295,6 @@
   <footer class="ex-pro-site-footer">
     <div class="ex-pro-wrap">
       <p>© {{ person_name }} · {{ target_role }} · {{ mock_domain }}</p>
-      <p class="meta">Example delivery · {{ site_name }} {{ package_label }}</p>
     </div>
   </footer>
   <script src="/static/examples.js?v=2" defer></script>

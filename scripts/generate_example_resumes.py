@@ -12,6 +12,8 @@ OUT_DIR = ROOT / "app" / "static" / "examples" / "resumes"
 
 
 class ResumePDF(FPDF):
+    domain: str = ""
+
     def header(self) -> None:
         return
 
@@ -19,7 +21,8 @@ class ResumePDF(FPDF):
         self.set_y(-12)
         self.set_font("Helvetica", "I", 8)
         self.set_text_color(120, 120, 120)
-        self.cell(0, 8, "Career Systems - sample delivery", align="C")
+        label = self.domain or ""
+        self.cell(0, 8, label, align="C")
 
 
 def _section(pdf: ResumePDF, title: str) -> None:
@@ -34,6 +37,7 @@ def _section(pdf: ResumePDF, title: str) -> None:
 
 def build_alex() -> Path:
     pdf = ResumePDF()
+    pdf.domain = "alexrivera.me"
     pdf.set_auto_page_break(auto=True, margin=14)
     pdf.add_page()
     pdf.set_font("Helvetica", "B", 20)
@@ -45,7 +49,7 @@ def build_alex() -> Path:
     pdf.multi_cell(
         0,
         5,
-        "Data Analyst Intern | alexrivera.me | alex.rivera@example.com | linkedin.com/in/alexrivera",
+        "Data Analyst Intern | alexrivera.me | alex@alexrivera.me | linkedin.com/in/alexrivera",
     )
     _section(pdf, "Summary")
     pdf.multi_cell(
@@ -72,6 +76,7 @@ def build_alex() -> Path:
 
 def build_jordan() -> Path:
     pdf = ResumePDF()
+    pdf.domain = "jordankim.me"
     pdf.set_auto_page_break(auto=True, margin=14)
     pdf.add_page()
     pdf.set_font("Helvetica", "B", 20)
@@ -83,7 +88,7 @@ def build_jordan() -> Path:
     pdf.multi_cell(
         0,
         5,
-        "Junior Software Engineer | jordankim.me | jordan.kim@example.com",
+        "Junior Software Engineer | jordankim.me | jordan@jordankim.me",
     )
     _section(pdf, "Summary")
     pdf.multi_cell(
@@ -112,9 +117,53 @@ def build_jordan() -> Path:
     return path
 
 
+def build_taylor() -> Path:
+    pdf = ResumePDF()
+    pdf.domain = "taylornguyen.me"
+    pdf.set_auto_page_break(auto=True, margin=14)
+    pdf.add_page()
+    pdf.set_font("Helvetica", "B", 20)
+    pdf.set_text_color(20, 20, 22)
+    pdf.cell(0, 10, "Taylor Nguyen")
+    pdf.ln(8)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(90, 90, 95)
+    pdf.multi_cell(
+        0,
+        5,
+        "Software Engineer Intern | taylornguyen.me | taylor@taylornguyen.me | linkedin.com/in/taylornguyen",
+    )
+    _section(pdf, "Summary")
+    pdf.multi_cell(
+        0,
+        5,
+        "CS senior shipping React + FastAPI capstones with tests, typed handlers, and deploy notes. "
+        "Healthcare IT focus with RBAC and audit-friendly logging.",
+    )
+    _section(pdf, "Technical Projects")
+    pdf.multi_cell(
+        0,
+        5,
+        "- CareConnect Portal: React + FastAPI patient scheduling with live Render deployment.\n"
+        "- GitPulse Dashboard: Next.js GitHub metrics dashboard for campus dev teams.",
+    )
+    _section(pdf, "Experience")
+    pdf.multi_cell(
+        0,
+        5,
+        "Software Engineering Intern, regional health network (2025) - scheduling integrations, "
+        "OpenAPI docs, accessible React form flows.",
+    )
+    _section(pdf, "Education")
+    pdf.multi_cell(0, 5, "B.S. Computer Science, Lakeside Institute of Technology - Expected May 2026")
+    path = OUT_DIR / "taylor-nguyen.pdf"
+    pdf.output(str(path))
+    return path
+
+
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    paths = [build_alex(), build_jordan()]
+    paths = [build_alex(), build_jordan(), build_taylor()]
     for path in paths:
         print(f"Wrote {path} ({path.stat().st_size} bytes)")
 

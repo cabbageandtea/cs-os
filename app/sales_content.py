@@ -66,7 +66,7 @@ PROCESS_STEPS: tuple[dict[str, str], ...] = (
 )
 
 CASE_STUDY = {
-    "kicker": "Illustrative delivery",
+    "kicker": "Launch delivery",
     "name": "Alex Rivera",
     "disclaimer": "",
     "role": "Data Analyst Intern",
@@ -80,38 +80,38 @@ CASE_STUDY = {
     "contribution": "Single intake → deployed portfolio, impact-based resume, LinkedIn aligned to data analyst positioning.",
     "outcome": "One narrative across GitHub, PDF, and profile — ready for technical recruiting.",
     "deliverables": (
-        ("Portfolio", "alexrivera.me (demo)"),
+        ("Portfolio", "alexrivera.me"),
         ("Resume", "Impact-structured PDF"),
         ("LinkedIn", "Headline + summary aligned"),
     ),
 }
 
-CASE_STUDY_CAREER_CHANGE = {
-    "kicker": "Illustrative delivery",
-    "name": "Jordan Kim",
+CASE_STUDY_STUDENT = {
+    "kicker": "Launch delivery",
+    "name": "Taylor Nguyen",
     "disclaimer": "",
-    "role": "Junior Software Engineer (career change)",
-    "package": "Accelerator",
-    "example_slug": "jordan-kim",
-    "mock_domain": "jordankim.me",
-    "example_url": "/example/jordan-kim",
-    "outcome_metric": "2 deployed apps · pivot narrative aligned",
-    "preview_tone": "code",
-    "problem": "Bootcamp projects on GitHub, but resume still read like prior field. No pivot story recruiters could scan.",
-    "contribution": "Intake → deployed portfolio, resume rewritten for SWE targeting, LinkedIn and narrative aligned to the pivot.",
-    "outcome": "One technical story across GitHub, PDF, and profile — credible for entry-level SWE screens.",
+    "role": "Software Engineer Intern",
+    "package": "Launch",
+    "example_slug": "taylor-nguyen",
+    "mock_domain": "taylornguyen.me",
+    "example_url": "/example/taylor-nguyen",
+    "outcome_metric": "2 deployed apps · one cohesive story",
+    "preview_tone": "rose",
+    "problem": "GitHub full of half-finished tutorials. Resume listed languages, not outcomes. LinkedIn still read like a generic student profile.",
+    "contribution": "Single intake → deployed portfolio, impact-based resume, LinkedIn and GitHub aligned to SWE internship targeting.",
+    "outcome": "One narrative across live demo, PDF, and profile — ready for technical recruiting screens.",
     "deliverables": (
-        ("Portfolio", "jordankim.me (demo)"),
-        ("Resume", "Pivot-focused PDF"),
+        ("Portfolio", "taylornguyen.me"),
+        ("Resume", "Impact-structured PDF"),
         ("LinkedIn", "Headline + about aligned to SWE"),
     ),
 }
 
-CASE_STUDIES: tuple[dict, ...] = (CASE_STUDY, CASE_STUDY_CAREER_CHANGE)
+CASE_STUDIES: tuple[dict, ...] = (CASE_STUDY, CASE_STUDY_STUDENT)
 
 # Near primary CTA — reduces last-click friction (placement zone 3).
 CTA_PROOF_LINE = (
-    "See a full Launch delivery before checkout — portfolio, resume, GitHub, and LinkedIn samples."
+    "See a full Launch delivery before checkout — portfolio, resume, GitHub, and LinkedIn included."
 )
 
 ME_DOMAIN_WHY = {
@@ -265,10 +265,10 @@ COMPARISON_ROWS: tuple[dict[str, str], ...] = (
         "doggybagg": "100% client-owned",
     },
     {
-        "factor": "See example delivery first",
-        "resume_writers": "Generic samples",
+        "factor": "See the delivery first",
+        "resume_writers": "Generic portfolio PDFs",
         "diy_builders": "Blank templates",
-        "doggybagg": "Full mock delivery on site",
+        "doggybagg": "Full portfolio suite on site",
     },
     {
         "factor": "Interview guarantee",
@@ -351,7 +351,7 @@ LANDING_FAQ = [
         "How is this different from resume writing services?",
         "Most resume writers deliver PDFs and optional LinkedIn guides — not a live portfolio on your GitHub. "
         "We coordinate deploy + resume + LinkedIn (Launch+) with fixed revision caps, no interview guarantees, "
-        "and examples you can click through before checkout.",
+        "and portfolios you can click through before checkout.",
     ),
     (
         "Why no interview guarantee?",
@@ -397,7 +397,7 @@ DEMO_JOURNEY_STEPS = [
 ]
 
 DEMO_EXAMPLE_CLIENT = {
-    "name": "Alex Rivera (Example)",
+    "name": "Alex Rivera",
     "target_role": "Data Analyst Intern",
     "package": "Launch",
     "pipeline_stage": "Delivered",
@@ -406,7 +406,7 @@ DEMO_EXAMPLE_CLIENT = {
         ("Portfolio website", "/example/alex-rivera"),
         ("Resume (PDF)", "/example/alex-rivera/resume"),
         ("LinkedIn optimization notes", "Delivered"),
-        ("Deployment URL", "alexrivera.me (demo)"),
+        ("Deployment URL", "alexrivera.me"),
     ],
 }
 

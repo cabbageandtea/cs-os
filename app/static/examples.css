@@ -1,4 +1,4 @@
-/* Premium portfolio mocks — conversion-grade fictional deliveries */
+/* Portfolio showcase templates — Alex (analyst) + Taylor (studio) layouts */
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -130,37 +130,6 @@ html { scroll-behavior: smooth; }
   color: #fafafa;
   border: 1px solid #27272a;
 }
-
-.example-chrome-badge {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.25rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(255, 107, 74, 0.15);
-  color: #ff9b84;
-  border: 1px solid rgba(255, 107, 74, 0.25);
-}
-
-.example-banner {
-  position: relative;
-  z-index: 20;
-  text-align: center;
-  font-size: 0.78rem;
-  padding: 0.45rem 1rem;
-  background: color-mix(in srgb, var(--ex-accent) 8%, var(--ex-bg));
-  border-bottom: 1px solid var(--ex-line);
-  color: var(--ex-muted);
-  backdrop-filter: blur(8px);
-}
-
-.example-banner a {
-  color: var(--ex-accent);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.example-banner a:hover { text-decoration: underline; }
 
 .example-shell {
   position: relative;
@@ -1094,6 +1063,396 @@ a:hover .example-arrow::after {
   --pro-accent-deep: #cf4a38;
   --pro-accent-glow: rgba(232, 93, 76, 0.16);
   --pro-warm: #d4a574;
+}
+
+.ex-pro--pro-rose {
+  --pro-accent: #b86b82;
+  --pro-accent-bright: #e8a4b8;
+  --pro-accent-deep: #8e4a5e;
+  --pro-accent-glow: rgba(184, 107, 130, 0.2);
+  --pro-warm: #c9a0a8;
+  --pro-surface: #fdf8f7;
+  --pro-hero-bg: #11090c;
+  --pro-radius: 18px;
+  --pro-radius-sm: 12px;
+}
+
+.ex-pro--pro-rose .ex-pro-hero {
+  background:
+    radial-gradient(ellipse 72% 58% at 12% 88%, color-mix(in srgb, var(--pro-accent-bright) 24%, transparent), transparent 58%),
+    radial-gradient(ellipse 48% 42% at 90% 12%, color-mix(in srgb, var(--pro-warm) 18%, transparent), transparent 52%),
+    radial-gradient(ellipse 35% 30% at 55% 40%, rgba(232, 164, 184, 0.08), transparent 60%),
+    var(--pro-hero-bg);
+}
+
+.ex-pro--pro-rose .ex-pro-hero-glow--left {
+  background: radial-gradient(circle, color-mix(in srgb, var(--pro-accent-bright) 22%, transparent), transparent 70%);
+}
+
+.ex-pro--pro-rose .ex-pro-dot {
+  background: #f0a8c0;
+  box-shadow: 0 0 14px rgba(240, 168, 192, 0.55);
+}
+
+.ex-pro--pro-rose .ex-pro-tag,
+.ex-pro--pro-rose .ex-pro-about-card,
+.ex-pro--pro-rose .ex-pro-method-card,
+.ex-pro--pro-rose .ex-pro-project-card,
+.ex-pro--pro-rose .ex-pro-skill-col {
+  border-color: color-mix(in srgb, var(--pro-accent) 18%, var(--pro-line));
+}
+
+.ex-pro--pro-rose .ex-pro-btn-primary {
+  box-shadow: 0 4px 24px color-mix(in srgb, var(--pro-accent) 35%, transparent);
+}
+
+/* Layout: analyst (Alex — dark data portfolio) */
+.ex-pro-layout-analyst.ex-pro--pro-teal {
+  --pro-surface: #e8eeef;
+  --pro-radius: 10px;
+  --pro-radius-sm: 8px;
+  --pro-hero-bg: #061016;
+}
+
+.ex-pro-layout-analyst .ex-pro-hero--analyst {
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, color-mix(in srgb, var(--pro-accent) 28%, transparent), transparent 55%),
+    radial-gradient(ellipse 45% 40% at 10% 90%, rgba(184, 149, 106, 0.1), transparent 50%),
+    linear-gradient(180deg, #061016 0%, #0a1218 100%);
+}
+
+.ex-pro-layout-analyst .ex-pro-hero--analyst .ex-pro-hero-grid {
+  background-size: 48px 48px;
+  opacity: 1;
+}
+
+.ex-pro-layout-analyst .ex-pro-hero h1 em {
+  background: linear-gradient(135deg, #6ecfd9, var(--pro-accent-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.ex-pro-layout-analyst .ex-pro-trust {
+  background: color-mix(in srgb, var(--pro-accent) 6%, var(--pro-white));
+}
+
+.ex-pro-layout-analyst .ex-pro-method::before {
+  background: radial-gradient(circle at 20% 50%, color-mix(in srgb, var(--pro-accent) 25%, transparent), transparent 55%);
+}
+
+.ex-pro-data-preview {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.ex-pro-data-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.45rem;
+  height: 120px;
+  padding: 0.75rem;
+  border-radius: var(--pro-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ex-pro-data-bars span {
+  flex: 1;
+  height: var(--h);
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--pro-accent-bright), var(--pro-accent-deep));
+  opacity: 0.85;
+}
+
+.ex-pro-data-legend {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--pro-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Layout: studio (Taylor — light editorial SWE) */
+.ex-pro-layout-studio {
+  --pro-serif: "Fraunces", "Instrument Serif", Georgia, serif;
+  --pro-font: "DM Sans", "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light {
+  min-height: auto;
+  padding-block: clamp(7rem, 14vw, 9rem) clamp(3rem, 6vw, 4.5rem);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, color-mix(in srgb, var(--pro-accent-bright) 22%, transparent), transparent 55%),
+    linear-gradient(180deg, #fff7f9 0%, var(--pro-surface) 72%);
+  color: var(--pro-ink);
+  overflow: hidden;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--centered .ex-pro-hero-content {
+  text-align: center;
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--centered .ex-pro-hero-actions {
+  justify-content: center;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light .ex-pro-hero-eyebrow {
+  color: var(--pro-accent-deep);
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light .ex-pro-hero-sub {
+  color: var(--pro-muted);
+  margin-inline: auto;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light h1 {
+  font-weight: 500;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--pro-accent-deep), var(--pro-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light .ex-pro-hero-badge {
+  border-color: color-mix(in srgb, var(--pro-accent) 22%, var(--pro-line));
+  color: var(--pro-muted);
+  background: var(--pro-white);
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light .ex-pro-btn-primary {
+  color: var(--pro-white);
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light .ex-pro-btn-ghost {
+  background: var(--pro-white);
+  border-color: var(--pro-line);
+  color: var(--pro-ink-soft);
+}
+
+.ex-pro-layout-studio .ex-pro-hero--light .ex-pro-btn-ghost:hover {
+  border-color: color-mix(in srgb, var(--pro-accent) 35%, var(--pro-line));
+  color: var(--pro-accent-deep);
+}
+
+.ex-pro-layout-studio .ex-pro-hero-stats {
+  max-width: 640px;
+  background: var(--pro-white);
+  border: 1px solid color-mix(in srgb, var(--pro-accent) 18%, var(--pro-line));
+  box-shadow: var(--pro-shadow);
+}
+
+.ex-pro-layout-studio .ex-pro-hero-stat {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.ex-pro-layout-studio .ex-pro-hero-stat strong {
+  color: var(--pro-accent-deep);
+}
+
+.ex-pro-layout-studio .ex-pro-hero-stat span {
+  color: var(--pro-muted);
+}
+
+.ex-pro-layout-studio .ex-pro-nav {
+  color: var(--pro-ink);
+}
+
+.ex-pro-layout-studio .ex-pro-nav-links a {
+  color: var(--pro-muted);
+}
+
+.ex-pro-layout-studio .ex-pro-nav-links a:hover,
+.ex-pro-layout-studio .ex-pro-nav-links a.is-active {
+  color: var(--pro-accent-deep);
+}
+
+.ex-pro-layout-studio .ex-pro-nav-cta {
+  background: var(--pro-accent) !important;
+  color: var(--pro-white) !important;
+}
+
+.ex-pro-layout-studio .ex-pro-nav.is-scrolled {
+  background: rgba(253, 248, 247, 0.94);
+}
+
+.ex-pro-layout-studio .ex-pro-trust {
+  background: var(--pro-white);
+  border-block: 1px solid color-mix(in srgb, var(--pro-accent) 12%, var(--pro-line));
+}
+
+.ex-pro-layout-studio .ex-pro-trust-items {
+  gap: 0.65rem;
+}
+
+.ex-pro-layout-studio .ex-pro-trust-item {
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pro-accent) 8%, var(--pro-white));
+  border: 1px solid color-mix(in srgb, var(--pro-accent) 14%, var(--pro-line));
+  font-weight: 500;
+  font-size: 0.78rem;
+}
+
+.ex-pro-layout-studio .ex-pro-trust-dot { display: none; }
+
+.ex-pro-studio-focus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.ex-pro-studio-focus-item {
+  font-size: 0.82rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--pro-radius-sm);
+  background: var(--pro-white);
+  border: 1px solid color-mix(in srgb, var(--pro-accent) 16%, var(--pro-line));
+  color: var(--pro-ink-soft);
+  box-shadow: var(--pro-shadow);
+}
+
+.ex-pro-layout-studio .ex-pro-about-grid {
+  grid-template-columns: 1fr;
+  max-width: 42rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.ex-pro-layout-studio .ex-pro-about-body p {
+  font-size: 1.12rem;
+}
+
+.ex-pro-layout-studio .ex-pro-tags {
+  justify-content: center;
+}
+
+.ex-pro-layout-studio .ex-pro-title {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.ex-pro-layout-studio .ex-pro-label {
+  text-align: center;
+}
+
+.ex-pro-layout-studio .ex-pro-lead {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.ex-pro-timeline--studio {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.ex-pro-timeline--studio .ex-pro-timeline-item {
+  border-left-color: color-mix(in srgb, var(--pro-accent) 35%, var(--pro-line));
+}
+
+.ex-pro-project-grid--studio {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.ex-pro-project-grid--studio .ex-pro-project-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--pro-white);
+}
+
+.ex-pro-project-visual--compact {
+  margin-top: auto;
+  min-height: 7rem;
+}
+
+.ex-pro-project-visual--compact .ex-pro-code-preview {
+  font-size: 0.68rem;
+  max-height: 5rem;
+  overflow: hidden;
+}
+
+.ex-pro-outcomes-grid--studio {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.ex-pro-outcomes-grid--studio .ex-pro-outcome-card {
+  background: color-mix(in srgb, var(--pro-accent) 5%, var(--pro-white));
+  border-color: color-mix(in srgb, var(--pro-accent) 14%, var(--pro-line));
+}
+
+.ex-pro-skills-grid--studio .ex-pro-skill-group {
+  text-align: center;
+}
+
+.ex-pro-skills-grid--studio .ex-pro-skill-group ul {
+  justify-content: center;
+}
+
+.ex-pro-cred-grid--studio {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.ex-pro-studio-snapshot {
+  max-width: 52ch;
+  margin: 1.25rem auto 0;
+  padding: 1rem 1.25rem;
+  border-radius: var(--pro-radius-sm);
+  background: color-mix(in srgb, var(--pro-accent) 7%, var(--pro-white));
+  border: 1px solid color-mix(in srgb, var(--pro-accent) 14%, var(--pro-line));
+  font-size: 0.88rem;
+  color: var(--pro-muted);
+  text-align: center;
+}
+
+.ex-pro-layout-studio .ex-pro-contact {
+  text-align: center;
+}
+
+.ex-pro-layout-studio .ex-pro-contact .ex-pro-hero-actions {
+  justify-content: center;
+}
+
+.ex-pro-layout-studio .ex-pro-contact .ex-pro-btn-ghost {
+  background: var(--pro-white);
+  border-color: var(--pro-line);
+  color: var(--pro-ink-soft);
+}
+
+/* Section order per layout */
+.ex-pro-main { display: flex; flex-direction: column; }
+
+.ex-pro-main--analyst .ex-pro-order-about { order: 1; }
+.ex-pro-main--analyst .ex-pro-order-projects { order: 2; }
+.ex-pro-main--analyst .ex-pro-order-experience { order: 3; }
+.ex-pro-main--analyst .ex-pro-order-method { order: 4; }
+.ex-pro-main--analyst .ex-pro-order-skills { order: 5; }
+.ex-pro-main--analyst .ex-pro-order-credentials { order: 6; }
+.ex-pro-main--analyst .ex-pro-order-contact { order: 7; }
+
+.ex-pro-main--studio .ex-pro-order-about { order: 1; }
+.ex-pro-main--studio .ex-pro-order-experience { order: 2; }
+.ex-pro-main--studio .ex-pro-order-projects { order: 3; }
+.ex-pro-main--studio .ex-pro-order-skills { order: 4; }
+.ex-pro-main--studio .ex-pro-order-credentials { order: 5; }
+.ex-pro-main--studio .ex-pro-order-contact { order: 6; }
+
+@media (max-width: 52rem) {
+  .ex-pro-project-grid--studio,
+  .ex-pro-outcomes-grid--studio {
+    grid-template-columns: 1fr;
+  }
 }
 
 .ex-pro::before,

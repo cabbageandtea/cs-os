@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>{{ github_handle }} — mock GitHub</title>
-  <link rel="stylesheet" href="/static/examples.css?v=5">
+  <title>{{ github_handle }} — GitHub</title>
+  <link rel="stylesheet" href="/static/examples.css?v=7">
 </head>
 <body class="example-site example-site--{{ theme }} example-mock-github">
   {% include "examples/_mock_chrome.html" %}
@@ -17,7 +17,7 @@
         <h1>{{ github_handle }}</h1>
         <p class="meta">{{ target_role }} · {{ mock_domain }}</p>
         <p class="example-prose">{{ hero_lead }}</p>
-        <p class="mock-github-stats">{{ project_cards|length }} public repos · {{ total_repo_stars }} stars (demo)</p>
+        <p class="mock-github-stats">{{ project_cards|length }} public repos · {{ total_repo_stars }} stars</p>
       </div>
     </header>
     <h2 class="mock-section-title">Pinned</h2>
@@ -39,6 +39,6 @@
       <a class="example-btn example-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
     </div>
   </div>
-  <footer class="example-footer">Mock GitHub · {{ mock_domain }}</footer>
+  <footer class="example-footer">© {{ mock_domain }}</footer>
 </body>
 </html>

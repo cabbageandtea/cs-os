@@ -33,7 +33,7 @@ def run_extended(base: str = "https://doggybagg.cc") -> int:
     check("logo header", "logo-header.png" in home, "present")
     check("home clean", "career systems" not in home.lower(), "no legacy brand")
 
-    for path in ("/start", "/example/alex-rivera", "/example/jordan-kim"):
+    for path in ("/start", "/example/alex-rivera", "/example/taylor-nguyen"):
         body = client.get(f"{base}{path}").text.lower()
         check(f"{path} clean", "career systems" not in body, "no legacy brand")
 

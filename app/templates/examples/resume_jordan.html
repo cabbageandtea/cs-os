@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
   <title>{{ person_name }} — Resume</title>
-  <link rel="stylesheet" href="/static/examples.css?v=5">
+  <link rel="stylesheet" href="/static/examples.css?v=7">
 </head>
 <body class="example-site example-site--{{ theme }}">
   {% set chrome_path = chrome_path | default(mock_domain ~ '/resume') %}
@@ -35,6 +35,6 @@
       {% endif %}
     </div>
   </article>
-  <footer class="example-footer">Example resume · {{ site_name }} {{ package_label }}</footer>
+  <footer class="example-footer">© {{ mock_domain }}</footer>
 </body>
 </html>

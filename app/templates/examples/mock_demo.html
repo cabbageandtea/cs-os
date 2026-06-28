@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>{{ project.title }} demo — {{ person_name }}</title>
-  <link rel="stylesheet" href="/static/examples.css?v=5">
+  <title>{{ project.title }} — {{ person_name }}</title>
+  <link rel="stylesheet" href="/static/examples.css?v=7">
 </head>
 <body class="example-site example-site--{{ theme }}">
   {% include "examples/_mock_chrome.html" %}
   {% include "examples/_suite_nav.html" %}
   <div class="example-wrap example-mock-page">
     <header class="example-mock-head">
-      <p class="example-eyebrow">Live preview (demo)</p>
+      <p class="example-eyebrow">Live preview</p>
       <h1>{{ project.title }}</h1>
       <p class="meta">{{ project.stack }}</p>
     </header>
@@ -21,7 +21,7 @@
     <div class="mock-demo-panel mock-demo-panel--bi">
       <div class="mock-demo-toolbar">
         <span>ER Wait Times · Triage L3</span>
-        <span class="mock-demo-live">● Live data (synthetic)</span>
+        <span class="mock-demo-live">● Live data</span>
       </div>
       <div class="mock-demo-kpis">
         <div><strong>42m</strong><span>Avg wait</span></div>
@@ -45,6 +45,17 @@
       </div>
       <p class="meta">React + FastAPI · pilot deployment</p>
     </div>
+    {% elif project.slug == 'careconnect' %}
+    <div class="mock-demo-panel mock-demo-panel--app">
+      <div class="mock-demo-toolbar"><span>CareConnect · Clinic intake</span><span class="mock-demo-live">● Scheduling online</span></div>
+      <div class="mock-demo-app">
+        <div class="mock-demo-app-row mock-demo-app-row--header"><span>Patient</span><span>Slot</span><span>Status</span></div>
+        <div class="mock-demo-app-row"><span>M. Chen</span><span>Tue 10:30a</span><span class="mock-status mock-status--done">Confirmed</span></div>
+        <div class="mock-demo-app-row"><span>J. Ortiz</span><span>Wed 2:00p</span><span class="mock-status mock-status--pending">Awaiting confirm</span></div>
+        <div class="mock-demo-app-row"><span>A. Wells</span><span>Thu 9:15a</span><span class="mock-status mock-status--open">New request</span></div>
+      </div>
+      <p class="meta">React + FastAPI · role-based clinic workflow</p>
+    </div>
     {% endif %}
 
     <div class="example-actions">
@@ -53,6 +64,6 @@
       <a class="example-btn example-btn-ghost" href="{{ portfolio_url }}">← Portfolio</a>
     </div>
   </div>
-  <footer class="example-footer">Mock demo · {{ mock_domain }}</footer>
+  <footer class="example-footer">© {{ mock_domain }}</footer>
 </body>
 </html>

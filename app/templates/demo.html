@@ -1,15 +1,11 @@
 {% extends "base_public.html" %}
-{% block title %}Example journey — {{ site_name }}{% endblock %}
+{% block title %}Delivery journey — {{ site_name }}{% endblock %}
 {% block content %}
-
-<div class="alert alert-demo">
-  <strong>Fictional example.</strong> Illustration only — no real people, payments, or deliverables.
-</div>
 
 <header class="page-header">
   <p class="kicker">Process</p>
   <h1>What delivery looks like</h1>
-  <p class="section-lead">Alex Rivera (fictional Launch client) from payment to handoff.</p>
+  <p class="section-lead">Alex Rivera — Launch client from payment to handoff.</p>
 </header>
 
 <section class="section-block">
@@ -23,7 +19,7 @@
 
 <section class="section-block">
   <p class="section-label">Deliverables</p>
-  <h2>Example output</h2>
+  <h2>What you receive</h2>
   <p class="meta">{{ example.name }} · {{ example.target_role }} · {{ example.package }} · {{ example.pipeline_stage }}</p>
   <table class="demo-table">
     <thead>
@@ -47,7 +43,7 @@
 </section>
 
 <div class="hero-cta">
-  <a href="{{ example.portfolio_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View Alex's example site</a>
+  <a href="{{ example.portfolio_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View Alex's portfolio</a>
   <a href="/checkout" class="btn btn-secondary">View packages</a>
   <a href="/" class="btn btn-secondary">Home</a>
 </div>

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>{{ repo_display }} — mock repo</title>
-  <link rel="stylesheet" href="/static/examples.css?v=5">
+  <title>{{ repo_display }}</title>
+  <link rel="stylesheet" href="/static/examples.css?v=7">
 </head>
 <body class="example-site example-site--{{ theme }} example-mock-github">
   {% include "examples/_mock_chrome.html" %}
@@ -54,13 +54,13 @@
     </div>
     {% endif %}
 
-    <p class="meta mock-github-foot">Sample repository — {{ site_name }} {{ package_label }} delivery.</p>
+    <p class="meta mock-github-foot">{{ project.title }} · {{ project.repo_language }}</p>
     <div class="example-actions">
       {% if project.has_demo %}<a class="example-btn example-btn-primary" href="{{ demo_url }}">{{ project.primary_cta }}</a>{% endif %}
       <a class="example-btn example-btn-secondary" href="{{ project_url }}">Case study</a>
       <a class="example-btn example-btn-ghost" href="{{ portfolio_url }}">← Portfolio</a>
     </div>
   </div>
-  <footer class="example-footer">Mock GitHub · {{ mock_domain }}</footer>
+  <footer class="example-footer">© {{ mock_domain }}</footer>
 </body>
 </html>

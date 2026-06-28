@@ -1,11 +1,4 @@
 <div class="example-chrome" aria-hidden="true">
   <div class="example-chrome-dots"><span></span><span></span><span></span></div>
   <span class="example-chrome-url">{{ chrome_path | default(mock_domain) }}</span>
-  <span class="example-chrome-badge">Demo</span>
 </div>
-<p class="example-banner">
-  {% if portfolio_url and not is_portfolio_home %}
-  <a href="{{ portfolio_url }}">← Portfolio</a> ·
-  {% endif %}
-  <a href="/">{{ site_name }}</a>
-</p>

@@ -78,8 +78,8 @@ Hero (one primary CTA: Launch)
 | Package | Template | Mock persona |
 |---------|----------|--------------|
 | Foundation | minimal / data-tech | Lighter hero, 2 projects |
-| Launch | data-tech + resume | Alex Rivera |
-| Accelerator | data-tech dark + narrative | Jordan Kim |
+| Launch | analyst + studio pro layouts | Alex Rivera · Taylor Nguyen |
+| Accelerator | pro coral + narrative | Jordan Kim (legacy URL) |
 
 ---
 
@@ -96,7 +96,7 @@ Hero (one primary CTA: Launch)
 
 ## When showcase client is real
 
-Replace or supplement Alex/Jordan card with **consent + real URL**. Keep one fictional card for the other wedge persona until you have two real deliveries.
+Replace or supplement Alex/Taylor card with **consent + real URL**. Keep one showcase card for the other wedge persona until you have two real deliveries.
 
 ---
 
@@ -105,6 +105,6 @@ Replace or supplement Alex/Jordan card with **consent + real URL**. Keep one fic
 - [ ] 6-second test with someone outside the project  
 - [ ] Primary CTA visible without scrolling on mobile  
 - [ ] Outcome metric on landing card + case study  
-- [ ] Example link on Launch package row  
+- [ ] Portfolio link on Launch package row  
 - [ ] Proof line above final checkout CTA  
 - [ ] Lighthouse: avoid layout shift on project visuals (`aspect-ratio` set)

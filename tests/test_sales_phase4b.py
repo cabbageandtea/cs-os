@@ -19,7 +19,7 @@ def test_landing_page_returns_200(client: TestClient) -> None:
     assert 'id="why-us"' in response.text
     assert "revision round" in response.text.lower()
     assert "Alex Rivera" in response.text
-    assert "Jordan Kim" in response.text
+    assert "Taylor Nguyen" in response.text
     assert "Foundation" in response.text
     assert "Launch" in response.text
     assert "Accelerator" in response.text
@@ -36,10 +36,10 @@ def test_start_hub_lists_edu_prerequisites(client: TestClient) -> None:
     assert "nc.me/github/auth" in response.text
 
 
-def test_demo_page_marked_as_example(client: TestClient) -> None:
+def test_demo_page_describes_delivery(client: TestClient) -> None:
     response = client.get("/demo")
     assert response.status_code == 200
-    assert "Fictional example." in response.text
+    assert "What delivery looks like" in response.text
     assert "Alex Rivera" in response.text
 
 

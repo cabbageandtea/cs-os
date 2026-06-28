@@ -13,18 +13,18 @@ const EXAMPLES = [
     caseStudyCta: /case study/i,
   },
   {
-    slug: "jordan-kim",
-    name: "Jordan Kim",
-    domain: "jordankim.me",
-    repoProject: "inventory-anomaly",
-    repoCta: /open notebook/i,
-    demoProject: "shiftsync",
+    slug: "taylor-nguyen",
+    name: "Taylor Nguyen",
+    domain: "taylornguyen.me",
+    repoProject: "gitpulse",
+    repoCta: /view code/i,
+    demoProject: "careconnect",
     demoCta: /live demo/i,
     caseStudyCta: /case study/i,
   },
 ];
 
-test.describe("example portfolio mock click-through", () => {
+test.describe("portfolio showcase click-through", () => {
   for (const ex of EXAMPLES) {
     test(`${ex.slug} suite nav links work`, async ({ page }) => {
       const response = await page.goto(`/example/${ex.slug}`, {
@@ -64,7 +64,7 @@ test.describe("example portfolio mock click-through", () => {
       await expect(page).toHaveURL(
         new RegExp(`/example/${ex.slug}/demo/${ex.demoProject}`)
       );
-      await expect(page.getByText("Live preview (demo)")).toBeVisible();
+      await expect(page.getByText("Live preview")).toBeVisible();
     });
   }
 
@@ -89,17 +89,17 @@ test.describe("example portfolio mock click-through", () => {
     expect(body.slice(0, 4).toString()).toBe("%PDF");
   });
 
-  test("landing proof opens example mocks in new tab", async ({ page, context }) => {
+  test("landing proof opens portfolios in new tab", async ({ page, context }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
 
     const linkedinPopup = context.waitForEvent("page");
-    await page.getByRole("link", { name: /sample linkedin/i }).first().click();
+    await page.getByRole("link", { name: /linkedin profile/i }).first().click();
     const linkedinPage = await linkedinPopup;
     await linkedinPage.waitForLoadState("domcontentloaded");
     await expect(linkedinPage).toHaveURL(/\/example\/alex-rivera\/linkedin/);
 
     const sitePopup = context.waitForEvent("page");
-    await page.getByRole("link", { name: /view example site/i }).first().click();
+    await page.getByRole("link", { name: /view portfolio/i }).first().click();
     const sitePage = await sitePopup;
     await sitePage.waitForLoadState("domcontentloaded");
     await expect(sitePage).toHaveURL(/\/example\/alex-rivera\/?$/);

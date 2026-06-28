@@ -1,8 +1,32 @@
-"""Hosted mock portfolio examples."""
+"""Hosted portfolio examples."""
 
 from __future__ import annotations
 
 from app.example_portfolios import get_portfolio_example
+
+PORTFOLIO_BANNED_PHRASES: tuple[str, ...] = (
+    "example delivery",
+    "example resume",
+    "example data",
+    "mock data",
+    "mock github",
+    "mock linkedin",
+    "mock demo",
+    "fictional",
+    "illustrative",
+    "(demo)",
+    "(sample)",
+    "sample delivery",
+    "live preview (demo)",
+    "@example.com",
+    "doggybagg",
+)
+
+
+def _assert_no_demo_labels(body: str) -> None:
+    lower = body.lower()
+    for phrase in PORTFOLIO_BANNED_PHRASES:
+        assert phrase not in lower, f"leaked label: {phrase!r}"
 
 
 def test_alex_portfolio_example(client) -> None:
@@ -12,10 +36,29 @@ def test_alex_portfolio_example(client) -> None:
     assert "alexrivera.me" in body
     assert "Experience" in body
     assert "State University" in body
+    assert "ex-pro-layout-analyst" in body
+    assert "ex-pro-hero--analyst" in body
+    assert "Recruiter snapshot" in body
     assert "example-suite-nav" in body
     assert 'href="/example/alex-rivera/repo/campus-dining"' in body
     assert "https://github.com" not in body
-    assert "Fictional" not in body
+    _assert_no_demo_labels(body)
+
+
+def test_taylor_portfolio_example(client) -> None:
+    response = client.get("/example/taylor-nguyen")
+    assert response.status_code == 200
+    body = response.text
+    assert "taylornguyen.me" in body
+    assert "Lakeside Institute" in body
+    assert "ex-pro--pro-rose" in body
+    assert "ex-pro-layout-studio" in body
+    assert "ex-pro-hero--light" in body
+    assert "Recruiter snapshot" not in body
+    assert 'href="/example/taylor-nguyen/demo/careconnect"' in body
+    assert 'href="/example/taylor-nguyen/repo/gitpulse"' in body
+    assert "Experience" in body
+    _assert_no_demo_labels(body)
 
 
 def test_jordan_portfolio_example(client) -> None:
@@ -26,6 +69,24 @@ def test_jordan_portfolio_example(client) -> None:
     assert "CodeForge Bootcamp" in body
     assert 'href="/example/jordan-kim/demo/shiftsync"' in body
     assert 'href="/example/jordan-kim/repo/inventory-anomaly"' in body
+    _assert_no_demo_labels(body)
+
+
+def test_portfolio_subpages_have_no_demo_labels(client) -> None:
+    paths = (
+        "/example/alex-rivera/github",
+        "/example/alex-rivera/linkedin",
+        "/example/alex-rivera/resume",
+        "/example/alex-rivera/repo/campus-dining",
+        "/example/alex-rivera/demo/healthcare-wait",
+        "/example/taylor-nguyen/github",
+        "/example/taylor-nguyen/demo/careconnect",
+        "/example/taylor-nguyen/resume",
+    )
+    for path in paths:
+        response = client.get(path)
+        assert response.status_code == 200, path
+        _assert_no_demo_labels(response.text)
 
 
 def test_resume_example(client) -> None:
@@ -35,11 +96,18 @@ def test_resume_example(client) -> None:
     assert "alexrivera.me" in body
     assert "Download PDF" in body
     assert "Education" in body
-    assert "Fictional" not in body
+    _assert_no_demo_labels(body)
 
 
 def test_resume_pdf_download(client) -> None:
     response = client.get("/example/alex-rivera/resume.pdf")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/pdf"
+    assert response.content[:4] == b"%PDF"
+
+
+def test_taylor_resume_pdf_download(client) -> None:
+    response = client.get("/example/taylor-nguyen/resume.pdf")
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/pdf"
     assert response.content[:4] == b"%PDF"
@@ -57,35 +125,44 @@ def test_landing_proof_has_pdf_download(client) -> None:
     assert "/example/alex-rivera/linkedin" in response.text
 
 
-def test_mock_repo_page(client) -> None:
+def test_repo_page(client) -> None:
     response = client.get("/example/alex-rivera/repo/campus-dining")
     assert response.status_code == 200
     assert "Campus Dining Insights" in response.text
     assert "README" in response.text
 
 
-def test_mock_demo_page(client) -> None:
+def test_demo_page(client) -> None:
     response = client.get("/example/jordan-kim/demo/shiftsync")
     assert response.status_code == 200
     assert "ShiftSync" in response.text
-    assert "mock" in response.text.lower()
+    assert "Live preview" in response.text
+    _assert_no_demo_labels(response.text)
 
 
-def test_mock_github_profile(client) -> None:
+def test_taylor_demo_page(client) -> None:
+    response = client.get("/example/taylor-nguyen/demo/careconnect")
+    assert response.status_code == 200
+    assert "CareConnect" in response.text
+    assert "Live preview" in response.text
+    _assert_no_demo_labels(response.text)
+
+
+def test_github_profile_page(client) -> None:
     response = client.get("/example/alex-rivera/github")
     assert response.status_code == 200
     assert "alexrivera-dev" in response.text
     assert "/example/alex-rivera/repo/" in response.text
 
 
-def test_mock_linkedin_profile(client) -> None:
+def test_linkedin_profile_page(client) -> None:
     response = client.get("/example/jordan-kim/linkedin")
     assert response.status_code == 200
     assert "Junior Software Engineer" in response.text
     assert "Education" in response.text
 
 
-def test_mock_repo_notebook(client) -> None:
+def test_repo_notebook_page(client) -> None:
     response = client.get("/example/jordan-kim/repo/inventory-anomaly")
     assert response.status_code == 200
     assert "inventory_anomaly.ipynb" in response.text

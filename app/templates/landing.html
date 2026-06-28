@@ -28,7 +28,7 @@
     <p class="hero-lead">{{ hero_lead }}</p>
     <div class="hero-cta hero-cta--single">
       <a href="{{ hero_cta_primary[1] }}" class="btn btn-primary btn-lg">{{ hero_cta_primary[0] }} — $199</a>
-      <a href="#examples" class="btn btn-secondary btn-lg">See live examples</a>
+      <a href="#examples" class="btn btn-secondary btn-lg">See live portfolios</a>
       <a href="{{ hero_cta_secondary[1] }}" class="btn btn-ghost">{{ hero_cta_secondary[0] }}</a>
     </div>
   </div>
@@ -42,14 +42,14 @@
   </aside>
 </section>
 
-{# Zone 1 — proof within first scroll: outcome + live mock, not buried at bottom #}
+{# Zone 1 — proof within first scroll: outcome + live portfolio, not buried at bottom #}
 <section class="band band--proof-preview is-visible" id="examples" data-reveal>
   <div class="proof-preview-head">
     <div>
-      <p class="section-label">Live examples</p>
+      <p class="section-label">Client portfolios</p>
       <h2>See the deliverable before you buy</h2>
     </div>
-    <p class="meta section-lead">Sample .me portfolios — click through site, resume, code, and LinkedIn.</p>
+    <p class="meta section-lead">Personal .me portfolios — click through site, resume, code, and LinkedIn.</p>
   </div>
   <div class="proof-preview-grid">
     {% for case_study in case_studies %}
@@ -61,7 +61,7 @@
       <span class="proof-preview-links">
         <span>Site</span> · <span>Resume</span> · <span>GitHub</span> · <span>LinkedIn</span>
       </span>
-      <span class="proof-preview-cta">View example site →</span>
+      <span class="proof-preview-cta">View portfolio →</span>
     </a>
     {% endfor %}
   </div>
@@ -94,7 +94,7 @@
   <p class="meta me-why-foot">{{ me_domain_why.footnote }}</p>
   <div class="me-why-actions">
     <a href="{{ me_domain_why.cta_url }}" class="btn btn-secondary">{{ me_domain_why.cta_label }}</a>
-    <a href="/example/alex-rivera" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">See alexrivera.me example →</a>
+    <a href="/example/alex-rivera" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">See alexrivera.me →</a>
   </div>
 </section>
 
@@ -149,10 +149,10 @@
       {% endfor %}
     </dl>
     <div class="proof-actions">
-      <a href="{{ case_study.example_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View example site</a>
+      <a href="{{ case_study.example_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View portfolio</a>
       <a href="{{ case_study.example_url }}/resume" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">View resume</a>
       <a href="{{ case_study.example_url }}/resume.pdf" class="btn btn-secondary" download>Download PDF</a>
-      <a href="{{ case_study.example_url }}/linkedin" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Sample LinkedIn</a>
+      <a href="{{ case_study.example_url }}/linkedin" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">LinkedIn profile</a>
     </div>
   </article>
   {% endfor %}
@@ -261,7 +261,7 @@
         </ul>
         <p class="package-meta tabular">{{ pkg.turnaround }} · {{ pkg.revision_rounds }} revision{% if pkg.revision_rounds != 1 %}s{% endif %}</p>
         {% if pkg.featured %}
-        <p class="package-proof meta"><a href="/example/alex-rivera" target="_blank" rel="noopener noreferrer">See Launch example delivery →</a></p>
+        <p class="package-proof meta"><a href="/example/alex-rivera" target="_blank" rel="noopener noreferrer">See Launch delivery →</a></p>
         {% endif %}
         <a href="/checkout" class="btn {% if pkg.featured %}btn-primary{% else %}btn-ghost{% endif %} btn-block">Select {{ pkg.display_name }}</a>
       </article>
@@ -284,7 +284,7 @@
     </li>
     {% endfor %}
   </ol>
-  <p class="meta band-foot"><a href="/demo" class="text-link">Full example journey →</a></p>
+  <p class="meta band-foot"><a href="/demo" class="text-link">Full delivery journey →</a></p>
 </section>
 
 <section class="band" id="principles" data-reveal>
@@ -314,7 +314,7 @@
 <section class="band band--cta" id="cta" data-reveal>
   <h2>One intake. Coordinated output. Accounts you own.</h2>
   <p class="section-lead">Payment unlocks intake. Delivery starts when intake is complete.</p>
-  <p class="cta-proof meta">{{ cta_proof_line }} <a href="/example/alex-rivera" target="_blank" rel="noopener noreferrer">View Alex's mock site</a></p>
+  <p class="cta-proof meta">{{ cta_proof_line }} <a href="/example/alex-rivera" target="_blank" rel="noopener noreferrer">View Alex's portfolio</a></p>
   <a href="/checkout" class="btn btn-primary btn-lg">Start with Launch — $199</a>
 </section>
 

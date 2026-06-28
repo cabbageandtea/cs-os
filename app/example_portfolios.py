@@ -78,7 +78,7 @@ class ExampleProfile:
     slug: str
     template_name: str
     resume_template: str
-    theme: str  # light-hero | dark | pro-teal | pro-coral
+    theme: str  # light-hero | dark | pro-teal | pro-coral | pro-rose
     package_label: str
     mock_domain: str
     person_name: str
@@ -123,6 +123,7 @@ class ExampleProfile:
     recruiter_snapshot: str = ""
     contact_heading: str = ""
     location_note: str = ""
+    layout: str = "classic"  # classic | analyst | studio
 
 
 EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
@@ -131,13 +132,14 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         template_name="examples/portfolio_pro.html",
         resume_template="examples/resume_alex.html",
         theme="pro-teal",
+        layout="analyst",
         package_label="Launch",
         mock_domain="alexrivera.me",
         person_name="Alex Rivera",
         target_role="Data Analyst Intern",
         role_tagline="Information Systems · graduating 2027",
         resume_pdf_filename="alex-rivera.pdf",
-        email="alex.rivera@example.com",
+        email="alex@alexrivera.me",
         github_handle="alexrivera-dev",
         linkedin_handle="alexrivera",
         about=(
@@ -146,8 +148,8 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "and present them so non-technical stakeholders act on the insight."
         ),
         hero_lead=(
-            "I turn coursework and side projects into recruiter-ready data stories — clear metrics, "
-            "live dashboards, and copy that survives a six-second scan."
+            "I turn messy operational data into dashboards and memos stakeholders act on — "
+            "SQL pipelines, Plotly views, and impact lines that survive a six-second scan."
         ),
         sidebar_note="",
         education=MockEducation(
@@ -360,6 +362,249 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         contact_heading="Open to the next internship",
         location_note="Remote, hybrid, or on-site — healthcare, campus ops, and civic data teams.",
     ),
+    "taylor-nguyen": ExampleProfile(
+        slug="taylor-nguyen",
+        template_name="examples/portfolio_pro.html",
+        resume_template="examples/resume_taylor.html",
+        theme="pro-rose",
+        layout="studio",
+        package_label="Launch",
+        mock_domain="taylornguyen.me",
+        person_name="Taylor Nguyen",
+        target_role="Software Engineer Intern",
+        role_tagline="Computer Science · graduating May 2026",
+        resume_pdf_filename="taylor-nguyen.pdf",
+        email="taylor@taylornguyen.me",
+        github_handle="taylornguyen-dev",
+        linkedin_handle="taylornguyen",
+        about=(
+            "CS senior at Lakeside Institute of Technology with a healthcare IT focus. I pair polished "
+            "React interfaces with FastAPI services that respect real constraints — role-based access, "
+            "audit-friendly logging, and deploy notes a teammate can follow on Render."
+        ),
+        hero_lead=(
+            "Full-stack capstones with live demos, pytest coverage, and deploy guides — "
+            "one engineering story from GitHub through PDF to LinkedIn."
+        ),
+        sidebar_note="",
+        education=MockEducation(
+            degree="B.S. Computer Science",
+            school="Lakeside Institute of Technology",
+            dates="Expected May 2026",
+            detail="GPA 3.8 · Dean's list · Focus: full-stack + health informatics",
+        ),
+        extra_education=None,
+        projects=(
+            MockProject(
+                slug="careconnect",
+                title="CareConnect Portal",
+                stack="React · TypeScript · FastAPI · PostgreSQL",
+                summary=(
+                    "Patient scheduling portal for a capstone clinic workflow — intake forms, "
+                    "provider availability, and appointment confirmations with role-based views."
+                ),
+                outcome="Pilot cut phone-tag scheduling by half in user testing; OpenAPI + Render deploy documented.",
+                visual_label="React · FastAPI",
+                visual_tone="code",
+                readme_intro="Healthcare scheduling portal with RBAC and audit-friendly event logs.",
+                readme_bullets=(
+                    "React + TypeScript UI with accessible form flows and empty states",
+                    "FastAPI backend with JWT roles, PostgreSQL migrations, and pytest coverage",
+                    "Docker Compose + Render deploy guide with seed data for demos",
+                ),
+                primary_cta="Live demo",
+                secondary_cta="View code",
+                primary_link="demo",
+                secondary_link="repo",
+                has_demo=True,
+                repo_language="TypeScript",
+                repo_stars=19,
+            ),
+            MockProject(
+                slug="gitpulse",
+                title="GitPulse Dashboard",
+                stack="Next.js · GitHub API · Chart.js",
+                summary=(
+                    "Team standup dashboard pulling PR velocity, review turnaround, and stale-branch "
+                    "alerts from GitHub — built for campus dev club leads."
+                ),
+                outcome="Adopted by two project teams for weekly standups; cached API layer documented.",
+                visual_label="Next.js · API",
+                visual_tone="code",
+                readme_intro="GitHub metrics dashboard for small engineering teams.",
+                readme_bullets=(
+                    "Next.js app router with server-side GitHub API caching",
+                    "Chart.js views for PR cycle time and review load by contributor",
+                    "Stale-branch alerts with configurable thresholds in env config",
+                ),
+                primary_cta="View code",
+                secondary_cta="Case study",
+                primary_link="repo",
+                secondary_link="project",
+                repo_language="TypeScript",
+                repo_stars=12,
+            ),
+        ),
+        skills=(
+            "TypeScript",
+            "React",
+            "Python",
+            "FastAPI",
+            "PostgreSQL",
+            "Docker",
+            "Git",
+            "pytest",
+        ),
+        contact_blurb="Open to software engineering internships — health tech, SaaS, and product-minded teams.",
+        linkedin_headline="CS senior · Full-stack · Seeking software engineering internship",
+        linkedin_about=(
+            "Building deployed React + FastAPI capstones with tests and README deploy sections. "
+            "Healthcare IT focus with attention to access control and audit trails. Portfolio, resume, "
+            "and GitHub aligned at taylornguyen.me."
+        ),
+        linkedin_experience=(
+            MockExperience(
+                title="Software Engineering Intern",
+                org="Regional health network (IT)",
+                dates="Jun 2025 – Aug 2025",
+                meta="Hybrid · Pittsburgh, PA",
+                detail="Internal tools squad — scheduling integrations and API documentation.",
+            ),
+        ),
+        availability_badge="Open to SWE internships · May 2026 · remote or hybrid",
+        trust_items=(
+            "Lakeside CS · Dean's List",
+            "2 deployed capstone apps",
+            "pytest + CI on every repo",
+            "Women in Tech mentor · hackathon lead",
+        ),
+        hero_stats=(
+            MockHeroStat("2", "Deployed capstone apps"),
+            MockHeroStat("3.8", "GPA · graduating 2026"),
+            MockHeroStat("31", "GitHub stars across repos"),
+        ),
+        about_heading="Code that respects real users.",
+        focus_areas=(
+            "Accessible React interfaces with clear states",
+            "REST APIs with auth, validation, and tests",
+            "Healthcare-minded logging without over-engineering",
+            "Deploy guides recruiters can run locally",
+            "One narrative across every hiring surface",
+        ),
+        role_tags=("Software Engineer Intern", "Full-stack", "Health tech", "Product engineering"),
+        approach_title="From wireframe to deployable service",
+        approach_lead=(
+            "Not tutorial clones — scoped features, pytest coverage, and README sections that show "
+            "how the system behaves when someone else runs it."
+        ),
+        approach_steps=(
+            MockApproachStep(
+                "01",
+                "Define",
+                "Start with the user journey and failure modes — especially for scheduling and "
+                "role-based healthcare workflows.",
+            ),
+            MockApproachStep(
+                "02",
+                "Build",
+                "Typed React components plus FastAPI handlers with migrations, fixtures, and CI on every PR.",
+            ),
+            MockApproachStep(
+                "03",
+                "Ship",
+                "Live demo, OpenAPI docs, and a PDF resume that repeats the same outcome metrics.",
+            ),
+        ),
+        experience_heading="Internships, teaching, and club leadership",
+        experience_lead=(
+            "Hands-on roles that explain why my projects emphasize access control, deploy notes, "
+            "and teammate-friendly documentation."
+        ),
+        experience=(
+            MockExperience(
+                title="Software Engineering Intern",
+                org="Regional health network · IT",
+                dates="Jun 2025 – Aug 2025",
+                meta="Hybrid · 12 weeks · Internal tools",
+                bullets=(
+                    "Extended a FastAPI scheduling integration with structured logging and OpenAPI docs for downstream teams.",
+                    "Pair-reviewed React form flows for accessibility — focus states, errors, and keyboard paths.",
+                    "Authored runbooks for staging deploys that outlasted the internship handoff.",
+                ),
+            ),
+            MockExperience(
+                title="Teaching Assistant — Data Structures",
+                org="Lakeside Institute of Technology",
+                dates="Jan 2025 – Present",
+                meta="10 hrs/wk · CS 201 labs",
+                bullets=(
+                    "Led weekly labs for 35+ students — trees, graphs, and complexity analysis with live coding.",
+                    "Built autograder fixtures that mirror production edge cases, not single happy-path inputs.",
+                ),
+            ),
+            MockExperience(
+                title="Lead Organizer — Women in Tech Hackathon",
+                org="Lakeside CS Club",
+                dates="Sep 2024 – Apr 2025",
+                meta="Volunteer · 120+ participants",
+                bullets=(
+                    "Coordinated sponsors, mentors, and judging rubrics focused on shippable MVPs over slide decks.",
+                    "Shipped GitPulse as the internal metrics tool for post-event team standups.",
+                ),
+            ),
+        ),
+        project_section_title="Full-stack work recruiters can run",
+        project_section_lead=(
+            "Capstone-grade apps with live demos, tests, and README deploy sections — not README-only homework."
+        ),
+        project_highlights=(
+            MockProjectHighlight(
+                "RBAC + audit trail",
+                "Role-based JWT flows with appointment history that clinic staff can trust in demos.",
+            ),
+            MockProjectHighlight(
+                "Live demo",
+                "CareConnect on Render with seed patients, providers, and documented OpenAPI endpoints.",
+            ),
+            MockProjectHighlight(
+                "Team metrics",
+                "GitPulse caches GitHub API data for standup-ready charts without rate-limit surprises.",
+            ),
+            MockProjectHighlight(
+                "Accessible UI",
+                "Form validation, focus management, and empty states documented in component README notes.",
+            ),
+        ),
+        skill_groups=(
+            MockSkillGroup(
+                "Frontend",
+                ("TypeScript", "React", "Next.js", "HTML/CSS", "Accessibility", "Chart.js"),
+            ),
+            MockSkillGroup(
+                "Backend",
+                ("Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "Docker", "pytest"),
+            ),
+            MockSkillGroup(
+                "Delivery",
+                ("Git & GitHub", "CI workflows", "OpenAPI", "Technical writing", "Render deploys"),
+            ),
+        ),
+        skills_heading="What hiring screens look for",
+        skills_lead="Full-stack depth, tested services, and copy that matches the GitHub history.",
+        certifications=(
+            "AWS Cloud Practitioner — in progress",
+            "Dean's List — 5 semesters",
+            "Data Structures & Algorithms — A",
+        ),
+        credentials_heading="Formalizing a product-minded path",
+        credentials_lead="Coursework and club leadership aligned to SWE screens — not a scatter of half-finished repos.",
+        recruiter_snapshot=(
+            "CS senior · React + FastAPI capstones · health IT focus · May 2026 · seeking SWE internships · "
+            "portfolio + PDF + LinkedIn aligned."
+        ),
+        contact_heading="Open to the next internship",
+        location_note="Remote, hybrid, or on-site — health tech, SaaS, and mission-driven product teams.",
+    ),
     "jordan-kim": ExampleProfile(
         slug="jordan-kim",
         template_name="examples/portfolio_pro.html",
@@ -371,7 +616,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         target_role="Junior Software Engineer",
         role_tagline="Career change · bootcamp + 4 yrs retail ops",
         resume_pdf_filename="jordan-kim.pdf",
-        email="jordan.kim@example.com",
+        email="jordan@jordankim.me",
         github_handle="jordankim-dev",
         linkedin_handle="jordankim",
         hero_lead=(
@@ -483,7 +728,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         hero_stats=(
             MockHeroStat("2", "Deployed capstone apps"),
             MockHeroStat("4 yrs", "Retail ops before pivot"),
-            MockHeroStat("33", "GitHub repo stars (sample)"),
+            MockHeroStat("33", "GitHub stars across repos"),
         ),
         about=(
             "Four years as a floor lead taught me what breaks in production — mis-picks, shrink, "
@@ -723,6 +968,7 @@ def example_template_context(slug: str, *, is_portfolio_home: bool = False) -> d
         "slug": profile.slug,
         "profile": profile,
         "theme": profile.theme,
+        "layout": profile.layout,
         "package_label": profile.package_label,
         "mock_domain": profile.mock_domain,
         "person_name": profile.person_name,

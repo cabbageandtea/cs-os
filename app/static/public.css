@@ -487,6 +487,10 @@
     background: linear-gradient(135deg, oklch(16% 0.02 265) 0%, oklch(22% 0.08 35) 45%, oklch(20% 0.06 260) 100%);
   }
 
+  .proof-preview-card--rose::before {
+    background: linear-gradient(135deg, oklch(14% 0.04 350) 0%, oklch(22% 0.08 15) 42%, oklch(18% 0.06 330) 100%);
+  }
+
   .proof-preview-card > * { position: relative; z-index: 1; }
 
   .proof-preview-card:hover {
