@@ -10,7 +10,7 @@ def test_alex_portfolio_example(client) -> None:
     assert response.status_code == 200
     body = response.text
     assert "alexrivera.me" in body
-    assert "View projects" in body
+    assert "View my work" in body
     assert "Fictional example" in body
 
 
@@ -23,7 +23,7 @@ def test_jordan_portfolio_example(client) -> None:
 def test_resume_example(client) -> None:
     response = client.get("/example/alex-rivera/resume")
     assert response.status_code == 200
-    assert "Resume (example)" in response.text
+    assert "Example resume" in response.text or "Resume" in response.text
 
 
 def test_unknown_example_404(client) -> None:

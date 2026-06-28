@@ -4,80 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
+  <meta name="description" content="Alex Rivera — Data analyst portfolio example delivered by Career Systems.">
   <title>{{ person_name }} — {{ target_role }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/examples.css?v=1">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=2">
 </head>
-<body class="example-site">
+<body class="example-site example-site--light-hero">
   <div class="example-chrome" aria-hidden="true">
-    <span class="example-chrome-lock">&#128274;</span>
+    <div class="example-chrome-dots"><span></span><span></span><span></span></div>
     <span class="example-chrome-url">{{ mock_domain }}</span>
     <span class="example-chrome-badge">Demo</span>
   </div>
   <p class="example-banner">Fictional example — not a real client. <a href="/">Career Systems</a></p>
 
-  <div class="example-wrap">
-    <header class="example-hero">
-      <p class="example-eyebrow">{{ target_role }}</p>
-      <h1>{{ person_name }}</h1>
-      <p class="example-lead">CS student turning coursework and side projects into recruiter-ready data stories — SQL, Python, and clear business outcomes.</p>
-      <div class="example-actions">
-        <a class="example-btn example-btn-primary" href="#projects">View projects</a>
-        <a class="example-btn example-btn-secondary" href="/example/alex-rivera/resume">Sample resume</a>
-        <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+  <div class="example-shell">
+    <nav class="example-nav" id="top">
+      <a class="example-nav-brand" href="#top">{{ person_name.split(' ')[0] }}.</a>
+      <div class="example-nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Work</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
       </div>
-    </header>
+    </nav>
 
-    <section class="example-section" id="about">
-      <h2>About</h2>
-      <p>Information Systems senior with hands-on analytics projects. I translate messy datasets into dashboards and recommendations hiring managers can scan in under a minute.</p>
-    </section>
-
-    <section class="example-section" id="projects">
-      <h2>Projects</h2>
-      <article class="example-card" id="project-1">
-        <h3>Campus Dining Insights</h3>
-        <p class="meta">Python · Pandas · Plotly · SQLite</p>
-        <p>Built an ETL pipeline on 40k+ meal-swipe records. Surfaced peak hours and waste patterns — presented findings to student government.</p>
-        <div class="example-card-actions">
-          <a class="example-btn example-btn-primary" href="https://github.com" target="_blank" rel="noopener noreferrer">View code</a>
-          <a class="example-btn example-btn-secondary" href="#project-1">Case study</a>
+    <div class="example-wrap">
+      <header class="example-hero example-animate">
+        <div>
+          <p class="example-eyebrow">{{ target_role }}</p>
+          <h1>{{ person_name }}</h1>
+          <p class="example-lead">I turn coursework and side projects into recruiter-ready data stories — clear metrics, live dashboards, and copy that survives a six-second scan.</p>
+          <ul class="example-stats">
+            <li><strong>2</strong><span>Shipped projects</span></li>
+            <li><strong>40k+</strong><span>Rows analyzed</span></li>
+            <li><strong>2027</strong><span>Graduating</span></li>
+          </ul>
+          <div class="example-actions">
+            <a class="example-btn example-btn-primary example-arrow" href="#projects">View my work</a>
+            <a class="example-btn example-btn-secondary" href="/example/alex-rivera/resume">Resume</a>
+            <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
         </div>
-      </article>
-      <article class="example-card" id="project-2">
-        <h3>Healthcare Wait-Time Dashboard</h3>
-        <p class="meta">SQL · Tableau · open clinic dataset</p>
-        <p>Modeled ER wait times by triage level. Identified two bottlenecks that explained 18% of delays in the capstone report.</p>
-        <div class="example-card-actions">
-          <a class="example-btn example-btn-primary" href="https://github.com" target="_blank" rel="noopener noreferrer">View code</a>
-          <a class="example-btn example-btn-secondary" href="#project-2">Case study</a>
+        <div class="example-hero-visual" aria-hidden="true">
+          <div class="example-avatar">AR</div>
         </div>
-      </article>
-    </section>
+      </header>
 
-    <section class="example-section" id="skills">
-      <h2>Skills</h2>
-      <ul class="example-pills">
-        <li>Python</li>
-        <li>SQL</li>
-        <li>Excel</li>
-        <li>Tableau</li>
-        <li>Pandas</li>
-        <li>Statistics</li>
-      </ul>
-    </section>
+      <section class="example-section example-animate example-animate-delay-1" id="about">
+        <div class="example-section-head">
+          <h2>About</h2>
+          <span class="example-section-label">01</span>
+        </div>
+        <p class="example-prose">Information Systems senior at State University. I build ETL pipelines and dashboards that answer real questions — peak dining demand, ER bottlenecks, budget tradeoffs — and present them so non-technical stakeholders act on the insight.</p>
+      </section>
 
-    <section class="example-section" id="contact">
-      <h2>Contact</h2>
-      <div class="example-actions">
-        <a class="example-btn example-btn-primary" href="mailto:alex.rivera@example.com">Email Alex</a>
-        <a class="example-btn example-btn-secondary" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      </div>
-    </section>
+      <section class="example-section example-animate example-animate-delay-2" id="projects">
+        <div class="example-section-head">
+          <h2>Selected work</h2>
+          <span class="example-section-label">02</span>
+        </div>
+        <div class="example-project-grid example-project-grid--featured">
+          <article class="example-project" id="project-1">
+            <div class="example-project-visual example-project-visual--data">
+              <span class="example-project-visual-label">Python · ETL</span>
+            </div>
+            <div class="example-project-body">
+              <h3>Campus Dining Insights</h3>
+              <p class="meta">Pandas · Plotly · SQLite</p>
+              <p>Ingested 40k+ meal-swipe records, modeled peak hours and waste patterns, and presented recommendations to student government.</p>
+              <p class="example-project-outcome"><strong>Outcome:</strong> Identified two underused meal windows — proposal adopted for pilot scheduling.</p>
+              <div class="example-project-actions">
+                <a class="example-btn example-btn-primary example-arrow" href="https://github.com" target="_blank" rel="noopener noreferrer">View code</a>
+                <a class="example-btn example-btn-secondary" href="#project-1">Details</a>
+              </div>
+            </div>
+          </article>
+          <article class="example-project" id="project-2">
+            <div class="example-project-visual example-project-visual--data">
+              <span class="example-project-visual-label">SQL · BI</span>
+            </div>
+            <div class="example-project-body">
+              <h3>Healthcare Wait-Time Dashboard</h3>
+              <p class="meta">SQL · Tableau · open data</p>
+              <p>Modeled ER wait times by triage level for a capstone clinic dataset. Surfaced bottlenecks in intake vs. bed assignment.</p>
+              <p class="example-project-outcome"><strong>Outcome:</strong> Two delay drivers explained 18% of total wait — documented in executive summary.</p>
+              <div class="example-project-actions">
+                <a class="example-btn example-btn-primary example-arrow" href="https://github.com" target="_blank" rel="noopener noreferrer">View dashboard</a>
+                <a class="example-btn example-btn-secondary" href="#project-2">Details</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="example-section" id="skills">
+        <div class="example-section-head">
+          <h2>Toolkit</h2>
+          <span class="example-section-label">03</span>
+        </div>
+        <ul class="example-pills">
+          <li>Python</li>
+          <li>SQL</li>
+          <li>Pandas</li>
+          <li>Tableau</li>
+          <li>Excel</li>
+          <li>Statistics</li>
+          <li>Technical writing</li>
+        </ul>
+      </section>
+
+      <section class="example-section" id="contact">
+        <div class="example-contact-card">
+          <h2>Let's connect</h2>
+          <p>Open to data analyst internships — healthcare, campus ops, and civic data especially.</p>
+          <div class="example-actions">
+            <a class="example-btn example-btn-primary" href="mailto:alex.rivera@example.com">alex.rivera@example.com</a>
+            <a class="example-btn example-btn-secondary" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 
-  <footer class="example-footer">Mock portfolio · {{ mock_domain }} · Career Systems Launch package example</footer>
+  <footer class="example-footer">Example delivery · {{ mock_domain }} · Career Systems Launch</footer>
+  <script src="/static/examples.js?v=1" defer></script>
 </body>
 </html>

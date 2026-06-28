@@ -4,40 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>{{ person_name }} — Resume (example)</title>
+  <title>{{ person_name }} — Resume</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/examples.css?v=1">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/examples.css?v=2">
 </head>
-<body class="example-site">
+<body class="example-site example-site--light-hero">
   <div class="example-chrome" aria-hidden="true">
-    <span class="example-chrome-lock">&#128274;</span>
+    <div class="example-chrome-dots"><span></span><span></span><span></span></div>
     <span class="example-chrome-url">{{ mock_domain }}/resume.pdf</span>
     <span class="example-chrome-badge">Demo</span>
   </div>
-  <p class="example-banner">Fictional resume sample — not a real person. <a href="{{ portfolio_url }}">Back to portfolio</a></p>
+  <p class="example-banner">Fictional resume sample. <a href="{{ portfolio_url }}">← Back to portfolio</a></p>
 
   <article class="example-resume">
-    <h1>{{ person_name }}</h1>
-    <p class="meta">{{ target_role }} · {{ mock_domain }} · alex.rivera@example.com</p>
+    <div class="example-resume-sheet">
+      <h1>{{ person_name }}</h1>
+      <p class="meta">{{ target_role }} · {{ mock_domain }} · alex.rivera@example.com · linkedin.com/in/alexrivera</p>
 
-    <h2>Summary</h2>
-    <p>Information Systems student seeking a data analyst internship. Combines SQL and Python with clear written recommendations — portfolio and LinkedIn aligned to healthcare analytics.</p>
+      <h2>Summary</h2>
+      <p class="example-prose">Information Systems student seeking a data analyst internship. Ships Python/SQL projects with measurable outcomes — aligned portfolio, resume, and LinkedIn for technical recruiting.</p>
 
-    <h2>Projects</h2>
-    <ul>
-      <li><strong>Campus Dining Insights</strong> — ETL pipeline, 40k+ records, executive summary for student government.</li>
-      <li><strong>Healthcare Wait-Time Dashboard</strong> — SQL models + Tableau; capstone on ER triage delays.</li>
-    </ul>
+      <h2>Projects</h2>
+      <ul>
+        <li><strong>Campus Dining Insights</strong> — ETL on 40k+ records; peak-hour analysis adopted for pilot scheduling.</li>
+        <li><strong>Healthcare Wait-Time Dashboard</strong> — SQL + Tableau; capstone on ER triage delays (18% driver identification).</li>
+      </ul>
 
-    <h2>Skills</h2>
-    <p>Python, SQL, Excel, Tableau, Pandas, statistics, technical writing.</p>
+      <h2>Skills</h2>
+      <p class="example-prose">Python, SQL, Pandas, Tableau, Excel, statistics, stakeholder presentations.</p>
 
-    <h2>Education</h2>
-    <p>B.S. Information Systems (expected 2027) — GPA 3.7</p>
+      <h2>Education</h2>
+      <p class="example-prose">B.S. Information Systems (expected 2027) — GPA 3.7</p>
+    </div>
   </article>
 
-  <footer class="example-footer">Mock resume · Career Systems Launch deliverable example</footer>
+  <footer class="example-footer">Example resume · Career Systems Launch</footer>
 </body>
 </html>
