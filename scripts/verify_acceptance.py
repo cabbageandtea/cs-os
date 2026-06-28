@@ -145,7 +145,7 @@ def run_checks(base_url: str, timeout: float) -> list[CheckResult]:
                 CheckResult(
                     "ops_auth_gate",
                     passed,
-                    f"HTTP {dash.status_code} → {dash.headers.get('location', '')}",
+                    f"HTTP {dash.status_code} -> {dash.headers.get('location', '')}",
                     10,
                 )
             )
