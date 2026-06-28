@@ -17,12 +17,16 @@ class EmailDeliveryError(RuntimeError):
     pass
 
 
+from app.site_branding import site_domain, site_name
+
+
 def _email_from() -> str:
-    return os.environ.get("EMAIL_FROM", "Career Systems <onboarding@careersystems.local>").strip()
+    default = f"{site_name()} <hello@{site_domain()}>"
+    return os.environ.get("EMAIL_FROM", default).strip()
 
 
 def _support_email() -> str:
-    return os.environ.get("SUPPORT_EMAIL", "support@careersystems.local").strip()
+    return os.environ.get("SUPPORT_EMAIL", f"support@{site_domain()}").strip()
 
 
 def _resend_api_key() -> str:
@@ -64,7 +68,7 @@ If you close this tab, use the same intake link above or visit:
 
 Questions: {_support_email()}
 
-— Career Systems
+— {site_name()}
 """
     html = f"""<!DOCTYPE html>
 <html lang="en"><body style="font-family:system-ui,sans-serif;line-height:1.55;color:#111;max-width:36rem;">

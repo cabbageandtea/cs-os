@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 
 # Phrases that reveal business model — must not appear on public HTML.
 BANNED_PUBLIC_PHRASES: tuple[str, ...] = (
+    "career systems",
     "student perk",
     "setup fee",
     "perk arbitrage",
@@ -30,6 +31,8 @@ PUBLIC_ROUTES = [
   "/status",
   "/example/alex-rivera",
   "/example/jordan-kim",
+  "/example/alex-rivera/linkedin",
+  "/example/alex-rivera/resume",
   "/purchase/return",
   "/purchase/cancelled",
   "/login",
