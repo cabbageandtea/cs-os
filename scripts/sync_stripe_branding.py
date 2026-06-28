@@ -14,7 +14,9 @@ import stripe
 
 ROOT = Path(__file__).resolve().parents[1]
 ICON = ROOT / "app" / "static" / "logo-icon.png"
-BRAND_NAME = "Career Systems"
+from app.site_branding import site_name
+
+BRAND_NAME = site_name()
 BRAND_BUTTON_COLOR = "#ff6b4a"
 BRAND_BACKGROUND_COLOR = "#f7f5f0"
 

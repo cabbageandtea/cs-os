@@ -9,7 +9,9 @@ from typing import Any
 
 import stripe
 
-BRAND_DISPLAY_NAME = "Career Systems"
+from app.site_branding import site_name
+
+BRAND_DISPLAY_NAME = site_name()
 BRAND_BUTTON_COLOR = "#ff6b4a"
 BRAND_BACKGROUND_COLOR = "#f7f5f0"
 _APP_ROOT = Path(__file__).resolve().parent

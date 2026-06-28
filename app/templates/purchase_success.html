@@ -1,58 +1,116 @@
-{% extends "base_public.html" %}
-{% block title %}Payment confirmed — Career Systems{% endblock %}
-{% block body_class %}page-purchase-success{% endblock %}
-{% block content %}
-<header class="page-header">
-  <p class="kicker">Payment received</p>
-  <h1>Thank you</h1>
-  <p class="meta" id="status-message">Confirming payment and preparing your intake form…</p>
-</header>
-
-<div class="public-card" id="status-panel">
-  <p id="fallback-link" style="display:none;">
-    <a id="intake-link" class="btn btn-primary" href="#">Continue to intake</a>
-  </p>
-</div>
-
-<script>
-(function () {
-  const sessionId = {{ session_id | tojson }};
-  const message = document.getElementById('status-message');
-  const fallback = document.getElementById('fallback-link');
-  const link = document.getElementById('intake-link');
-  let attempts = 0;
-  const maxAttempts = 30;
-
-  function poll() {
-    fetch('/purchase/status?session_id=' + encodeURIComponent(sessionId))
-      .then(r => r.json())
-      .then(data => {
-        if (data.ready) {
-          if (data.intake_complete) {
-            message.textContent = 'Intake already complete. Thank you.';
-            return;
-          }
-          if (data.intake_url) {
-            message.textContent = 'Redirecting to your intake form…';
-            window.location.href = data.intake_url;
-            return;
-          }
-          message.textContent = 'Account ready. Contact support if you need your intake link.';
-          return;
-        }
-        attempts += 1;
-        if (attempts >= maxAttempts) {
-          message.textContent = 'Payment is still processing. This page will keep trying…';
-          setTimeout(poll, 3000);
-          return;
-        }
-        setTimeout(poll, 2000);
-      })
-      .catch(() => {
-        message.textContent = 'Unable to check status. Refresh this page.';
-      });
-  }
-  poll();
-})();
-</script>
-{% endblock %}
+{% extends "base_public.html" %}
+
+{% block title %}Payment confirmed — {{ site_name }}{% endblock %}
+
+{% block body_class %}page-purchase-success{% endblock %}
+
+{% block content %}
+
+<header class="page-header">
+
+  <p class="kicker">Payment received</p>
+
+  <h1>Thank you</h1>
+
+  <p class="meta" id="status-message">Confirming payment and preparing your intake form…</p>
+
+</header>
+
+
+
+<div class="public-card" id="status-panel">
+
+  <p id="fallback-link" style="display:none;">
+
+    <a id="intake-link" class="btn btn-primary" href="#">Continue to intake</a>
+
+  </p>
+
+</div>
+
+
+
+<script>
+
+(function () {
+
+  const sessionId = {{ session_id | tojson }};
+
+  const message = document.getElementById('status-message');
+
+  const fallback = document.getElementById('fallback-link');
+
+  const link = document.getElementById('intake-link');
+
+  let attempts = 0;
+
+  const maxAttempts = 30;
+
+
+
+  function poll() {
+
+    fetch('/purchase/status?session_id=' + encodeURIComponent(sessionId))
+
+      .then(r => r.json())
+
+      .then(data => {
+
+        if (data.ready) {
+
+          if (data.intake_complete) {
+
+            message.textContent = 'Intake already complete. Thank you.';
+
+            return;
+
+          }
+
+          if (data.intake_url) {
+
+            message.textContent = 'Redirecting to your intake form…';
+
+            window.location.href = data.intake_url;
+
+            return;
+
+          }
+
+          message.textContent = 'Account ready. Contact support if you need your intake link.';
+
+          return;
+
+        }
+
+        attempts += 1;
+
+        if (attempts >= maxAttempts) {
+
+          message.textContent = 'Payment is still processing. This page will keep trying…';
+
+          setTimeout(poll, 3000);
+
+          return;
+
+        }
+
+        setTimeout(poll, 2000);
+
+      })
+
+      .catch(() => {
+
+        message.textContent = 'Unable to check status. Refresh this page.';
+
+      });
+
+  }
+
+  poll();
+
+})();
+
+</script>
+
+{% endblock %}
+

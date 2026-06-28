@@ -11,7 +11,6 @@ from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request, statu
 from fastapi.exception_handlers import http_exception_handler
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
@@ -41,6 +40,7 @@ from app.models import (
     TaskStatus,
 )
 from app.stripe_checkout import base_url
+from app.jinja_env import templates
 from app.pipeline_config import ROLLBACK_POLICY
 
 from app.services import (
@@ -56,7 +56,9 @@ from app.services import (
 Base.metadata.create_all(bind=engine)
 run_migrations(engine)
 
-app = FastAPI(title="Career Systems OS", version="0.1.0")
+from app.site_branding import site_name
+
+app = FastAPI(title=f"{site_name()} OS", version="0.1.0")
 
 from app.routes.revenue import router as revenue_router
 from app.routes.sales import router as sales_router
@@ -65,7 +67,6 @@ app.include_router(sales_router)
 app.include_router(revenue_router)
 
 BASE_DIR = Path(__file__).resolve().parent
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 

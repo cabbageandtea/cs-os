@@ -6,10 +6,10 @@ from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.jinja_env import templates
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
 from app.example_portfolios import (
@@ -43,7 +43,6 @@ from app.sales_content import (
 router = APIRouter()
 BASE_DIR = Path(__file__).resolve().parent.parent
 RESUME_PDF_DIR = BASE_DIR / "static" / "examples" / "resumes"
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 
 @router.get("/", response_class=HTMLResponse)

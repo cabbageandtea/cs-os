@@ -9,6 +9,9 @@ services:
     runtime: python
     plan: free
     region: oregon
+    domains:
+      - doggybag.cc
+      - www.doggybag.cc
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -21,6 +24,10 @@ services:
           property: connectionString
       - key: BASE_URL
         sync: false
+      - key: SITE_NAME
+        value: Doggybag
+      - key: SITE_DOMAIN
+        value: doggybag.cc
       - key: OPS_PASSWORD
         sync: false
       - key: STRIPE_SECRET_KEY

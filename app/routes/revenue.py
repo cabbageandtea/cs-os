@@ -6,8 +6,7 @@ from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
-from sqlalchemy import select
+from app.jinja_env import templates
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
@@ -27,7 +26,6 @@ from app.stripe_webhook import (
 
 router = APIRouter()
 BASE_DIR = Path(__file__).resolve().parent.parent
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 
 def _token_intake_template_context(

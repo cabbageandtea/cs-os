@@ -1,5 +1,5 @@
 {% extends "base_public.html" %}
-{% block title %}Career Systems — Career signal engineering{% endblock %}
+{% block title %}{{ site_name }} — {{ site_tagline }}{% endblock %}
 {% block content %}
 
 <section class="hero-convert is-visible" data-reveal>
@@ -60,7 +60,7 @@
       <code>{{ me_domain_why.compare_weak }}</code>
     </div>
     <div class="me-why-url me-why-url--strong">
-      <span class="me-why-url-label">Career Systems delivery</span>
+      <span class="me-why-url-label">{{ site_name }} delivery</span>
       <code>{{ me_domain_why.compare_strong }}</code>
     </div>
   </div>
