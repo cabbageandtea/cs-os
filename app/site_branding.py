@@ -57,6 +57,14 @@ def site_og_image_url() -> str:
     return f"{site_base_url()}/static/logo.png"
 
 
+def support_email() -> str:
+    """Public support / contact mailbox (brand-aligned default: hello@domain)."""
+    custom = (os.getenv("SUPPORT_EMAIL") or "").strip()
+    if custom and "@" in custom:
+        return custom.lower()
+    return f"hello@{site_domain()}"
+
+
 # Public marketing paths included in sitemap.xml (no auth, no PII flows).
 PUBLIC_SITEMAP_PATHS: tuple[str, ...] = (
     "/",
@@ -78,6 +86,7 @@ def template_globals() -> dict[str, str]:
         "site_meta_description": site_meta_description(),
         "site_base_url": site_base_url(),
         "site_og_image_url": site_og_image_url(),
+        "support_email": support_email(),
     }
 
 

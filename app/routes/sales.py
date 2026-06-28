@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.jinja_env import templates
+from app.email_service import send_contact_lead_notification
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
 from app.legal_validation import LegalConsentError, validate_privacy_consent
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
@@ -185,6 +186,14 @@ def submit_contact(
             {"request": request, "error": str(exc), "success": False, "success_name": None, "form": form_data},
             status_code=500,
         )
+
+    send_contact_lead_notification(
+        name=lead.name,
+        email=lead.email,
+        target_role=lead.target_role,
+        current_status=lead.current_status,
+        interested_package=lead.interested_package,
+    )
 
     return templates.TemplateResponse(
         "contact.html",

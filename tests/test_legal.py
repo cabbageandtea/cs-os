@@ -33,6 +33,13 @@ def test_footer_links_to_legal_pages(client: TestClient) -> None:
     assert response.status_code == 200
     assert 'href="/terms"' in response.text
     assert 'href="/privacy"' in response.text
+    assert "hello@" in response.text.lower()
+
+
+def test_terms_lists_support_email(client: TestClient) -> None:
+    response = client.get("/terms")
+    assert response.status_code == 200
+    assert "hello@" in response.text.lower()
 
 
 def test_sitemap_includes_legal_paths(client: TestClient) -> None:

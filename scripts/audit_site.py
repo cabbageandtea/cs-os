@@ -15,6 +15,8 @@ BANNED_PHRASES = (
     "shopify",
     "operator dashboard",
     "internal pipeline",
+    "malik lomax",
+    "maliklomax",
 )
 
 PUBLIC_ROUTES = ("/", "/demo", "/contact", "/checkout", "/start", "/status", "/login")
@@ -87,6 +89,9 @@ def audit(base: str, timeout: float = 25.0) -> AuditReport:
             for phrase in BANNED_PHRASES:
                 if phrase in lower:
                     report.add("fail", "content", f"{path} contains banned phrase: {phrase!r}")
+
+            if path in ("/terms", "/privacy", "/contact") and "hello@" not in lower:
+                report.add("warn", "content", f"{path} missing public support email")
 
             if path == "/":
                 for token in SEO_REQUIRED:

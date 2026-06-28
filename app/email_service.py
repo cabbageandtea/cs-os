@@ -18,7 +18,7 @@ class EmailDeliveryError(RuntimeError):
     pass
 
 
-from app.site_branding import site_domain, site_name
+from app.site_branding import site_domain, site_name, support_email
 
 
 def _email_from_address() -> str:
@@ -41,10 +41,6 @@ def _email_from_display_name() -> str:
 
 def _email_from() -> str:
     return formataddr((_email_from_display_name(), _email_from_address()))
-
-
-def _support_email() -> str:
-    return os.environ.get("SUPPORT_EMAIL", f"support@{site_domain()}").strip()
 
 
 def _resend_api_key() -> str:
@@ -84,7 +80,7 @@ Account checklist before you submit:
 If you close this tab, use the same intake link above or visit:
 {start_url.replace('/start', '/purchase/return')}
 
-Questions: {_support_email()}
+Questions: {support_email()}
 
 — {site_name()}
 """
@@ -95,12 +91,20 @@ Questions: {_support_email()}
 <p><a href="{intake_url}" style="display:inline-block;background:#111;color:#fff;padding:12px 18px;text-decoration:none;border-radius:3px;">Complete intake</a></p>
 <p style="font-size:14px;color:#555;">Account checklist: <a href="{start_url}">{start_url}</a></p>
 <p style="font-size:14px;color:#555;">Lost your link? <a href="{start_url.replace('/start', '/purchase/return')}">Resume with session ID</a></p>
-<p style="font-size:14px;color:#888;">Questions: {_support_email()}</p>
+<p style="font-size:14px;color:#888;">Questions: <a href="mailto:{support_email()}">{support_email()}</a></p>
+<p style="font-size:12px;color:#aaa;margin-top:1.5rem;">— {site_name()}</p>
 </body></html>"""
     return subject, plain, html
 
 
-def send_email(*, to_email: str, subject: str, plain: str, html: str) -> bool:
+def send_email(
+    *,
+    to_email: str,
+    subject: str,
+    plain: str,
+    html: str,
+    reply_to: str | None = None,
+) -> bool:
     """Send email via Resend, SMTP, or dev log. Returns True when dispatched."""
     to_email = (to_email or "").strip().lower()
     if not to_email or "@" not in to_email:
@@ -156,6 +160,55 @@ def send_intake_reminder_email(
     return send_email(to_email=to_email, subject=subject, plain=plain, html=html)
 
 
+def send_contact_lead_notification(
+    *,
+    name: str,
+    email: str,
+    target_role: str,
+    current_status: str,
+    interested_package: str,
+) -> bool:
+    """Notify support inbox when a contact form lead is submitted."""
+    inbox = support_email()
+    if not inbox or "@" not in inbox:
+        return False
+    package_label = interested_package.strip() or "unsure"
+    subject = f"Contact inquiry — {name}"
+    plain = f"""New contact form submission on {site_name()}:
+
+Name: {name}
+Email: {email}
+Target role: {target_role}
+Current status: {current_status}
+Package interest: {package_label}
+
+Reply directly to {email} to respond.
+"""
+    html = f"""<!DOCTYPE html>
+<html lang="en"><body style="font-family:system-ui,sans-serif;line-height:1.55;color:#111;max-width:36rem;">
+<p><strong>New contact form submission</strong> on {site_name()}</p>
+<ul>
+<li><strong>Name:</strong> {name}</li>
+<li><strong>Email:</strong> <a href="mailto:{email}">{email}</a></li>
+<li><strong>Target role:</strong> {target_role}</li>
+<li><strong>Current status:</strong> {current_status}</li>
+<li><strong>Package interest:</strong> {package_label}</li>
+</ul>
+<p style="font-size:14px;color:#555;">Reply directly to the prospect to respond.</p>
+</body></html>"""
+    try:
+        return send_email(
+            to_email=inbox,
+            subject=subject,
+            plain=plain,
+            html=html,
+            reply_to=email,
+        )
+    except EmailDeliveryError:
+        logger.warning("contact lead notification failed for %s", email)
+        return False
+
+
 def _send_resend(
     *,
     api_key: str,
@@ -173,9 +226,9 @@ def _send_resend(
             "text": plain,
             "html": html,
         }
-        reply_to = _support_email()
-        if reply_to and "@" in reply_to:
-            payload["reply_to"] = reply_to
+        reply = (reply_to or support_email()).strip()
+        if reply and "@" in reply:
+            payload["reply_to"] = reply
         response = httpx.post(
             "https://api.resend.com/emails",
             headers={"Authorization": f"Bearer {api_key}"},

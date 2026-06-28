@@ -1,4 +1,4 @@
-"""Stripe Checkout branding aligned with CS-OS logo and palette."""
+"""Stripe Checkout branding aligned with Doggybagg logo and palette."""
 
 from __future__ import annotations
 

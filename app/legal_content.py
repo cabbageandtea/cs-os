@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from datetime import date
 
-from app.site_branding import site_base_url, site_domain, site_name
+from app.site_branding import site_base_url, site_name, support_email
 
 
 TERMS_VERSION = "2026-06-28"
@@ -21,10 +21,6 @@ def legal_jurisdiction() -> str:
     if custom:
         return custom
     return "Commonwealth of Pennsylvania, United States"
-
-
-def support_email() -> str:
-    return os.environ.get("SUPPORT_EMAIL", f"support@{site_domain()}").strip()
 
 
 def terms_url() -> str:
