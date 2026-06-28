@@ -1,104 +1,164 @@
 {% extends "base_public.html" %}
-{% block title %}Career Portfolio Packages — CS-OS{% endblock %}
+{% block title %}Career Systems — Career signal engineering{% endblock %}
 {% block content %}
 
-<section class="hero">
-  <p class="eyebrow">For students &amp; career changers</p>
-  <h1>Turn your coursework into a job-ready portfolio.</h1>
-  <p class="hero-lead">
-    You have projects. Employers need proof. We build your live portfolio, resume, and LinkedIn
-    so they tell one clear story—without you juggling three different freelancers.
-  </p>
-  <div class="hero-cta">
-    <a href="/checkout" class="btn btn-primary btn-lg">Get started — Launch $199</a>
-    <a href="/contact" class="btn btn-secondary btn-lg">Ask a question first</a>
-  </div>
-</section>
-
-<section id="problem" class="landing-section">
-  <h2>The problem</h2>
-  <div class="landing-grid">
-    <div class="landing-card">
-      <h3>Projects stuck in the classroom</h3>
-      <p>GitHub repos and class assignments do not show up when recruiters search your name.</p>
-    </div>
-    <div class="landing-card">
-      <h3>Resume and portfolio do not match</h3>
-      <p>Different tools, different messaging—hiring managers see inconsistency, not potential.</p>
-    </div>
-    <div class="landing-card">
-      <h3>No time to figure it out alone</h3>
-      <p>Between classes or shifts, learning web design and resume strategy is another full-time job.</p>
+<section class="hero-convert" data-reveal>
+  <div class="hero-convert__copy">
+    <p class="kicker">{{ hero_audience }}</p>
+    <h1>{{ hero_headline }}</h1>
+    <p class="hero-lead">{{ hero_lead }}</p>
+    <div class="hero-cta hero-cta--single">
+      <a href="{{ hero_cta_primary[1] }}" class="btn btn-primary btn-lg">{{ hero_cta_primary[0] }} — $199</a>
+      <a href="{{ hero_cta_secondary[1] }}" class="btn btn-ghost">{{ hero_cta_secondary[0] }}</a>
     </div>
   </div>
+  <aside class="hero-convert__rail" aria-label="Operating model">
+    {% for stat in credibility_stats %}
+    <div class="stat-cell">
+      <span class="stat-value">{{ stat.value }}</span>
+      <span class="stat-label">{{ stat.label }}</span>
+    </div>
+    {% endfor %}
+  </aside>
 </section>
 
-<section id="solution" class="landing-section landing-section-alt">
-  <h2>The solution</h2>
-  <p class="section-lead">
-    One package. One intake. One delivery pipeline. You submit your experience—we ship a coordinated
-    professional presence you can send in applications today.
-  </p>
-  <ul class="check-list">
-    <li>Live portfolio deployed to a public URL</li>
-    <li>Resume language aligned to your target role</li>
-    <li>LinkedIn profile notes that match your portfolio story</li>
-    <li>Clear revision rounds—no surprise scope creep</li>
-  </ul>
-</section>
-
-<section id="packages" class="landing-section">
-  <h2>Packages</h2>
-  <p class="section-lead">Pick the level that matches where you are. Most clients choose Launch.</p>
-  <div class="package-compare">
-    {% for pkg in packages %}
-    <article class="package-card {% if pkg.featured %}package-featured{% endif %}">
-      {% if pkg.featured %}<span class="package-badge">Most Popular</span>{% endif %}
-      <h3>{{ pkg.display_name }}</h3>
-      <p class="package-price">{{ pkg.price_display }}</p>
-      <p class="package-who"><strong>Best for:</strong> {{ pkg.who_for }}</p>
-      <ul>
-        {% for item in pkg.deliverables %}
-        <li>{{ item }}</li>
-        {% endfor %}
-      </ul>
-      <p class="package-meta"><strong>Turnaround:</strong> {{ pkg.turnaround }}</p>
-      <p class="package-meta"><strong>Revisions:</strong> {{ pkg.revision_rounds }} round{% if pkg.revision_rounds != 1 %}s{% endif %} included</p>
-      <a href="/checkout" class="btn {% if pkg.featured %}btn-primary{% else %}btn-secondary{% endif %}">Choose {{ pkg.display_name }}</a>
+<section class="band band--signal" id="signal" data-reveal>
+  <p class="section-label">The gap</p>
+  <h2>Recruiters decide in seconds. Most profiles fail the scan.</h2>
+  <div class="signal-grid">
+    {% for gap in signal_gaps %}
+    <article class="signal-cell">
+      <h3>{{ gap.title }}</h3>
+      <p>{{ gap.body }}</p>
     </article>
     {% endfor %}
   </div>
 </section>
 
-<section id="process" class="landing-section landing-section-alt">
-  <h2>How it works</h2>
-  <ol class="process-steps">
-    <li><strong>Choose a package</strong> — Foundation, Launch, or Accelerator.</li>
-    <li><strong>Pay securely</strong> — Stripe checkout. No subscriptions.</li>
-    <li><strong>Complete intake</strong> — Education, projects, links, target role.</li>
-    <li><strong>We deliver</strong> — Portfolio live, resume and LinkedIn aligned.</li>
-    <li><strong>You review</strong> — Included revision rounds, then handoff.</li>
-  </ol>
-  <p class="meta"><a href="/demo">See an example customer journey →</a></p>
+<section class="band" id="packages" data-reveal>
+  <p class="section-label">Packages</p>
+  <h2>Scope locked before work begins</h2>
+  <p class="section-lead">Fixed deliverables. Defined turnaround. No scope creep.</p>
+
+  <div class="compare-shell">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th scope="col">Tier</th>
+          <th scope="col">Price</th>
+          <th scope="col">Best for</th>
+          <th scope="col">Turnaround</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pkg in packages %}
+        <tr class="{% if pkg.featured %}is-featured{% endif %}">
+          <th scope="row">
+            {{ pkg.display_name }}
+            {% if pkg.featured %}<span class="tier-tag">Recommended</span>{% endif %}
+          </th>
+          <td class="tabular">{{ pkg.price_display }}</td>
+          <td>{{ pkg.who_for }}</td>
+          <td class="tabular">{{ pkg.turnaround }}</td>
+          <td><a href="/checkout" class="btn {% if pkg.featured %}btn-primary{% else %}btn-ghost{% endif %} btn-sm">Select</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="compare-cards">
+      {% for pkg in packages %}
+      <article class="compare-card {% if pkg.featured %}is-featured{% endif %}">
+        {% if pkg.featured %}<span class="tier-tag">Recommended</span>{% endif %}
+        <h3>{{ pkg.display_name }}</h3>
+        <p class="price tabular">{{ pkg.price_display }}</p>
+        <p class="meta">{{ pkg.who_for }}</p>
+        <ul>
+          {% for item in pkg.deliverables %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        <p class="package-meta tabular">{{ pkg.turnaround }} · {{ pkg.revision_rounds }} revision{% if pkg.revision_rounds != 1 %}s{% endif %}</p>
+        <a href="/checkout" class="btn {% if pkg.featured %}btn-primary{% else %}btn-ghost{% endif %} btn-block">Select {{ pkg.display_name }}</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
-<section id="faq" class="landing-section">
-  <h2>FAQ</h2>
-  <dl class="faq-list">
-    {% for question, answer in faq %}
-    <dt>{{ question }}</dt>
-    <dd>{{ answer }}</dd>
+<section class="band band--process" id="process" data-reveal>
+  <p class="section-label">Process</p>
+  <h2>Three steps. No ambiguity.</h2>
+  <ol class="process-rail">
+    {% for step in process_steps %}
+    <li>
+      <span class="process-num">{{ step.step }}</span>
+      <div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.body }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+  <p class="meta band-foot"><a href="/demo" class="text-link">Full example journey →</a></p>
+</section>
+
+<section class="band band--proof" id="proof" data-reveal>
+  <p class="section-label">{{ case_study.kicker }}</p>
+  <h2>{{ case_study.name }} · {{ case_study.role }}</h2>
+  <p class="meta proof-disclaimer">{{ case_study.disclaimer }}</p>
+  <div class="proof-grid">
+    <div class="proof-block">
+      <h3>Problem</h3>
+      <p>{{ case_study.problem }}</p>
+    </div>
+    <div class="proof-block">
+      <h3>Delivery</h3>
+      <p>{{ case_study.contribution }}</p>
+    </div>
+    <div class="proof-block">
+      <h3>Outcome</h3>
+      <p>{{ case_study.outcome }}</p>
+    </div>
+  </div>
+  <dl class="proof-deliverables">
+    {% for label, value in case_study.deliverables %}
+    <div>
+      <dt>{{ label }}</dt>
+      <dd>{{ value }}</dd>
+    </div>
     {% endfor %}
   </dl>
 </section>
 
-<section id="cta" class="landing-section landing-cta">
-  <h2>Ready to become recruiter-ready?</h2>
-  <p>Start with Launch, or contact us if you are not sure which package fits.</p>
-  <div class="hero-cta">
-    <a href="/checkout" class="btn btn-primary btn-lg">Start with Launch — $199</a>
-    <a href="/contact" class="btn btn-secondary btn-lg">Contact us</a>
+<section class="band" id="principles" data-reveal>
+  <p class="section-label">Position</p>
+  <h2>What this is</h2>
+  <ul class="principle-list">
+    {% for line in principles %}
+    <li>{{ line }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="band band--faq" id="faq" data-reveal>
+  <p class="section-label">FAQ</p>
+  <h2>Details</h2>
+  <div class="faq-accordion">
+    {% for question, answer in faq %}
+    <details class="faq-item">
+      <summary>{{ question }}</summary>
+      <p>{{ answer }}</p>
+    </details>
+    {% endfor %}
   </div>
+</section>
+
+<section class="band band--cta" id="cta" data-reveal>
+  <h2>One intake. Coordinated output. Accounts you own.</h2>
+  <p class="section-lead">Payment unlocks intake. Delivery starts when intake is complete.</p>
+  <a href="/checkout" class="btn btn-primary btn-lg">Start with Launch — $199</a>
 </section>
 
 {% endblock %}

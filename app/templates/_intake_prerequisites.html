@@ -1,0 +1,28 @@
+{# Required accounts — show before intake fields #}
+<div class="form-span-2 intake-prerequisites">
+  <h2 class="intake-section-title">Account checklist (~{{ prerequisites_setup_minutes }} min)</h2>
+  <p class="field-hint">
+    Create these in <strong>your name</strong> before or within <strong>48 hours</strong> of submitting.
+    Use the same email when possible.
+  </p>
+  <ul class="prerequisite-list">
+    {% for item in prerequisites %}
+    <li>
+      <a href="{{ item.signup_url }}" target="_blank" rel="noopener noreferrer"><strong>{{ item.title }}</strong></a>
+      <span class="prerequisite-time">~{{ item.time_minutes }} min</span>
+      <p class="field-hint">{{ item.why }}</p>
+      {% if item.note %}
+      <p class="field-hint prerequisite-note">{{ item.note }}</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="field-hint">
+    <a href="/start">Return links &amp; full checklist</a> ·
+    <a href="/purchase/return">Paid but closed the tab?</a>
+  </p>
+  <label class="checkbox-label prerequisite-confirm">
+    <input type="checkbox" name="prerequisites_attestation" value="on" required>
+    I have these accounts in my name, or will complete setup within 48 hours of submitting intake.
+  </label>
+</div>

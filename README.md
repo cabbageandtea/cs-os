@@ -18,7 +18,17 @@ Open http://127.0.0.1:8003 — sign in at `/login` with your `OPS_PASSWORD` from
 Copy `.env.example` to `.env` and fill in Stripe test keys and Price IDs.
 
 ```bash
-stripe listen --forward-to localhost:8000/webhooks/stripe
+stripe listen --forward-to localhost:8003/webhooks/stripe
+```
+
+Copy the `whsec_...` value into `.env` as `STRIPE_WEBHOOK_SECRET` and restart the server.
+
+**Liaison playbook:** [docs/LIAISON.md](docs/LIAISON.md) — minimal human steps only.
+
+**One-command local start (Windows):**
+
+```powershell
+.\scripts\start_local.ps1
 ```
 
 | Route | Purpose |

@@ -16,6 +16,12 @@ from app.models import (
     TimestampLog,
 )
 from app.outcome_service import get_outcome_for_client
+from app.intake_validation import resolve_client_package_slug
+from app.template_config import (
+    get_portfolio_template,
+    parse_template_preference_from_summary,
+    recommend_portfolio_template,
+)
 from app.pipeline_config import (
     PIPELINE_ORDER,
     STAGE_DEFINITIONS,
@@ -159,6 +165,16 @@ def build_client_detail_context(
     tasks_by_stage = _group_tasks_by_stage(tasks)
     has_tasks = any(grouped for grouped in tasks_by_stage.values())
 
+    package_slug = resolve_client_package_slug(client.package_slug, client.package_tier)
+    template_pref = parse_template_preference_from_summary(client.experience_summary or "")
+    recommended_slug = recommend_portfolio_template(
+        package_slug=package_slug,
+        target_role=client.target_role or "",
+        skills=client.skills or "",
+        client_choice=template_pref,
+    )
+    recommended_template = get_portfolio_template(recommended_slug)
+
     return {
         "client": client,
         "project": project,
@@ -188,5 +204,7 @@ def build_client_detail_context(
             client.experience_summary, "No intake experience on file."
         ),
         "display_skills": _safe_text(client.skills, "No skills on file."),
+        "recommended_template": recommended_template,
+        "template_client_preference": template_pref,
         "outcome": get_outcome_for_client(db, client.id),
     }

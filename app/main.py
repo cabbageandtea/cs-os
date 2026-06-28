@@ -3,7 +3,7 @@ from pathlib import Path
 try:
     from dotenv import load_dotenv
 
-    load_dotenv()
+    load_dotenv(encoding="utf-8-sig")
 except ImportError:
     pass
 
@@ -23,12 +23,15 @@ from app.lead_views import build_lead_pipeline_context
 from app.metrics_service import build_metrics_summary
 from app.outcome_service import OutcomePersistenceError, OutcomeValidationError, upsert_client_outcome
 from app.database import Base, engine, get_db
+from app.intake_context import intake_form_context
+from app.intake_tokens import assign_intake_token
 from app.intake_validation import IntakeValidationError
 from app.migrations import run_migrations
 from app.models import (
     Client,
     Deliverable,
     DeliverableStatus,
+    IntakeStatus,
     Lead,
     LeadStatus,
     PipelineStatus,
@@ -36,7 +39,9 @@ from app.models import (
     Task,
     TaskStatus,
 )
+from app.stripe_checkout import base_url
 from app.pipeline_config import ROLLBACK_POLICY
+
 from app.services import (
     PersistenceError,
     WorkflowError,
@@ -117,12 +122,14 @@ def _render_client_detail(
     client_id: int,
     *,
     error: str | None = None,
+    issued_intake_url: str | None = None,
     status_code: int = 200,
 ) -> HTMLResponse:
     client = _load_client(db, client_id)
     context = build_client_detail_context(db, client, error=error)
     context["request"] = request
     context["rollback_policy"] = ROLLBACK_POLICY.value
+    context["issued_intake_url"] = issued_intake_url
     return templates.TemplateResponse("client_detail.html", context, status_code=status_code)
 
 
@@ -186,28 +193,62 @@ def change_lead_status(
 
 @app.get("/intake", response_class=HTMLResponse)
 def intake_form(request: Request, _ops: str = Depends(require_ops_auth)):
-    return templates.TemplateResponse("intake.html", {"request": request, "error": None})
+    ctx = intake_form_context(package_slug="foundation", show_package_select=True)
+    return templates.TemplateResponse(
+        "intake.html",
+        {"request": request, "error": None, **ctx},
+    )
 
 
 @app.post("/intake")
 def submit_intake(
     request: Request,
     name: str = Form(...),
+    email: str = Form(...),
+    package_slug: str = Form("foundation"),
     target_role: str = Form(...),
     experience_education: str = Form(...),
     experience_projects: str = Form(...),
     experience_work: str = Form(...),
     skills: str = Form(...),
+    career_goals: str = Form(""),
     linkedin_url: str = Form(""),
-    github_url: str = Form(""),
-    package_tier: str = Form("Basic"),
+    github_url: str = Form(...),
+    portfolio_template: str = Form(""),
+    resume_url: str = Form(""),
+    existing_portfolio_url: str = Form(""),
+    certifications: str = Form(""),
+    job_timeline: str = Form(""),
+    additional_notes: str = Form(""),
+    attestation: str | None = Form(None),
+    prerequisites_attestation: str | None = Form(None),
     db: Session = Depends(get_db),
     _ops: str = Depends(require_ops_auth),
 ):
+    prefill = {
+        "name": name,
+        "email": email,
+        "target_role": target_role,
+        "experience_education": experience_education,
+        "experience_projects": experience_projects,
+        "experience_work": experience_work,
+        "skills": skills,
+        "career_goals": career_goals,
+        "linkedin_url": linkedin_url,
+        "github_url": github_url,
+        "portfolio_template": portfolio_template,
+        "resume_url": resume_url,
+        "existing_portfolio_url": existing_portfolio_url,
+        "certifications": certifications,
+        "job_timeline": job_timeline,
+        "additional_notes": additional_notes,
+    }
     try:
         client = create_client_with_project(
             db,
+            package_slug=package_slug,
             name=name,
+            email=email,
             target_role=target_role,
             experience_education=experience_education,
             experience_projects=experience_projects,
@@ -215,12 +256,25 @@ def submit_intake(
             skills=skills,
             linkedin_url=linkedin_url.strip() or None,
             github_url=github_url.strip() or None,
-            package_tier=package_tier,
+            career_goals=career_goals.strip() or None,
+            certifications=certifications.strip() or None,
+            job_timeline=job_timeline.strip() or None,
+            portfolio_template=portfolio_template.strip() or None,
+            resume_url=resume_url.strip() or None,
+            existing_portfolio_url=existing_portfolio_url.strip() or None,
+            additional_notes=additional_notes.strip() or None,
+            attestation_checked=(attestation or "").strip().lower() == "on",
+            prerequisites_attestation_checked=(prerequisites_attestation or "").strip().lower() == "on",
         )
     except IntakeValidationError as exc:
+        ctx = intake_form_context(
+            package_slug=package_slug,
+            show_package_select=True,
+            prefill=prefill,
+        )
         return templates.TemplateResponse(
             "intake.html",
-            {"request": request, "error": str(exc)},
+            {"request": request, "error": str(exc), **ctx},
             status_code=422,
         )
     except PersistenceError as exc:
@@ -247,6 +301,30 @@ def client_detail(
         context["request"] = request
         context["rollback_policy"] = ROLLBACK_POLICY.value
         return templates.TemplateResponse("client_detail.html", context, status_code=200)
+
+
+@app.post("/clients/{client_id}/issue-intake-link", response_class=HTMLResponse)
+def issue_client_intake_link(
+    request: Request,
+    client_id: int,
+    db: Session = Depends(get_db),
+    _ops: str = Depends(require_ops_auth),
+):
+    client = _load_client(db, client_id)
+    if client is None:
+        return _render_client_detail(request, db, client_id, error="Client not found.", status_code=404)
+    if client.intake_status == IntakeStatus.COMPLETE.value:
+        return _render_client_detail(
+            request, db, client_id, error="Intake already complete.", status_code=422
+        )
+    if client.customer_lifecycle == "archived":
+        return _render_client_detail(
+            request, db, client_id, error="Client is archived.", status_code=422
+        )
+    token = assign_intake_token(client)
+    db.commit()
+    intake_url = f"{base_url()}/intake/{token}"
+    return _render_client_detail(request, db, client_id, issued_intake_url=intake_url)
 
 
 @app.post("/clients/{client_id}/status", response_class=HTMLResponse)

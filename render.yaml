@@ -35,3 +35,13 @@ services:
         sync: false
       - key: INTAKE_TOKEN_PEPPER
         sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: SUPPORT_EMAIL
+        sync: false
+      - key: STRIPE_BRAND_ICON_FILE
+        value: app/static/logo-icon.png
+      - key: STRIPE_BRAND_LOGO_FILE
+        value: app/static/logo.png

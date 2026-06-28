@@ -1,0 +1,33 @@
+{% extends "base_public.html" %}
+{% block title %}Resume intake — Career Systems{% endblock %}
+{% block body_class %}page-purchase-return{% endblock %}
+{% block content %}
+<header class="page-header">
+  <p class="kicker">After payment</p>
+  <h1>Resume your intake</h1>
+  <p class="meta">Use your Stripe checkout session ID to return to the intake form.</p>
+</header>
+
+<div class="public-card">
+  <form method="get" action="/purchase/success">
+    <label for="session_id">Payment session ID</label>
+    <p class="field-hint">
+      After checkout, your URL contains <code>session_id=cs_test_…</code>.
+      Paste the full value or the <code>cs_test_…</code> segment.
+    </p>
+    <input
+      type="text"
+      id="session_id"
+      name="session_id"
+      required
+      placeholder="cs_test_..."
+      value="{{ session_id | default('') }}"
+      pattern="cs_.+"
+    >
+    <button type="submit" class="btn btn-primary">Continue</button>
+  </form>
+  <p class="field-hint" style="margin-top: var(--space-4);">
+    Need accounts first? <a href="/start">See intake checklist</a>
+  </p>
+</div>
+{% endblock %}

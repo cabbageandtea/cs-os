@@ -1,30 +1,30 @@
 {% extends "base_public.html" %}
-{% block title %}Example Customer Journey — CS-OS{% endblock %}
+{% block title %}Example journey — Career Systems{% endblock %}
 {% block content %}
 
 <div class="alert alert-demo">
-  <strong>Example customer. Not real data.</strong>
-  This page shows a fictional journey for illustration only. No real people, payments, or deliverables.
+  <strong>Fictional example.</strong> Illustration only — no real people, payments, or deliverables.
 </div>
 
-<h1>What working with us looks like</h1>
-<p class="section-lead">Follow Alex Rivera (fictional Launch client) from payment to handoff.</p>
+<header class="page-header">
+  <p class="kicker">Process</p>
+  <h1>What delivery looks like</h1>
+  <p class="section-lead">Alex Rivera (fictional Launch client) from payment to handoff.</p>
+</header>
 
-<section class="landing-section">
-  <h2>The journey</h2>
-  <ol class="process-steps demo-steps">
+<section class="section-block">
+  <p class="section-label">Journey</p>
+  <ol class="index-list">
     {% for step in journey_steps %}
-    <li>
-      <strong>{{ step.title }}</strong>
-      <span>{{ step.description }}</span>
-    </li>
+    <li><div><strong>{{ step.title }}</strong> — {{ step.description }}</div></li>
     {% endfor %}
   </ol>
 </section>
 
-<section class="landing-section landing-section-alt">
-  <h2>Example deliverables</h2>
-  <p class="meta">Client: {{ example.name }} · {{ example.target_role }} · {{ example.package }} package · Pipeline: {{ example.pipeline_stage }}</p>
+<section class="section-block">
+  <p class="section-label">Deliverables</p>
+  <h2>Example output</h2>
+  <p class="meta">{{ example.name }} · {{ example.target_role }} · {{ example.package }} · {{ example.pipeline_stage }}</p>
   <table class="demo-table">
     <thead>
       <tr><th>Deliverable</th><th>Status</th></tr>
@@ -46,16 +46,17 @@
   </table>
 </section>
 
-<section class="landing-section">
-  <h2>See it in the operator dashboard</h2>
-  <p>Load demo clients to walk through the full CS-OS pipeline with fictional data marked <code>[DEMO]</code>.</p>
-  <pre class="demo-code">python -m app.demo_seed</pre>
-  <p class="meta">Then open the <a href="/dashboard">operations dashboard</a> and select <strong>[DEMO] Taylor Nguyen (Showcase)</strong>.</p>
+<section class="section-block">
+  <p class="section-label">Operator view</p>
+  <h2>Dashboard walkthrough</h2>
+  <p class="meta">Load demo clients to review the pipeline with fictional <code>[DEMO]</code> data.</p>
+  <pre class="demo-code" style="margin-top: var(--space-4); padding: var(--space-4); background: var(--ink); color: var(--paper); font-family: var(--font-mono); font-size: var(--text-sm); border-radius: var(--radius); overflow-x: auto;">python -m app.demo_seed</pre>
+  <p class="meta" style="margin-top: var(--space-4);">Then open the <a href="/login?next=/dashboard">operator dashboard</a> and select <strong>[DEMO] Taylor Nguyen (Showcase)</strong>.</p>
 </section>
 
 <div class="hero-cta">
-  <a href="/checkout" class="btn btn-primary">Start your package</a>
-  <a href="/" class="btn btn-secondary">Back to home</a>
+  <a href="/checkout" class="btn btn-primary">View packages</a>
+  <a href="/" class="btn btn-secondary">Home</a>
 </div>
 
 {% endblock %}

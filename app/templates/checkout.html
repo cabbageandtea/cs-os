@@ -1,26 +1,35 @@
-{% extends "base.html" %}
-{% block title %}Checkout — CS-OS{% endblock %}
+{% extends "base_public.html" %}
+{% block title %}Checkout — Career Systems{% endblock %}
+{% block body_class %}page-checkout-public{% endblock %}
 {% block content %}
-<h1>Choose Your Package</h1>
-<p class="meta">Secure payment via Stripe. After payment you will receive a link to complete intake.</p>
-<p class="meta"><a href="/docs/CUSTOMER_TERMS.md" target="_blank">Customer terms</a> apply to all purchases.</p>
+<header class="page-header">
+  <p class="kicker">Secure checkout</p>
+  <h1>Choose your package</h1>
+  <p class="meta">One-time payment. Intake follows on accounts you own.</p>
+</header>
 
 {% if error %}
 <div class="alert alert-error">{{ error }}</div>
 {% endif %}
 
-<div class="card-grid">
+<div class="package-grid">
   {% for pkg in packages %}
-  <div class="card {% if pkg.featured %}card-featured{% endif %}">
-    {% if pkg.featured %}<p class="meta"><strong>Most Popular</strong></p>{% endif %}
+  <article class="package-cell {% if pkg.featured %}is-featured{% endif %}">
+    {% if pkg.featured %}<span class="tier-label">Recommended</span>{% endif %}
     <h2>{{ pkg.display_name }}</h2>
-    <p class="meta">${{ (pkg.default_price_cents / 100) | int }}{% if pkg.default_price_cents % 100 != 0 %}.{{ '%02d' | format(pkg.default_price_cents % 100) }}{% endif %}</p>
-    <p>{{ pkg.tagline }}</p>
+    <p class="price tabular">${{ (pkg.default_price_cents / 100) | int }}{% if pkg.default_price_cents % 100 != 0 %}.{{ '%02d' | format(pkg.default_price_cents % 100) }}{% endif %}</p>
+    <p class="meta">{{ pkg.tagline }}</p>
     <form method="post" action="/checkout/create">
       <input type="hidden" name="package_slug" value="{{ pkg.slug }}">
-      <button type="submit" class="btn btn-primary">Continue to Checkout</button>
+      <button type="submit" class="btn {% if pkg.featured %}btn-primary{% else %}btn-ghost{% endif %} btn-block">
+        Continue to Stripe
+      </button>
     </form>
-  </div>
+  </article>
   {% endfor %}
 </div>
+
+<p class="meta" style="margin-top: var(--space-5); text-align: center;">
+  <a href="/start">Intake checklist</a> · <a href="/contact">Questions</a>
+</p>
 {% endblock %}

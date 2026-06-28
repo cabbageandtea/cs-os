@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 {% block title %}{{ display_name | default('Client') }} — CS-OS{% endblock %}
+{% block body_class %}page-client{% endblock %}
 {% block content %}
-<p><a href="/dashboard">&larr; Dashboard</a></p>
-<h1>{{ display_name | default('Unknown Client') }}</h1>
-<p class="meta">{{ display_role | default('Role not specified') }} · {{ display_package | default('Basic') }} package</p>
+<p class="ops-back"><a href="/dashboard">&larr; Dashboard</a></p>
+
+<header class="ops-page-header ops-page-header-compact">
+  <h1>{{ display_name | default('Unknown Client') }}</h1>
+  <p class="meta">{{ display_role | default('Role not specified') }} · {{ display_package | default('Basic') }} package</p>
 {% if display_lifecycle and display_lifecycle != '—' %}
 <p class="meta">Customer lifecycle: {{ display_lifecycle }} · Intake: {{ display_intake_status }} · Payment: {{ purchase_status }}</p>
+{% endif %}
+
+{% if issued_intake_url %}
+<div class="alert alert-success">
+  <strong>Intake link (send to client):</strong>
+  <a href="{{ issued_intake_url }}">{{ issued_intake_url }}</a>
+</div>
+{% elif client and client.intake_status == 'pending' %}
+<div class="bento-card">
+  <h2>Intake pending</h2>
+  <p class="meta">Generate a fresh intake link (valid 14 days) and send it to the client.</p>
+  <form method="post" action="/clients/{{ client.id }}/issue-intake-link">
+    <button type="submit" class="btn btn-primary">Generate intake link</button>
+  </form>
+</div>
 {% endif %}
 
 {% if client and client.name.startswith('[DEMO]') %}
@@ -23,7 +41,7 @@
 {% endfor %}
 
 {% if project %}
-<div class="card">
+<div class="bento-card">
   <h2>Pipeline — {{ project.status.value if project.status else 'Unknown' }}</h2>
   <div class="pipeline">
     {% for status in status_list | default([]) %}
@@ -49,13 +67,20 @@
   </form>
 </div>
 {% else %}
-<div class="card">
+<div class="bento-card">
   <p class="meta">No project linked. Intake data shown below.</p>
 </div>
 {% endif %}
 
-<div class="card">
+<div class="bento-card">
   <h2>Intake Data</h2>
+  {% if recommended_template %}
+  <p class="meta">
+    <strong>Portfolio template:</strong> {{ recommended_template.display_name }}
+    {% if template_client_preference %} (client asked for {{ template_client_preference }}){% endif %}
+    — {{ recommended_template.best_for }}
+  </p>
+  {% endif %}
   <pre class="experience-block">{{ display_experience | default('No intake experience on file.') }}</pre>
   <p><strong>Skills</strong></p>
   <p>{{ display_skills | default('No skills on file.') }}</p>
@@ -72,7 +97,7 @@
   {% for status in status_list | default([]) %}
   {% set stage_tasks = (tasks_by_stage | default({})).get(status.value, []) %}
   {% if stage_tasks %}
-  <div class="card">
+  <div class="bento-card">
     <h3>{{ status.value }}</h3>
     <table>
       <thead>
@@ -108,7 +133,7 @@
 
 <section id="deliverables">
   <h2>Deliverables</h2>
-  <div class="card">
+  <div class="bento-card">
     {% if deliverables | default([]) %}
     <table>
       <thead>
@@ -147,7 +172,7 @@
 
 <section>
   <h2>Status History</h2>
-  <div class="card">
+  <div class="bento-card">
     {% if logs | default([]) %}
       {% for log in logs %}
       <div class="log-entry">
@@ -168,7 +193,7 @@
 <section id="outcome">
   <h2>Client Outcome</h2>
   <p class="meta">Record before/after story for future marketing (with permission).</p>
-  <div class="card">
+  <div class="bento-card">
     <form method="post" action="/clients/{{ client.id }}/outcome">
       <label for="before_problem">Before — problem</label>
       <textarea id="before_problem" name="before_problem" required minlength="10">{{ outcome.before_problem if outcome else '' }}</textarea>

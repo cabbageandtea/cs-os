@@ -1,0 +1,119 @@
+{# Shared intake fields — ops /intake and paid /intake/{token} #}
+<div class="form-span-2">
+  <label for="name">Full name</label>
+  <input type="text" id="name" name="name" value="{{ prefill_name | default('') }}" required>
+</div>
+
+<div class="form-span-2">
+  <label for="email">Email</label>
+  {% if email_readonly %}
+  <input type="email" id="email" name="email" value="{{ prefill_email | default('') }}" readonly required>
+    <p class="field-hint">From your purchase — contact support if this is wrong. <a href="/start">Setup help &amp; return links</a></p>
+  {% else %}
+  <input type="email" id="email" name="email" value="{{ prefill_email | default('') }}" placeholder="you@example.com" required>
+  {% endif %}
+</div>
+
+{% if show_package_select %}
+<div class="form-span-2">
+  <label for="package_slug">Package</label>
+  <select id="package_slug" name="package_slug" required>
+    {% for pkg in packages %}
+    <option value="{{ pkg.slug }}" {% if pkg.slug == package_slug %}selected{% endif %}>
+      {{ pkg.display_name }} — {{ pkg.tagline }}
+    </option>
+    {% endfor %}
+  </select>
+</div>
+{% endif %}
+
+<div class="form-span-2">
+  <label for="target_role">Target role</label>
+  <input type="text" id="target_role" name="target_role" placeholder="Software Engineer Intern" required minlength="3" value="{{ prefill_target_role | default('') }}">
+</div>
+
+<div class="form-span-2 intake-package-note">
+  <p class="field-hint">
+    <strong>{{ package_name }}</strong> —
+    GitHub required.
+    {% if linkedin_required %}LinkedIn required.{% else %}LinkedIn optional.{% endif %}
+    {% if career_goals_required %}Career goals required.{% endif %}
+  </p>
+</div>
+
+<div class="form-span-2">
+  <label for="experience_education">Education</label>
+  <textarea id="experience_education" name="experience_education" placeholder="School, degree, graduation year, relevant coursework..." required minlength="10">{{ prefill_education | default('') }}</textarea>
+</div>
+
+<div class="form-span-2">
+  <label for="experience_projects">Projects</label>
+  <textarea id="experience_projects" name="experience_projects" placeholder="Project name, stack, outcome, measurable impact..." required minlength="10">{{ prefill_projects | default('') }}</textarea>
+</div>
+
+<div class="form-span-2">
+  <label for="experience_work">Work / internships</label>
+  <textarea id="experience_work" name="experience_work" placeholder="Company, role, dates, responsibilities, results..." required minlength="10">{{ prefill_work | default('') }}</textarea>
+</div>
+
+<div class="form-span-2">
+  <label for="skills">Skills (comma-separated)</label>
+  <input type="text" id="skills" name="skills" placeholder="Python, React, SQL" required value="{{ prefill_skills | default('') }}">
+</div>
+
+<div class="form-span-2">
+  <label for="career_goals">Career goals &amp; positioning{% if not career_goals_required %} (optional){% endif %}</label>
+  <textarea id="career_goals" name="career_goals" placeholder="Target industry, role level, what you want recruiters to notice..." {% if career_goals_required %}required minlength="10"{% endif %}>{{ prefill_career_goals | default('') }}</textarea>
+</div>
+
+<div>
+  <label for="github_url">GitHub URL</label>
+  <input type="url" id="github_url" name="github_url" placeholder="https://github.com/..." required value="{{ prefill_github | default('') }}">
+</div>
+
+<div>
+  <label for="linkedin_url">LinkedIn URL{% if not linkedin_required %} (optional){% endif %}</label>
+  <input type="url" id="linkedin_url" name="linkedin_url" placeholder="https://linkedin.com/in/..." {% if linkedin_required %}required{% endif %} value="{{ prefill_linkedin | default('') }}">
+</div>
+
+<div>
+  <label for="portfolio_template">Portfolio template preference</label>
+  <select id="portfolio_template" name="portfolio_template">
+    <option value="">No preference</option>
+    <option value="minimal" {% if prefill_portfolio_template == 'minimal' %}selected{% endif %}>Minimal</option>
+    <option value="data-tech" {% if prefill_portfolio_template == 'data-tech' %}selected{% endif %}>Data-Tech</option>
+    <option value="professional" {% if prefill_portfolio_template == 'professional' %}selected{% endif %}>Professional</option>
+  </select>
+</div>
+
+<div>
+  <label for="resume_url">Resume link (optional)</label>
+  <input type="url" id="resume_url" name="resume_url" placeholder="Google Drive, Dropbox, etc." value="{{ prefill_resume_url | default('') }}">
+</div>
+
+<div>
+  <label for="existing_portfolio_url">Existing portfolio URL (optional)</label>
+  <input type="url" id="existing_portfolio_url" name="existing_portfolio_url" placeholder="https://..." value="{{ prefill_portfolio_url | default('') }}">
+</div>
+
+<div class="form-span-2">
+  <label for="certifications">Certifications &amp; awards (optional)</label>
+  <textarea id="certifications" name="certifications" placeholder="AWS Cloud Practitioner, Dean's List, hackathon wins...">{{ prefill_certifications | default('') }}</textarea>
+</div>
+
+<div class="form-span-2">
+  <label for="job_timeline">Job search timeline (optional)</label>
+  <input type="text" id="job_timeline" name="job_timeline" placeholder="Graduating May 2026, applying for summer 2026 internships" value="{{ prefill_job_timeline | default('') }}">
+</div>
+
+<div class="form-span-2">
+  <label for="additional_notes">Anything else we should know (optional)</label>
+  <textarea id="additional_notes" name="additional_notes" placeholder="Scheduling constraints, visa status, portfolio constraints...">{{ prefill_notes | default('') }}</textarea>
+</div>
+
+<div class="form-span-2 intake-attestation">
+  <label class="checkbox-label">
+    <input type="checkbox" name="attestation" value="on" required>
+    I confirm the experience and projects listed are accurate and mine to represent.
+  </label>
+</div>

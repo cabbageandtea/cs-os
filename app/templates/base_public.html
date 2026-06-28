@@ -1,26 +1,78 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}CS-OS{% endblock %}</title>
-  <link rel="stylesheet" href="/static/style.css">
+
+  <meta name="description" content="Career Systems engineers portfolio, resume, and professional presence as one coordinated system — on accounts you own.">
+
+  <title>{% block title %}Career Systems{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="/static/logo-icon.png?v=3" type="image/png">
+
+  <meta name="theme-color" content="#141418">
+
+  <link rel="apple-touch-icon" href="/static/logo-icon.png?v=3">
+
+  <link rel="stylesheet" href="/static/public.css?v=4">
+
 </head>
+
 <body class="page-public {% block body_class %}{% endblock %}">
+
   <header class="public-header">
-    <a href="/" class="brand">Career Systems</a>
+
+    <a href="/" class="brand">
+
+      <span class="brand-logo-wrap" aria-hidden="true">
+
+        <img src="/static/logo-icon.png?v=3" alt="" class="brand-logo" width="32" height="32">
+
+      </span>
+
+      Career Systems
+
+    </a>
+
     <nav>
+
       <a href="/#packages">Packages</a>
-      <a href="/demo">Demo</a>
+
+      <a href="/demo">Process</a>
+
       <a href="/contact">Contact</a>
-      <a href="/checkout" class="nav-cta">Get started</a>
+
+      <a href="/checkout" class="nav-cta">Begin</a>
+
     </nav>
+
   </header>
+
   <main>
+
     {% block content %}{% endblock %}
+
   </main>
+
   <footer class="public-footer">
-    <p class="meta">Questions? <a href="/contact">Get in touch</a> · <a href="/dashboard">Operator login</a></p>
+
+    <p class="meta"><a href="/contact">Contact</a> · <a href="/start">Client guide</a> · <a href="/login?next=/dashboard">Operator</a></p>
+
   </footer>
+
+  <script src="/static/public.js?v=2" defer></script>
+
 </body>
+
 </html>
+

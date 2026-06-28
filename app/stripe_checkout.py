@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from app.models import Purchase, PurchaseStatus, utcnow
 from app.metrics_service import record_checkout_started
 from app.package_config import PackageConfigError, get_package, resolve_price_cents, resolve_stripe_price_id
+from app.stripe_branding import StripeBrandingError, checkout_branding_settings
 
 
 class StripeCheckoutError(RuntimeError):
@@ -53,6 +54,7 @@ def create_checkout_session(db: Session, package_slug: str) -> tuple[Purchase, s
         line_items=[{"price": price_id, "quantity": 1}],
         success_url=f"{root}/purchase/success?session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=f"{root}/purchase/cancelled",
+        branding_settings=checkout_branding_settings(),
         metadata={
             "package_slug": package.slug,
             "source": "csos_checkout",

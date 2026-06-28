@@ -4,18 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}CS-OS{% endblock %}</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+  <link rel="icon" href="/static/logo-icon.png?v=2" type="image/png">
+  <meta name="theme-color" content="#0c0e14">
+  <link rel="apple-touch-icon" href="/static/logo-icon.png?v=2">
+  <link rel="stylesheet" href="/static/style.css?v=2">
 </head>
-<body class="{% block body_class %}{% endblock %}">
-  <header>
-    <strong>Career Systems OS</strong>
-    <nav>
+<body class="page-ops {% block body_class %}{% endblock %}">
+  <header class="ops-header">
+    <a href="/dashboard" class="ops-brand">
+      <span class="brand-logo-wrap" aria-hidden="true">
+        <img src="/static/logo-icon.png?v=2" alt="" class="brand-logo" width="40" height="40">
+      </span>
+      <span>Career Systems OS</span>
+    </a>
+    <nav class="ops-nav">
       <a href="/dashboard">Dashboard</a>
       <a href="/checkout">Checkout</a>
-      <a href="/intake">+ New Client</a>
+      <a href="/intake" class="ops-nav-cta">+ New Client</a>
     </nav>
   </header>
-  <main>
+  <main class="ops-main">
     {% block content %}{% endblock %}
   </main>
 </body>

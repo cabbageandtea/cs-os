@@ -11,11 +11,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
-from app.intake_tokens import assign_intake_token
-from app.intake_validation import IntakeValidationError
+from app.intake_context import intake_form_context
+from app.intake_notify import intake_url_for_token, maybe_send_intake_reminder_email
+from app.intake_validation import IntakeValidationError, resolve_client_package_slug
 from app.models import Client, IntakeStatus, Purchase, PurchaseStatus
 from app.package_config import PACKAGES, PackageConfigError
 from app.services import IntakeAccessError, PersistenceError, complete_token_intake
+from app.stripe_branding import StripeBrandingError
 from app.stripe_checkout import StripeCheckoutError, base_url, create_checkout_session
 from app.stripe_webhook import (
     WebhookConfigError,
@@ -26,6 +28,70 @@ from app.stripe_webhook import (
 router = APIRouter()
 BASE_DIR = Path(__file__).resolve().parent.parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+
+def _token_intake_template_context(
+    *,
+    client: Client,
+    token: str,
+    prefill: dict | None = None,
+) -> dict:
+    slug = resolve_client_package_slug(client.package_slug, client.package_tier)
+    base_prefill = {
+        "name": client.name if client.name not in {"Pending Intake", "Pending intake"} else "",
+        "email": client.email or "",
+    }
+    if prefill:
+        base_prefill.update(prefill)
+    return {
+        "client": client,
+        "token": token,
+        **intake_form_context(
+            package_slug=slug,
+            show_package_select=False,
+            email_readonly=bool(client.email),
+            prefill=base_prefill,
+        ),
+    }
+
+
+def _intake_prefill_from_form(
+    *,
+    name: str,
+    email: str,
+    target_role: str,
+    experience_education: str,
+    experience_projects: str,
+    experience_work: str,
+    skills: str,
+    career_goals: str,
+    linkedin_url: str,
+    github_url: str,
+    portfolio_template: str,
+    resume_url: str,
+    existing_portfolio_url: str,
+    certifications: str,
+    job_timeline: str,
+    additional_notes: str,
+) -> dict:
+    return {
+        "name": name,
+        "email": email,
+        "target_role": target_role,
+        "experience_education": experience_education,
+        "experience_projects": experience_projects,
+        "experience_work": experience_work,
+        "skills": skills,
+        "career_goals": career_goals,
+        "linkedin_url": linkedin_url,
+        "github_url": github_url,
+        "portfolio_template": portfolio_template,
+        "resume_url": resume_url,
+        "existing_portfolio_url": existing_portfolio_url,
+        "certifications": certifications,
+        "job_timeline": job_timeline,
+        "additional_notes": additional_notes,
+    }
 
 
 def _find_client_by_token(db: Session, token: str) -> Client | None:
@@ -65,7 +131,7 @@ def checkout_create(
 ):
     try:
         _, redirect_url = create_checkout_session(db, package_slug)
-    except (PackageConfigError, StripeCheckoutError) as exc:
+    except (PackageConfigError, StripeCheckoutError, StripeBrandingError) as exc:
         packages = [
             {
                 "slug": slug,
@@ -134,9 +200,10 @@ def purchase_status(session_id: str = Query(...), db: Session = Depends(get_db))
         return JSONResponse({"status": purchase.status, "ready": False})
 
     intake_url = None
-    if client.intake_status == IntakeStatus.PENDING.value and not purchase.intake_link_delivered:
+    if client.intake_status == IntakeStatus.PENDING.value:
         token = assign_intake_token(client)
-        purchase.intake_link_delivered = True
+        if not purchase.intake_link_delivered:
+            purchase.intake_link_delivered = True
         db.commit()
         intake_url = f"{base_url()}/intake/{token}"
 
@@ -172,17 +239,12 @@ def token_intake_form(request: Request, token: str, db: Session = Depends(get_db
             status_code=403,
         )
 
-    package_name = client.package_tier or "Package"
     return templates.TemplateResponse(
         "token_intake.html",
         {
             "request": request,
             "error": None,
-            "client": client,
-            "token": token,
-            "package_name": package_name,
-            "prefill_name": client.name if client.name != "Pending Intake" else "",
-            "prefill_email": client.email or "",
+            **_token_intake_template_context(client=client, token=token),
         },
     )
 
@@ -192,13 +254,23 @@ def submit_token_intake(
     request: Request,
     token: str,
     name: str = Form(...),
+    email: str = Form(""),
     target_role: str = Form(...),
     experience_education: str = Form(...),
     experience_projects: str = Form(...),
     experience_work: str = Form(...),
     skills: str = Form(...),
+    career_goals: str = Form(""),
     linkedin_url: str = Form(""),
-    github_url: str = Form(""),
+    github_url: str = Form(...),
+    portfolio_template: str = Form(""),
+    resume_url: str = Form(""),
+    existing_portfolio_url: str = Form(""),
+    certifications: str = Form(""),
+    job_timeline: str = Form(""),
+    additional_notes: str = Form(""),
+    attestation: str | None = Form(None),
+    prerequisites_attestation: str | None = Form(None),
     db: Session = Depends(get_db),
 ):
     client = _find_client_by_token(db, token)
@@ -209,12 +281,32 @@ def submit_token_intake(
             status_code=403,
         )
 
+    prefill = _intake_prefill_from_form(
+        name=name,
+        email=email or client.email or "",
+        target_role=target_role,
+        experience_education=experience_education,
+        experience_projects=experience_projects,
+        experience_work=experience_work,
+        skills=skills,
+        career_goals=career_goals,
+        linkedin_url=linkedin_url,
+        github_url=github_url,
+        portfolio_template=portfolio_template,
+        resume_url=resume_url,
+        existing_portfolio_url=existing_portfolio_url,
+        certifications=certifications,
+        job_timeline=job_timeline,
+        additional_notes=additional_notes,
+    )
+
     try:
         complete_token_intake(
             db,
             client,
             token=token,
             name=name,
+            email=email or client.email or "",
             target_role=target_role,
             experience_education=experience_education,
             experience_projects=experience_projects,
@@ -222,6 +314,15 @@ def submit_token_intake(
             skills=skills,
             linkedin_url=linkedin_url.strip() or None,
             github_url=github_url.strip() or None,
+            career_goals=career_goals.strip() or None,
+            certifications=certifications.strip() or None,
+            job_timeline=job_timeline.strip() or None,
+            portfolio_template=portfolio_template.strip() or None,
+            resume_url=resume_url.strip() or None,
+            existing_portfolio_url=existing_portfolio_url.strip() or None,
+            additional_notes=additional_notes.strip() or None,
+            attestation_checked=(attestation or "").strip().lower() == "on",
+            prerequisites_attestation_checked=(prerequisites_attestation or "").strip().lower() == "on",
         )
     except IntakeAccessError as exc:
         return templates.TemplateResponse(
@@ -229,11 +330,7 @@ def submit_token_intake(
             {
                 "request": request,
                 "error": str(exc),
-                "client": client,
-                "token": token,
-                "package_name": client.package_tier,
-                "prefill_name": name,
-                "prefill_email": client.email or "",
+                **_token_intake_template_context(client=client, token=token, prefill=prefill),
             },
             status_code=403,
         )
@@ -243,11 +340,7 @@ def submit_token_intake(
             {
                 "request": request,
                 "error": str(exc),
-                "client": client,
-                "token": token,
-                "package_name": client.package_tier,
-                "prefill_name": name,
-                "prefill_email": client.email or "",
+                **_token_intake_template_context(client=client, token=token, prefill=prefill),
             },
             status_code=422,
         )

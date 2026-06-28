@@ -1,17 +1,24 @@
-{% extends "base.html" %}
-{% block title %}Sign in — CS-OS{% endblock %}
+{% extends "base_public.html" %}
+{% block title %}Operator sign in — Career Systems{% endblock %}
+{% block body_class %}page-auth-public{% endblock %}
 {% block content %}
-<div class="card" style="max-width: 400px; margin: 2rem auto;">
-  <h1>Operator sign in</h1>
-  <p class="meta">Dashboard and client tools require your local ops password.</p>
-  {% if error %}
-  <div class="alert alert-error">{{ error }}</div>
-  {% endif %}
-  <form method="post" action="/login">
-    <input type="hidden" name="next" value="{{ next }}">
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required autofocus>
-    <button type="submit" class="btn">Sign in</button>
-  </form>
+<div class="auth-shell">
+  <div class="public-card auth-card">
+    <header class="page-header" style="border: none; padding-bottom: var(--space-4); margin-bottom: 0;">
+      <p class="kicker">Operator</p>
+      <h1>Sign in</h1>
+      <p class="meta">Dashboard, intake, and client delivery.</p>
+    </header>
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+    <form method="post" action="/login">
+      <input type="hidden" name="next" value="{{ next }}">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required autofocus placeholder="Ops password">
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+    <p class="meta auth-footer"><a href="/">← Public site</a></p>
+  </div>
 </div>
 {% endblock %}

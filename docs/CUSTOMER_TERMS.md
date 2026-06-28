@@ -134,12 +134,18 @@ To receive your deliverables on time, you agree to:
 | Requirement | Foundation | Launch | Accelerator |
 |-------------|:----------:|:------:|:-------------:|
 | Valid email address | ✓ | ✓ | ✓ |
-| GitHub profile URL | ✓ | ✓ | ✓ |
+| GitHub profile URL (your account) | ✓ | ✓ | ✓ |
 | LinkedIn profile URL | — | ✓ | ✓ |
 | Project descriptions sufficient for portfolio content | ✓ | ✓ | ✓ |
 | Target role stated clearly | ✓ | ✓ | ✓ |
 
 If you cannot provide a required link, contact us before purchase so we can confirm whether we can still deliver your package.
+
+### Account ownership
+
+- GitHub, email, LinkedIn, and any domain registration remain **in your name**.
+- We provide setup guidance and deliverables on infrastructure you control.
+- You are responsible for account credentials, renewals, and third-party terms.
 
 ### Review within defined windows
 

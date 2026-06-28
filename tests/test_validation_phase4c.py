@@ -147,3 +147,5 @@ def test_public_routes_remain_open(client: TestClient) -> None:
     assert client.get("/").status_code == 200
     assert client.get("/demo").status_code == 200
     assert client.get("/contact").status_code == 200
+    assert client.get("/start").status_code == 200
+    assert client.get("/purchase/return").status_code == 200

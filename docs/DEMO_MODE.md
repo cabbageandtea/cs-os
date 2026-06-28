@@ -44,7 +44,7 @@ python -m app.demo_seed --force
 
 ### 3. Verify demo clients exist
 
-On the dashboard, confirm you see six `[DEMO]` clients — one per pipeline stage. Each row shows a purple **DEMO** badge.
+On the dashboard, confirm you see six `[DEMO]` clients — one per pipeline stage. Each row shows a gold **DEMO** badge.
 
 ### 4. Open the showcase client
 

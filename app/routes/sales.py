@@ -4,17 +4,29 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Form, Request
+from fastapi import APIRouter, Depends, Form, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
+from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
 from app.sales_content import (
+    CASE_STUDY,
+    CREDIBILITY_STATS,
     DEMO_EXAMPLE_CLIENT,
     DEMO_JOURNEY_STEPS,
+    HERO_AUDIENCE,
+    HERO_CTA_PRIMARY,
+    HERO_CTA_SECONDARY,
+    HERO_HEADLINE,
+    HERO_LEAD,
     LANDING_FAQ,
+    PRINCIPLES,
+    PROCESS_STEPS,
+    SIGNAL_GAPS,
+    VALUE_BULLETS,
     package_list_for_display,
 )
 
@@ -31,6 +43,17 @@ def landing_page(request: Request):
             "request": request,
             "packages": package_list_for_display(),
             "faq": LANDING_FAQ,
+            "hero_headline": HERO_HEADLINE,
+            "hero_audience": HERO_AUDIENCE,
+            "hero_lead": HERO_LEAD,
+            "hero_cta_primary": HERO_CTA_PRIMARY,
+            "hero_cta_secondary": HERO_CTA_SECONDARY,
+            "credibility_stats": CREDIBILITY_STATS,
+            "signal_gaps": SIGNAL_GAPS,
+            "value_bullets": VALUE_BULLETS,
+            "process_steps": PROCESS_STEPS,
+            "case_study": CASE_STUDY,
+            "principles": PRINCIPLES,
         },
     )
 
@@ -109,4 +132,23 @@ def submit_contact(
             "success_name": lead.name,
             "form": {},
         },
+    )
+
+
+@router.get("/start", response_class=HTMLResponse)
+def client_start_hub(request: Request):
+    return templates.TemplateResponse(
+        "start.html",
+        {
+            "request": request,
+            "prerequisites": CLIENT_PREREQUISITES,
+        },
+    )
+
+
+@router.get("/purchase/return", response_class=HTMLResponse)
+def purchase_return_page(request: Request, session_id: str = Query("")):
+    return templates.TemplateResponse(
+        "purchase_return.html",
+        {"request": request, "session_id": session_id.strip()},
     )

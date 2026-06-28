@@ -25,6 +25,25 @@ from app.services import IntakeAccessError, complete_token_intake
 from app.stripe_webhook import handle_stripe_event, process_webhook
 
 
+def _sample_intake_kwargs(**overrides):
+    data = {
+        "name": "Alex Student",
+        "email": "student@example.com",
+        "target_role": "Data Analyst",
+        "experience_education": "BS Information Systems at Strayer University",
+        "experience_projects": "Built a portfolio tracker using Python and FastAPI",
+        "experience_work": "Retail associate with inventory reporting duties",
+        "skills": "Python, SQL, Excel",
+        "linkedin_url": "https://linkedin.com/in/alex",
+        "github_url": "https://github.com/alex",
+        "career_goals": "Target healthcare analytics roles after graduation.",
+        "attestation_checked": True,
+        "prerequisites_attestation_checked": True,
+    }
+    data.update(overrides)
+    return data
+
+
 def _checkout_completed_event(
     *,
     event_id: str = "evt_test_checkout_1",
@@ -162,18 +181,11 @@ def test_refund_archives_client_and_blocks_intake(db_session: Session) -> None:
             db_session,
             client,
             token=token,
-            name="Alex Student",
-            target_role="Data Analyst",
-            experience_education="BS Information Systems at Strayer University",
-            experience_projects="Built a portfolio tracker using Python and FastAPI",
-            experience_work="Retail associate with inventory reporting duties",
-            skills="Python, SQL, Excel",
-            linkedin_url=None,
-            github_url=None,
+            **_sample_intake_kwargs(linkedin_url=None, github_url=None),
         )
 
 
-def test_completed_intake_activates_customer_stays_at_intake_stage(db_session: Session) -> None:
+def test_completed_intake_activates_customer_advances_to_analysis(db_session: Session) -> None:
     purchase = _make_pending_purchase(db_session)
     handle_stripe_event(db_session, _checkout_completed_event(purchase_id=purchase.id))
     db_session.refresh(purchase)
@@ -187,14 +199,7 @@ def test_completed_intake_activates_customer_stays_at_intake_stage(db_session: S
         db_session,
         client,
         token=token,
-        name="Alex Student",
-        target_role="Data Analyst",
-        experience_education="BS Information Systems at Strayer University",
-        experience_projects="Built a portfolio tracker using Python and FastAPI",
-        experience_work="Retail associate with inventory reporting duties",
-        skills="Python, SQL, Excel",
-        linkedin_url="https://linkedin.com/in/alex",
-        github_url="https://github.com/alex",
+        **_sample_intake_kwargs(),
     )
 
     db_session.refresh(client)
@@ -202,7 +207,7 @@ def test_completed_intake_activates_customer_stays_at_intake_stage(db_session: S
     assert client.customer_lifecycle == CustomerLifecycle.ACTIVE.value
     assert client.intake_status == IntakeStatus.COMPLETE.value
     assert project is not None
-    assert project.status == PipelineStatus.INTAKE
+    assert project.status == PipelineStatus.ANALYSIS
 
 
 def test_incomplete_intake_expired_token_rejected(db_session: Session) -> None:
@@ -221,12 +226,5 @@ def test_incomplete_intake_expired_token_rejected(db_session: Session) -> None:
             db_session,
             client,
             token=token,
-            name="Alex Student",
-            target_role="Data Analyst",
-            experience_education="BS Information Systems at Strayer University",
-            experience_projects="Built a portfolio tracker using Python and FastAPI",
-            experience_work="Retail associate with inventory reporting duties",
-            skills="Python, SQL, Excel",
-            linkedin_url=None,
-            github_url=None,
+            **_sample_intake_kwargs(),
         )

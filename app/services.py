@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from sqlalchemy.orm import Session
@@ -8,15 +9,11 @@ from app.intake_validation import (
 
     IntakeValidationError,
 
-    compose_experience_summary,
+    ValidatedIntake,
 
-    normalize_skills,
+    resolve_client_package_slug,
 
-    normalize_url,
-
-    validate_name,
-
-    validate_target_role,
+    validate_intake_submission,
 
 )
 
@@ -194,13 +191,34 @@ def seed_project_defaults(db: Session, project: Project, *, package_slug: str | 
 
 
 
+def _apply_validated_intake(client: Client, data: ValidatedIntake) -> None:
+    client.name = data.name
+    client.email = data.email
+    client.target_role = data.target_role
+    client.experience_summary = data.experience_summary
+    client.skills = data.skills
+    client.linkedin_url = data.linkedin_url
+    client.github_url = data.github_url
+
+
+def _advance_project_after_intake(db: Session, project: Project) -> None:
+    """Validated intake complete → start Analysis (one stage forward)."""
+    if project.status != PipelineStatus.INTAKE:
+        return
+    update_project_status(db, project, PipelineStatus.ANALYSIS)
+
+
 def create_client_with_project(
 
     db: Session,
 
     *,
 
+    package_slug: str,
+
     name: str,
+
+    email: str,
 
     target_role: str,
 
@@ -216,33 +234,89 @@ def create_client_with_project(
 
     github_url: str | None,
 
-    package_tier: str,
+    career_goals: str | None = None,
+
+    certifications: str | None = None,
+
+    job_timeline: str | None = None,
+
+    portfolio_template: str | None = None,
+
+    resume_url: str | None = None,
+
+    existing_portfolio_url: str | None = None,
+
+    additional_notes: str | None = None,
+
+    attestation_checked: bool = False,
+
+    prerequisites_attestation_checked: bool = False,
 
 ) -> Client:
 
+    package = get_package(package_slug)
+
+    data = validate_intake_submission(
+
+        package_slug=package_slug,
+
+        name=name,
+
+        email=email,
+
+        target_role=target_role,
+
+        experience_education=experience_education,
+
+        experience_projects=experience_projects,
+
+        experience_work=experience_work,
+
+        skills=skills,
+
+        linkedin_url=linkedin_url,
+
+        github_url=github_url,
+
+        career_goals=career_goals,
+
+        certifications=certifications,
+
+        job_timeline=job_timeline,
+
+        portfolio_template=portfolio_template,
+
+        resume_url=resume_url,
+
+        existing_portfolio_url=existing_portfolio_url,
+
+        additional_notes=additional_notes,
+
+        attestation_checked=attestation_checked,
+
+        prerequisites_attestation_checked=prerequisites_attestation_checked,
+
+    )
+
     client = Client(
 
-        name=validate_name(name),
+        name=data.name,
 
-        target_role=validate_target_role(target_role),
+        email=data.email,
 
-        experience_summary=compose_experience_summary(
+        target_role=data.target_role,
 
-            education=experience_education,
+        experience_summary=data.experience_summary,
 
-            projects=experience_projects,
+        skills=data.skills,
 
-            work=experience_work,
+        linkedin_url=data.linkedin_url,
 
-        ),
+        github_url=data.github_url,
 
-        skills=normalize_skills(skills),
+        package_slug=package.slug,
 
-        linkedin_url=normalize_url(linkedin_url),
-
-        github_url=normalize_url(github_url),
-
-        package_tier=package_tier or "Basic",
+        package_tier=package.display_name,
 
     )
 
@@ -276,7 +350,12 @@ def create_client_with_project(
 
 
 
-    seed_project_defaults(db, project)
+    seed_project_defaults(db, project, package_slug=package.slug)
+
+    client.intake_status = IntakeStatus.COMPLETE.value
+    client.intake_completed_at = utcnow()
+    client.customer_lifecycle = CustomerLifecycle.ACTIVE.value
+    _advance_project_after_intake(db, project)
 
     record_intake_completed(db, client)
 
@@ -302,6 +381,8 @@ def complete_token_intake(
 
     name: str,
 
+    email: str,
+
     target_role: str,
 
     experience_education: str,
@@ -315,6 +396,24 @@ def complete_token_intake(
     linkedin_url: str | None,
 
     github_url: str | None,
+
+    career_goals: str | None = None,
+
+    certifications: str | None = None,
+
+    job_timeline: str | None = None,
+
+    portfolio_template: str | None = None,
+
+    resume_url: str | None = None,
+
+    existing_portfolio_url: str | None = None,
+
+    additional_notes: str | None = None,
+
+    attestation_checked: bool = False,
+
+    prerequisites_attestation_checked: bool = False,
 
 ) -> Client:
 
@@ -332,25 +431,51 @@ def complete_token_intake(
 
 
 
-    client.name = validate_name(name)
+    package_slug = resolve_client_package_slug(client.package_slug, client.package_tier)
 
-    client.target_role = validate_target_role(target_role)
+    data = validate_intake_submission(
 
-    client.experience_summary = compose_experience_summary(
+        package_slug=package_slug,
 
-        education=experience_education,
+        name=name,
 
-        projects=experience_projects,
+        email=email or client.email or "",
 
-        work=experience_work,
+        target_role=target_role,
+
+        experience_education=experience_education,
+
+        experience_projects=experience_projects,
+
+        experience_work=experience_work,
+
+        skills=skills,
+
+        linkedin_url=linkedin_url,
+
+        github_url=github_url,
+
+        career_goals=career_goals,
+
+        certifications=certifications,
+
+        job_timeline=job_timeline,
+
+        portfolio_template=portfolio_template,
+
+        resume_url=resume_url,
+
+        existing_portfolio_url=existing_portfolio_url,
+
+        additional_notes=additional_notes,
+
+        attestation_checked=attestation_checked,
+
+        prerequisites_attestation_checked=prerequisites_attestation_checked,
 
     )
 
-    client.skills = normalize_skills(skills)
-
-    client.linkedin_url = normalize_url(linkedin_url)
-
-    client.github_url = normalize_url(github_url)
+    _apply_validated_intake(client, data)
 
     client.intake_status = IntakeStatus.COMPLETE.value
 
@@ -359,6 +484,12 @@ def complete_token_intake(
     invalidate_intake_token(client)
 
     transition_customer_lifecycle(db, client, CustomerLifecycle.ACTIVE.value)
+
+    project = client.project
+    if project is None and client.id:
+        project = db.scalar(select(Project).where(Project.client_id == client.id))
+    if project is not None:
+        _advance_project_after_intake(db, project)
 
     record_intake_completed(db, client)
 

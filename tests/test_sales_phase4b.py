@@ -13,7 +13,7 @@ from tests.conftest import OPS_AUTH
 def test_landing_page_returns_200(client: TestClient) -> None:
     response = client.get("/")
     assert response.status_code == 200
-    assert "Turn your coursework into a job-ready portfolio" in response.text
+    assert "Career signal" in response.text
     assert "Foundation" in response.text
     assert "Launch" in response.text
     assert "Accelerator" in response.text
@@ -22,7 +22,7 @@ def test_landing_page_returns_200(client: TestClient) -> None:
 def test_demo_page_marked_as_example(client: TestClient) -> None:
     response = client.get("/demo")
     assert response.status_code == 200
-    assert "Example customer. Not real data." in response.text
+    assert "Fictional example." in response.text
     assert "Alex Rivera" in response.text
 
 
@@ -38,7 +38,7 @@ def test_contact_form_stores_lead(client: TestClient, db_session: Session) -> No
         },
     )
     assert response.status_code == 200
-    assert "Thanks, Jordan Lee" in response.text
+    assert "Thank you, Jordan Lee" in response.text
 
     lead = db_session.scalar(select(Lead).where(Lead.email == "jordan@example.com"))
     assert lead is not None

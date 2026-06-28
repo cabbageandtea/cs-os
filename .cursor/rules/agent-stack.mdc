@@ -22,3 +22,6 @@ alwaysApply: true
 
 ## Scope lock
 Read `EXECUTION.md` before adding features. Manual-first. No over-engineering.
+
+## Public content
+Never put internal strategy (`docs/ops/`) on public routes. Client copy = outcomes only; see `docs/ops/README.md`.

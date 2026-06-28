@@ -1,7 +1,13 @@
-{% extends "base.html" %}
-{% block title %}Checkout Cancelled — CS-OS{% endblock %}
+{% extends "base_public.html" %}
+{% block title %}Checkout cancelled — Career Systems{% endblock %}
 {% block content %}
-<h1>Checkout Cancelled</h1>
-<p class="meta">No payment was taken. You can return when ready.</p>
-<p><a href="/checkout" class="btn btn-primary">Back to packages</a></p>
+<header class="page-header">
+  <p class="kicker">Checkout</p>
+  <h1>Payment not completed</h1>
+  <p class="meta">No charge was made. Return when you are ready.</p>
+</header>
+<div class="hero-cta">
+  <a href="/checkout" class="btn btn-primary">View packages</a>
+  <a href="/contact" class="btn btn-ghost">Contact us</a>
+</div>
 {% endblock %}

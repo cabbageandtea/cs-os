@@ -19,6 +19,7 @@ from app.models import (
 )
 from app.package_config import get_package
 from app.metrics_service import record_purchased
+from app.intake_notify import maybe_send_intake_reminder_email
 from app.services import log_change, seed_project_defaults
 
 
@@ -40,7 +41,15 @@ def provision_client_from_purchase(
     if purchase.client_id:
         client = db.get(Client, purchase.client_id)
         if client:
-            return client, ""
+            token = ""
+            if (
+                client.intake_status == IntakeStatus.PENDING.value
+                and not purchase.intake_link_delivered
+                and (client.email or purchase.customer_email)
+            ):
+                token = assign_intake_token(client)
+                maybe_send_intake_reminder_email(db, purchase, client, token)
+            return client, token
 
     package = get_package(purchase.package_slug)
     email = (customer_email or purchase.customer_email or "").strip().lower() or None
@@ -101,6 +110,7 @@ def provision_client_from_purchase(
     record_purchased(db, client, purchase)
 
     db.flush()
+    maybe_send_intake_reminder_email(db, purchase, client, intake_token)
     return client, intake_token
 
 
