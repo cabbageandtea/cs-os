@@ -1,41 +1,62 @@
-{% extends "base_public.html" %}
-{% block title %}Client guide — Career Systems{% endblock %}
-{% block body_class %}page-start{% endblock %}
-{% block content %}
-<header class="page-header">
-  <p class="kicker">Client guide</p>
-  <h1>Before intake &amp; how to return</h1>
-  <p class="meta">Account setup and recovery if you leave mid-flow.</p>
-</header>
-
-<div class="public-card" style="margin-bottom: var(--space-5);">
-  <h2>Return paths</h2>
-  <ul class="start-steps">
-    <li><strong>Paid, intake incomplete</strong> — <a href="/purchase/return">Resume intake</a></li>
-    <li><strong>Intake link saved</strong> — Bookmark it; valid 14 days.</li>
-    <li><strong>Intake submitted</strong> — Watch your checkout email for deliverables.</li>
-    <li><strong>Link expired</strong> — Contact support with your purchase email.</li>
-  </ul>
-</div>
-
-<div class="public-card" style="margin-bottom: var(--space-5);">
-  <h2>Account checklist</h2>
-  <p class="field-hint">Create these in <strong>your name</strong> before or within 48 hours of intake.</p>
-  <ul class="prerequisite-list">
-    {% for item in prerequisites %}
-    <li>
-      <a href="{{ item.signup_url }}" target="_blank" rel="noopener noreferrer"><strong>{{ item.title }}</strong></a>
-      <span class="prerequisite-time">~{{ item.time_minutes }} min</span>
-      <p class="field-hint">{{ item.why }}</p>
-      {% if item.note %}
-      <p class="field-hint">{{ item.note }}</p>
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-
-<div class="hero-cta">
-  <a href="/checkout" class="btn btn-primary">View packages</a>
-</div>
-{% endblock %}
+{% extends "base_public.html" %}
+{% block title %}Before you start — Career Systems{% endblock %}
+{% block content %}
+
+<section class="band band--start" data-reveal>
+  <p class="section-label">Account checklist</p>
+  <h1>What to set up before intake</h1>
+  <p class="meta section-lead">
+    Create these in <strong>your name</strong> before or within 48 hours of submitting intake.
+    Same email everywhere when possible.
+  </p>
+
+  <div class="start-grid">
+    <div class="start-card">
+      <h2>All clients</h2>
+      <ul class="prerequisite-list start-list">
+        {% for item in prerequisites %}
+        {% if item.slug not in ['github-education', 'student-me-domain'] %}
+        <li>
+          <a href="{{ item.signup_url }}" target="_blank" rel="noopener noreferrer"><strong>{{ item.title }}</strong></a>
+          <span class="prerequisite-time">~{{ item.time_minutes }} min</span>
+          <p class="field-hint">{{ item.why }}</p>
+          {% if item.note %}
+          <p class="field-hint prerequisite-note">{{ item.note }}</p>
+          {% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="start-card start-card--edu">
+      <h2>Students (.edu)</h2>
+      <p class="field-hint start-edu-lead">
+        Enrolled in a degree or bootcamp with verification? These steps unlock free domain and tool perks —
+        <strong>optional</strong>, not required to buy.
+      </p>
+      <ul class="prerequisite-list start-list">
+        {% for item in prerequisites %}
+        {% if item.slug in ['github-education', 'student-me-domain'] %}
+        <li>
+          <a href="{{ item.signup_url }}" target="_blank" rel="noopener noreferrer"><strong>{{ item.title }}</strong></a>
+          <span class="prerequisite-time">~{{ item.time_minutes }} min</span>
+          <p class="field-hint">{{ item.why }}</p>
+          {% if item.note %}
+          <p class="field-hint prerequisite-note">{{ item.note }}</p>
+          {% endif %}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="start-actions">
+    <a href="/checkout" class="btn btn-primary">Ready — choose a package</a>
+    <a href="/purchase/return" class="btn btn-secondary">Already paid? Resume intake</a>
+    <a href="/" class="btn btn-ghost">← Back to home</a>
+  </div>
+</section>
+
+{% endblock %}

@@ -5,14 +5,20 @@ from __future__ import annotations
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.lead_service import LeadPersistenceError, LeadValidationError, create_lead
 from app.client_prerequisites import CLIENT_PREREQUISITES, prerequisites_for_package
-from app.example_portfolios import get_portfolio_example
+from app.example_portfolios import (
+    example_template_context,
+    get_example_profile,
+    get_portfolio_example,
+    mock_subpage_context,
+    resume_pdf_url,
+)
 from app.health import build_status_page_context
 from app.sales_content import (
     CASE_STUDIES,
@@ -35,6 +41,7 @@ from app.sales_content import (
 
 router = APIRouter()
 BASE_DIR = Path(__file__).resolve().parent.parent
+RESUME_PDF_DIR = BASE_DIR / "static" / "examples" / "resumes"
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 
@@ -158,43 +165,110 @@ def system_status_page(request: Request, db: Session = Depends(get_db)):
     )
 
 
+def _render_example(request: Request, slug: str, template_name: str, **extra):
+    ctx = example_template_context(slug, is_portfolio_home=extra.pop("is_portfolio_home", False))
+    if ctx is None:
+        raise HTTPException(status_code=404, detail="Example not found.")
+    ctx.update(extra)
+    return templates.TemplateResponse(template_name, {"request": request, **ctx})
+
+
 @router.get("/example/{slug}", response_class=HTMLResponse)
 def portfolio_example(request: Request, slug: str):
+    profile = get_example_profile(slug)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Example not found.")
+    return _render_example(
+        request,
+        slug,
+        profile.template_name,
+        is_portfolio_home=True,
+        suite_active="portfolio",
+    )
+
+
+@router.get("/example/{slug}/projects/{project_slug}", response_class=HTMLResponse)
+def portfolio_example_project(request: Request, slug: str, project_slug: str):
+    ctx = mock_subpage_context(slug, project_slug, suite_active="portfolio")
+    if ctx is None:
+        raise HTTPException(status_code=404, detail="Project not found.")
+    return templates.TemplateResponse("examples/mock_project.html", {"request": request, **ctx})
+
+
+@router.get("/example/{slug}/repo/{project_slug}", response_class=HTMLResponse)
+def portfolio_example_repo(request: Request, slug: str, project_slug: str):
+    ctx = mock_subpage_context(slug, project_slug, suite_active="github")
+    if ctx is None:
+        raise HTTPException(status_code=404, detail="Repository not found.")
+    return templates.TemplateResponse("examples/mock_repo.html", {"request": request, **ctx})
+
+
+@router.get("/example/{slug}/demo/{project_slug}", response_class=HTMLResponse)
+def portfolio_example_demo(request: Request, slug: str, project_slug: str):
+    ctx = mock_subpage_context(slug, project_slug, suite_active="portfolio")
+    if ctx is None or not ctx["project"].has_demo:
+        raise HTTPException(status_code=404, detail="Demo not found.")
+    profile = get_example_profile(slug)
+    if profile:
+        ctx["chrome_path"] = f"demo.{profile.mock_domain}/{project_slug}"
+    return templates.TemplateResponse("examples/mock_demo.html", {"request": request, **ctx})
+
+
+@router.get("/example/{slug}/github", response_class=HTMLResponse)
+def portfolio_example_github(request: Request, slug: str):
+    profile = get_example_profile(slug)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Example not found.")
+    return _render_example(
+        request,
+        slug,
+        "examples/mock_github.html",
+        suite_active="github",
+        chrome_path=f"github.com/{profile.github_handle}",
+    )
+
+
+@router.get("/example/{slug}/linkedin", response_class=HTMLResponse)
+def portfolio_example_linkedin(request: Request, slug: str):
+    profile = get_example_profile(slug)
+    if profile is None:
+        raise HTTPException(status_code=404, detail="Example not found.")
+    return _render_example(
+        request,
+        slug,
+        "examples/mock_linkedin.html",
+        suite_active="linkedin",
+        chrome_path=f"linkedin.com/in/{profile.linkedin_handle}",
+    )
+
+
+@router.get("/example/{slug}/resume.pdf")
+def portfolio_example_resume_pdf(slug: str):
     example = get_portfolio_example(slug)
     if example is None:
         raise HTTPException(status_code=404, detail="Example not found.")
-    return templates.TemplateResponse(
-        example.template_name,
-        {
-            "request": request,
-            "mock_domain": example.mock_domain,
-            "person_name": example.person_name,
-            "target_role": example.target_role,
-        },
+    pdf_path = RESUME_PDF_DIR / example.resume_pdf_filename
+    if not pdf_path.is_file():
+        raise HTTPException(status_code=404, detail="Resume PDF not found.")
+    safe_name = example.slug.replace("-", "_")
+    return FileResponse(
+        pdf_path,
+        media_type="application/pdf",
+        filename=f"{safe_name}_resume.pdf",
     )
 
 
 @router.get("/example/{slug}/resume", response_class=HTMLResponse)
 def portfolio_example_resume(request: Request, slug: str):
-    example = get_portfolio_example(slug)
-    if example is None:
+    profile = get_example_profile(slug)
+    if profile is None:
         raise HTTPException(status_code=404, detail="Example not found.")
-    resume_templates = {
-        "alex-rivera": "examples/resume_alex.html",
-        "jordan-kim": "examples/resume_jordan.html",
-    }
-    template_name = resume_templates.get(example.slug)
-    if not template_name:
-        raise HTTPException(status_code=404, detail="Resume example not found.")
-    return templates.TemplateResponse(
-        template_name,
-        {
-            "request": request,
-            "mock_domain": example.mock_domain,
-            "person_name": example.person_name,
-            "target_role": example.target_role,
-            "portfolio_url": f"/example/{example.slug}",
-        },
+    return _render_example(
+        request,
+        slug,
+        profile.resume_template,
+        suite_active="resume",
+        chrome_path=f"{profile.mock_domain}/resume",
     )
 
 

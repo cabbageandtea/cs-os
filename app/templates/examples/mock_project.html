@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ project.title }} — {{ person_name }}</title>
+  <link rel="stylesheet" href="/static/examples.css?v=4">
+</head>
+<body class="example-site example-site--{{ theme }}">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+  <div class="example-wrap example-mock-page">
+    <nav class="example-breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ portfolio_url }}">Portfolio</a>
+      <span>/</span>
+      <a href="{{ portfolio_url }}#projects">Projects</a>
+      <span>/</span>
+      <span>{{ project.title }}</span>
+    </nav>
+    <header class="example-mock-head">
+      <p class="example-eyebrow">{{ project.stack }}</p>
+      <h1>{{ project.title }}</h1>
+    </header>
+    <p class="example-prose">{{ project.summary }}</p>
+    <div class="example-outcome-card">
+      <strong>Outcome</strong>
+      <p>{{ project.outcome }}</p>
+    </div>
+    <h2 class="mock-section-title">What I built</h2>
+    <ul class="mock-detail-list">
+      {% for bullet in project.readme_bullets %}
+      <li>{{ bullet }}</li>
+      {% endfor %}
+    </ul>
+    <div class="example-actions">
+      <a class="example-btn example-btn-primary" href="{{ repo_url }}">View {{ 'notebook' if project.repo_style == 'notebook' else 'code' }}</a>
+      {% if project.has_demo %}<a class="example-btn example-btn-secondary" href="{{ demo_url }}">Live demo</a>{% endif %}
+      <a class="example-btn example-btn-ghost" href="{{ portfolio_url }}">← Portfolio</a>
+    </div>
+  </div>
+  <footer class="example-footer">Case study · {{ mock_domain }}</footer>
+</body>
+</html>

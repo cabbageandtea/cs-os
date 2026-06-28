@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ repo_display }} — mock repo</title>
+  <link rel="stylesheet" href="/static/examples.css?v=4">
+</head>
+<body class="example-site example-site--{{ theme }} example-mock-github">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+  <div class="example-wrap example-mock-page">
+    <div class="mock-github-bar">
+      <span class="mock-github-path">{{ repo_display }}</span>
+      <span class="mock-github-pill">Public</span>
+      <span class="mock-github-meta">★ {{ project.repo_stars }} · {{ project.repo_language }}</span>
+    </div>
+
+    {% if project.repo_style == 'notebook' %}
+    <div class="mock-notebook">
+      <div class="mock-notebook-toolbar">
+        <span>inventory_anomaly.ipynb</span>
+        <span class="mock-github-pill">Python 3.11</span>
+      </div>
+      <div class="mock-notebook-cell mock-notebook-cell--md">
+        <p># Inventory Anomaly Detector</p>
+        <p>Unsupervised pipeline on nightly shrink exports — flags SKU clusters for floor audit.</p>
+      </div>
+      <div class="mock-notebook-cell">
+        <code>from sklearn.ensemble import IsolationForest</code><br>
+        <code>model = IsolationForest(contamination=0.04, random_state=42)</code><br>
+        <code>flags = model.fit_predict(shrink_features)</code>
+      </div>
+      <div class="mock-notebook-cell mock-notebook-cell--out">
+        <p><strong>Output:</strong> 23 SKUs flagged across 3 clusters · report saved to <code>audit_queue.csv</code></p>
+      </div>
+    </div>
+    {% else %}
+    <div class="mock-github-layout">
+      <aside class="mock-github-tree">
+        <p class="is-file is-active">README.md</p>
+        <p>src/</p>
+        <p>tests/</p>
+        <p>requirements.txt</p>
+        {% if project.has_demo %}<p>dashboard/</p>{% endif %}
+      </aside>
+      <article class="mock-github-readme">
+        <h1>{{ project.title }}</h1>
+        <p>{{ project.readme_intro }}</p>
+        <h2>Highlights</h2>
+        <ul>{% for bullet in project.readme_bullets %}<li>{{ bullet }}</li>{% endfor %}</ul>
+      </article>
+    </div>
+    {% endif %}
+
+    <p class="meta mock-github-foot">Fictional repo preview — part of the Career Systems Launch/Accelerator demo.</p>
+    <div class="example-actions">
+      {% if project.has_demo %}<a class="example-btn example-btn-primary" href="{{ demo_url }}">{{ project.primary_cta }}</a>{% endif %}
+      <a class="example-btn example-btn-secondary" href="{{ project_url }}">Case study</a>
+      <a class="example-btn example-btn-ghost" href="{{ portfolio_url }}">← Portfolio</a>
+    </div>
+  </div>
+  <footer class="example-footer">Mock GitHub · {{ mock_domain }}</footer>
+</body>
+</html>

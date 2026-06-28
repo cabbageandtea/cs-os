@@ -38,6 +38,9 @@
       <span class="proof-preview-metric">{{ case_study.outcome_metric }}</span>
       <strong class="proof-preview-name">{{ case_study.name }}</strong>
       <span class="proof-preview-role">{{ case_study.role }} · {{ case_study.package }}</span>
+      <span class="proof-preview-links">
+        <span>Site</span> · <span>Resume</span> · <span>GitHub</span> · <span>LinkedIn</span>
+      </span>
       <span class="proof-preview-cta">View example site →</span>
     </a>
     {% endfor %}
@@ -94,7 +97,9 @@
     </dl>
     <div class="proof-actions">
       <a href="{{ case_study.example_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View example site</a>
-      <a href="{{ case_study.example_url }}/resume" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Sample resume</a>
+      <a href="{{ case_study.example_url }}/resume" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">View resume</a>
+      <a href="{{ case_study.example_url }}/resume.pdf" class="btn btn-secondary" download>Download PDF</a>
+      <a href="{{ case_study.example_url }}/linkedin" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Sample LinkedIn</a>
     </div>
   </article>
   {% endfor %}

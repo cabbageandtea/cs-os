@@ -5,41 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
   <title>{{ person_name }} — Resume</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/examples.css?v=2">
+  <link rel="stylesheet" href="/static/examples.css?v=4">
 </head>
-<body class="example-site example-site--light-hero">
-  <div class="example-chrome" aria-hidden="true">
-    <div class="example-chrome-dots"><span></span><span></span><span></span></div>
-    <span class="example-chrome-url">{{ mock_domain }}/resume.pdf</span>
-    <span class="example-chrome-badge">Demo</span>
+<body class="example-site example-site--{{ theme }}">
+  {% set chrome_path = chrome_path | default(mock_domain ~ '/resume') %}
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+  <div class="example-actions example-resume-actions">
+    <a class="example-btn example-btn-primary" href="{{ resume_pdf_url }}" download>Download PDF</a>
+    <a class="example-btn example-btn-secondary" href="{{ portfolio_url }}">Portfolio</a>
+    <a class="example-btn example-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
   </div>
-  <p class="example-banner">Fictional resume sample. <a href="{{ portfolio_url }}">← Back to portfolio</a></p>
-
   <article class="example-resume">
     <div class="example-resume-sheet">
       <h1>{{ person_name }}</h1>
-      <p class="meta">{{ target_role }} · {{ mock_domain }} · alex.rivera@example.com · linkedin.com/in/alexrivera</p>
-
+      <p class="meta">{{ target_role }} · {{ mock_domain }} · {{ email }} · linkedin.com/in/{{ linkedin_handle }}</p>
       <h2>Summary</h2>
-      <p class="example-prose">Information Systems student seeking a data analyst internship. Ships Python/SQL projects with measurable outcomes — aligned portfolio, resume, and LinkedIn for technical recruiting.</p>
-
+      <p class="example-prose">{{ hero_lead }}</p>
       <h2>Projects</h2>
-      <ul>
-        <li><strong>Campus Dining Insights</strong> — ETL on 40k+ records; peak-hour analysis adopted for pilot scheduling.</li>
-        <li><strong>Healthcare Wait-Time Dashboard</strong> — SQL + Tableau; capstone on ER triage delays (18% driver identification).</li>
-      </ul>
-
+      <ul>{% for card in project_cards %}<li><strong>{{ card.project.title }}</strong> — {{ card.project.outcome }}</li>{% endfor %}</ul>
       <h2>Skills</h2>
-      <p class="example-prose">Python, SQL, Pandas, Tableau, Excel, statistics, stakeholder presentations.</p>
-
+      <p class="example-prose">{{ skills | join(', ') }}.</p>
       <h2>Education</h2>
-      <p class="example-prose">B.S. Information Systems (expected 2027) — GPA 3.7</p>
+      <p class="example-prose"><strong>{{ education.degree }}</strong> — {{ education.school }} ({{ education.dates }}). {{ education.detail }}</p>
     </div>
   </article>
-
-  <footer class="example-footer">Example resume · Career Systems Launch</footer>
+  <footer class="example-footer">Example resume · Career Systems {{ package_label }}</footer>
 </body>
 </html>

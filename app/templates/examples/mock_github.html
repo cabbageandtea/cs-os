@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ github_handle }} — mock GitHub</title>
+  <link rel="stylesheet" href="/static/examples.css?v=4">
+</head>
+<body class="example-site example-site--{{ theme }} example-mock-github">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+  <div class="example-wrap example-mock-page">
+    <header class="mock-github-profile">
+      <div class="example-avatar mock-github-avatar">{{ person_name.split(' ')[0][0] }}{{ person_name.split(' ')[-1][0] }}</div>
+      <div>
+        <h1>{{ github_handle }}</h1>
+        <p class="meta">{{ target_role }} · {{ mock_domain }}</p>
+        <p class="example-prose">{{ hero_lead }}</p>
+        <p class="mock-github-stats">{{ project_cards|length }} public repos · {{ total_repo_stars }} stars (demo)</p>
+      </div>
+    </header>
+    <h2 class="mock-section-title">Pinned</h2>
+    <ul class="mock-github-repos">
+      {% for card in project_cards %}
+      <li>
+        <div class="mock-repo-top">
+          <a href="{{ card.repo_url }}"><strong>{{ card.project.slug }}</strong></a>
+          <span class="mock-github-pill">Public</span>
+        </div>
+        <p>{{ card.project.readme_intro }}</p>
+        <span class="mock-github-meta">★ {{ card.project.repo_stars }} · {{ card.project.repo_language }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="example-actions">
+      <a class="example-btn example-btn-primary" href="{{ portfolio_url }}">Portfolio site</a>
+      <a class="example-btn example-btn-secondary" href="{{ resume_url }}">Resume</a>
+      <a class="example-btn example-btn-ghost" href="{{ linkedin_url }}">LinkedIn</a>
+    </div>
+  </div>
+  <footer class="example-footer">Mock GitHub · {{ mock_domain }}</footer>
+</body>
+</html>

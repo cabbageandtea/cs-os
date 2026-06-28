@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ project.title }} demo — {{ person_name }}</title>
+  <link rel="stylesheet" href="/static/examples.css?v=4">
+</head>
+<body class="example-site example-site--{{ theme }}">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+  <div class="example-wrap example-mock-page">
+    <header class="example-mock-head">
+      <p class="example-eyebrow">Live preview (demo)</p>
+      <h1>{{ project.title }}</h1>
+      <p class="meta">{{ project.stack }}</p>
+    </header>
+
+    {% if project.slug == 'healthcare-wait' %}
+    <div class="mock-demo-panel mock-demo-panel--bi">
+      <div class="mock-demo-toolbar">
+        <span>ER Wait Times · Triage L3</span>
+        <span class="mock-demo-live">● Live data (synthetic)</span>
+      </div>
+      <div class="mock-demo-kpis">
+        <div><strong>42m</strong><span>Avg wait</span></div>
+        <div><strong>18%</strong><span>Variance explained</span></div>
+        <div><strong>Intake</strong><span>Top bottleneck</span></div>
+      </div>
+      <div class="mock-demo-chart" aria-hidden="true">
+        <span style="height:72%"></span><span style="height:55%"></span><span style="height:88%"></span>
+        <span style="height:48%"></span><span style="height:64%"></span><span style="height:40%"></span>
+      </div>
+      <p class="meta">Tableau-style dashboard · capstone clinic dataset</p>
+    </div>
+    {% elif project.slug == 'shiftsync' %}
+    <div class="mock-demo-panel mock-demo-panel--app">
+      <div class="mock-demo-toolbar"><span>ShiftSync · Pilot store</span><span class="mock-demo-live">● API connected</span></div>
+      <div class="mock-demo-app">
+        <div class="mock-demo-app-row mock-demo-app-row--header"><span>Shift</span><span>Status</span><span>Action</span></div>
+        <div class="mock-demo-app-row"><span>Mon 2–10p</span><span class="mock-status mock-status--open">Open</span><span>Request swap</span></div>
+        <div class="mock-demo-app-row"><span>Wed 9–5</span><span class="mock-status mock-status--pending">Pending</span><span>Review</span></div>
+        <div class="mock-demo-app-row"><span>Fri 6–2</span><span class="mock-status mock-status--done">Approved</span><span>Audit log</span></div>
+      </div>
+      <p class="meta">React + FastAPI · fictional pilot deployment</p>
+    </div>
+    {% endif %}
+
+    <div class="example-actions">
+      <a class="example-btn example-btn-secondary" href="{{ repo_url }}">View source</a>
+      <a class="example-btn example-btn-ghost" href="{{ project_url }}">Case study</a>
+      <a class="example-btn example-btn-ghost" href="{{ portfolio_url }}">← Portfolio</a>
+    </div>
+  </div>
+  <footer class="example-footer">Mock demo · {{ mock_domain }}</footer>
+</body>
+</html>

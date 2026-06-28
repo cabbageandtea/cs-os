@@ -56,7 +56,7 @@ PROCESS_STEPS: tuple[dict[str, str], ...] = (
     {
         "step": "02",
         "title": "Submit intake",
-        "body": "Projects, links, target role, account checklist. The delivery clock starts when intake is complete.",
+        "body": "Projects, links, target role, account checklist. Students: optional GitHub Education + .me setup on /start. Clock starts when intake is complete.",
     },
     {
         "step": "03",
@@ -181,7 +181,14 @@ LANDING_FAQ = [
     ),
     (
         "What do I need before starting?",
-        "GitHub, email you check, and LinkedIn for Launch+. Intake includes a short account checklist.",
+        "GitHub, email you check, and LinkedIn for Launch+. Intake includes a short account checklist. "
+        "Students: verify GitHub Education (school .edu email) for optional free .me domain setup — see /start.",
+    ),
+    (
+        "I'm a student — anything special?",
+        "If you're enrolled, apply for the GitHub Student Developer Pack with your .edu email. "
+        "After approval you can claim a free .me domain; we wire it to your portfolio. "
+        "Not required — every package works on github.io.",
     ),
     (
         "How is this different from separate vendors?",

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{{ person_name }} — mock LinkedIn</title>
+  <link rel="stylesheet" href="/static/examples.css?v=4">
+</head>
+<body class="example-site example-site--{{ theme }}">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
+  <div class="example-wrap example-mock-page">
+    <article class="mock-linkedin-card">
+      <div class="example-avatar mock-linkedin-avatar">{{ person_name.split(' ')[0][0] }}{{ person_name.split(' ')[-1][0] }}</div>
+      <h1>{{ person_name }}</h1>
+      <p class="mock-linkedin-headline">{{ profile.linkedin_headline }}</p>
+      <p class="meta">{{ mock_domain }} · {{ email }}</p>
+    </article>
+
+    <section class="mock-linkedin-section">
+      <h2>About</h2>
+      <p class="example-prose">{{ profile.linkedin_about }}</p>
+    </section>
+
+    {% if linkedin_experience %}
+    <section class="mock-linkedin-section">
+      <h2>Experience</h2>
+      {% for job in linkedin_experience %}
+      <div class="mock-linkedin-job">
+        <strong>{{ job.title }}</strong> · {{ job.org }}<br>
+        <span class="meta">{{ job.dates }}</span>
+        <p>{{ job.detail }}</p>
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    <section class="mock-linkedin-section">
+      <h2>Education</h2>
+      <p><strong>{{ education.degree }}</strong><br>{{ education.school }} · {{ education.dates }}</p>
+      {% if extra_education %}
+      <p><strong>{{ extra_education.degree }}</strong><br>{{ extra_education.school }} · {{ extra_education.dates }}</p>
+      {% endif %}
+    </section>
+
+    <section class="mock-linkedin-section">
+      <h2>Featured</h2>
+      <ul class="mock-linkedin-featured">
+        <li><a href="{{ portfolio_url }}">Portfolio — {{ mock_domain }}</a></li>
+        <li><a href="{{ resume_pdf_url }}" download>Resume (PDF)</a></li>
+        <li><a href="{{ github_url }}">GitHub — {{ github_handle }}</a></li>
+      </ul>
+    </section>
+
+    <div class="example-actions">
+      <a class="example-btn example-btn-primary" href="{{ portfolio_url }}">View portfolio</a>
+    </div>
+  </div>
+  <footer class="example-footer">Mock LinkedIn · Career Systems {{ package_label }}</footer>
+</body>
+</html>

@@ -4,105 +4,90 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <meta name="description" content="Jordan Kim — Junior software engineer portfolio example (career change).">
   <title>{{ person_name }} — {{ target_role }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/examples.css?v=2">
+  <link rel="stylesheet" href="/static/examples.css?v=4">
 </head>
-<body class="example-site example-site--dark">
-  <div class="example-chrome" aria-hidden="true">
-    <div class="example-chrome-dots"><span></span><span></span><span></span></div>
-    <span class="example-chrome-url">{{ mock_domain }}</span>
-    <span class="example-chrome-badge">Demo</span>
-  </div>
-  <p class="example-banner">Fictional example — not a real client. <a href="/">Career Systems</a></p>
+<body class="example-site example-site--{{ theme }}">
+  {% include "examples/_mock_chrome.html" %}
+  {% include "examples/_suite_nav.html" %}
 
   <div class="example-shell example-layout-dark">
     <aside class="example-sidebar">
       <p class="example-eyebrow">Open to work</p>
       <h1>{{ person_name }}</h1>
-      <p class="role">{{ target_role }}<br>Career change · bootcamp + ops background</p>
+      <p class="role">{{ target_role }}<br>{{ role_tagline }}</p>
       <nav>
         <a href="#intro">Intro</a>
+        <a href="#education">Education</a>
         <a href="#projects">Projects</a>
         <a href="#stack">Stack</a>
-        <a href="/example/jordan-kim/resume">Resume</a>
-        <a href="mailto:jordan.kim@example.com">Contact</a>
+        <a href="{{ resume_pdf_url }}" download>Download PDF</a>
+        <a href="{{ resume_url }}">Resume</a>
+        <a href="{{ github_url }}">GitHub</a>
+        <a href="{{ linkedin_url }}">LinkedIn</a>
       </nav>
-      <p class="example-sidebar-note">Retail team lead → full-stack bootcamp → SWE search. Pivot story aligned across this site, resume, and LinkedIn.</p>
+      <p class="example-sidebar-note">{{ sidebar_note }}</p>
     </aside>
 
     <main class="example-main">
       <header class="example-hero example-animate" id="intro">
         <h2>Shipped tools, not tutorial clones.</h2>
-        <p class="example-lead">I automated inventory reporting as a floor lead. Now I build APIs and UIs with tests, deploys, and commit history recruiters can actually read.</p>
+        <p class="example-lead">{{ hero_lead }}</p>
         <div class="example-actions">
           <a class="example-btn example-btn-primary example-arrow" href="#projects">Featured work</a>
-          <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="example-btn example-btn-secondary" href="{{ github_url }}">GitHub</a>
         </div>
       </header>
 
-      <section class="example-section example-animate example-animate-delay-1" id="projects">
-        <div class="example-section-head">
-          <h2>Projects</h2>
-          <span class="example-section-label">Featured</span>
-        </div>
+      <section class="example-section" id="education">
+        <div class="example-section-head"><h2>Education</h2><span class="example-section-label">Credentials</span></div>
+        <article class="example-edu-card">
+          <h3>{{ education.degree }}</h3>
+          <p class="meta">{{ education.school }} · {{ education.dates }}</p>
+          <p class="example-prose">{{ education.detail }}</p>
+        </article>
+        {% if extra_education %}
+        <article class="example-edu-card example-edu-card--secondary">
+          <h3>{{ extra_education.degree }}</h3>
+          <p class="meta">{{ extra_education.school }} · {{ extra_education.dates }}</p>
+          <p class="example-prose">{{ extra_education.detail }}</p>
+        </article>
+        {% endif %}
+      </section>
+
+      <section class="example-section" id="projects">
+        <div class="example-section-head"><h2>Projects</h2><span class="example-section-label">Featured</span></div>
         <div class="example-bento">
+          {% for card in project_cards %}
           <article class="example-project">
-            <div class="example-project-visual example-project-visual--code">
-              <span class="example-project-visual-label">FastAPI · React</span>
+            <div class="example-project-visual example-project-visual--{{ card.project.visual_tone }}">
+              <span class="example-project-visual-label">{{ card.project.visual_label }}</span>
             </div>
             <div class="example-project-body">
-              <h3>ShiftSync API</h3>
-              <p class="meta">PostgreSQL · JWT · Docker</p>
-              <p>REST API + React UI for shift swaps at small retailers — replaces spreadsheet chaos with auditable requests.</p>
-              <p class="example-project-outcome"><strong>Outcome:</strong> Pilot store cut scheduling conflicts in manual tests; documented OpenAPI + deploy on Render.</p>
+              <h3>{{ card.project.title }}</h3>
+              <p class="meta">{{ card.project.stack }}</p>
+              <p>{{ card.project.summary }}</p>
+              <p class="example-project-outcome"><strong>Outcome:</strong> {{ card.project.outcome }}</p>
               <div class="example-project-actions">
-                <a class="example-btn example-btn-primary example-arrow" href="https://github.com" target="_blank" rel="noopener noreferrer">Live demo</a>
-                <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
+                <a class="example-btn example-btn-primary example-arrow" href="{{ card.primary_url }}">{{ card.project.primary_cta }}</a>
+                <a class="example-btn example-btn-secondary" href="{{ card.secondary_url }}">{{ card.project.secondary_cta }}</a>
               </div>
             </div>
           </article>
-          <article class="example-project">
-            <div class="example-project-visual example-project-visual--code">
-              <span class="example-project-visual-label">ML · Python</span>
-            </div>
-            <div class="example-project-body">
-              <h3>Inventory Anomaly Detector</h3>
-              <p class="meta">scikit-learn · pandas</p>
-              <p>Unsupervised flags on nightly shrink exports — tied to real ops experience from prior role.</p>
-              <p class="example-project-outcome"><strong>Outcome:</strong> SKU clusters surfaced for manual audit; notebook + README for hiring screens.</p>
-              <div class="example-project-actions">
-                <a class="example-btn example-btn-primary example-arrow" href="https://github.com" target="_blank" rel="noopener noreferrer">Notebook</a>
-                <a class="example-btn example-btn-secondary" href="https://github.com" target="_blank" rel="noopener noreferrer">Repo</a>
-              </div>
-            </div>
-          </article>
+          {% endfor %}
         </div>
       </section>
 
       <section class="example-section" id="stack">
-        <div class="example-section-head">
-          <h2>Stack</h2>
-          <span class="example-section-label">Daily drivers</span>
-        </div>
-        <ul class="example-pills">
-          <li>Python</li>
-          <li>TypeScript</li>
-          <li>React</li>
-          <li>FastAPI</li>
-          <li>PostgreSQL</li>
-          <li>Docker</li>
-          <li>Git</li>
-          <li>pytest</li>
-        </ul>
+        <div class="example-section-head"><h2>Stack</h2><span class="example-section-label">Daily drivers</span></div>
+        <ul class="example-pills">{% for skill in skills %}<li>{{ skill }}</li>{% endfor %}</ul>
       </section>
     </main>
   </div>
-
-  <footer class="example-footer">Example delivery · {{ mock_domain }} · Career Systems Accelerator</footer>
+  <footer class="example-footer">Example delivery · {{ mock_domain }} · Career Systems {{ package_label }}</footer>
   <script src="/static/examples.js?v=1" defer></script>
 </body>
 </html>
