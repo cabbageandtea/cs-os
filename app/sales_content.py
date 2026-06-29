@@ -265,10 +265,10 @@ COMPARISON_ROWS: tuple[dict[str, str], ...] = (
         "doggybagg": "100% client-owned",
     },
     {
-        "factor": "See the delivery first",
-        "resume_writers": "Generic portfolio PDFs",
-        "diy_builders": "Blank templates",
-        "doggybagg": "Full portfolio suite on site",
+        "factor": "Preview before checkout",
+        "resume_writers": "Sample PDFs",
+        "diy_builders": "Theme previews",
+        "doggybagg": "Alex + Taylor — full site, resume, GitHub, LinkedIn",
     },
     {
         "factor": "Interview guarantee",

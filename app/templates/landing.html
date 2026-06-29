@@ -160,18 +160,17 @@
 
 <section class="band band--compare-market" id="why-us" data-reveal>
   <p class="section-label">Why {{ site_name }}</p>
-  <h2>What the market gets wrong — and how we fix it</h2>
+  <h2>Compare your options</h2>
   <p class="section-lead meta">
-    Resume writers, DIY builders, and vague bundles dominate this space. We built the opposite:
-    fixed scope, honest revision caps, live delivery on your accounts.
+    Same goal — proof you’re ready. Different paths on live delivery, alignment, and what you can verify before you pay.
   </p>
 
   <div class="market-pitfall-grid">
     {% for item in market_pitfalls %}
     <article class="market-pitfall-card">
       <h3>{{ item.title }}</h3>
-      <p class="market-pitfall-problem"><strong>Their mistake:</strong> {{ item.problem }}</p>
-      <p class="market-pitfall-answer"><strong>Our standard:</strong> {{ item.answer }}</p>
+      <p class="market-pitfall-problem"><strong>Common gap:</strong> {{ item.problem }}</p>
+      <p class="market-pitfall-answer"><strong>How we handle it:</strong> {{ item.answer }}</p>
     </article>
     {% endfor %}
   </div>
