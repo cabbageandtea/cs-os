@@ -1,12 +1,12 @@
 {% extends "base_public.html" %}
 {% block robots %}noindex, nofollow{% endblock %}
-{% block title %}Resume intake — {{ site_name }}{% endblock %}
+{% block title %}Open your brief — {{ site_name }}{% endblock %}
 {% block body_class %}page-purchase-return{% endblock %}
 {% block content %}
 <header class="page-header">
   <p class="kicker">After payment</p>
-  <h1>Resume your intake</h1>
-  <p class="meta">Use your Stripe checkout session ID to return to the intake form.</p>
+  <h1>Find your brief link</h1>
+  <p class="meta">Paid already? Paste your Stripe session ID to get back to the project brief.</p>
 </header>
 
 <div class="public-card">
@@ -28,7 +28,7 @@
     <button type="submit" class="btn btn-primary">Continue</button>
   </form>
   <p class="field-hint" style="margin-top: var(--space-4);">
-    Need accounts first? <a href="/start">See intake checklist</a>
+    Need accounts first? <a href="/start">See account checklist</a>
   </p>
 </div>
 {% endblock %}

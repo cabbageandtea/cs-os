@@ -5,7 +5,7 @@
 <header class="page-header">
   <p class="kicker">Process</p>
   <h1>What delivery looks like</h1>
-  <p class="section-lead">Alex Rivera — Launch client from payment to handoff.</p>
+  <p class="section-lead">Checkout to handoff, step by step. This walkthrough follows {{ example.name }} ({{ example.target_role }}).</p>
 </header>
 
 <section class="section-block">
@@ -42,8 +42,17 @@
   </table>
 </section>
 
+<section class="section-block">
+  <p class="section-label">More previews</p>
+  <p class="meta">
+    {% for link in showcase_links %}
+    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% if not loop.last %} · {% endif %}
+    {% endfor %}
+  </p>
+</section>
+
 <div class="hero-cta">
-  <a href="{{ example.portfolio_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View Alex's portfolio</a>
+  <a href="{{ example.portfolio_url }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View {{ example.name.split()[0] }}'s portfolio</a>
   <a href="/checkout" class="btn btn-secondary">View packages</a>
   <a href="/" class="btn btn-secondary">Home</a>
 </div>

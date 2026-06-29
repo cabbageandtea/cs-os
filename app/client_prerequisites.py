@@ -22,7 +22,7 @@ CLIENT_PREREQUISITES: tuple[ClientPrerequisite, ...] = (
     ClientPrerequisite(
         slug="github",
         title="GitHub account",
-        why="Your portfolio is deployed under your GitHub profile — recruiters see your work directly.",
+        why="We deploy your portfolio under your GitHub — recruiters click your work, not ours.",
         signup_url="https://github.com/signup",
         time_minutes=5,
         required_for=_ALL,
@@ -59,7 +59,7 @@ CLIENT_PREREQUISITES: tuple[ClientPrerequisite, ...] = (
     ClientPrerequisite(
         slug="linkedin",
         title="LinkedIn profile",
-        why="Required for Launch and Accelerator — resume and portfolio align with your public profile.",
+        why="Launch and Accelerator include LinkedIn updates — it needs to match your resume and site.",
         signup_url="https://www.linkedin.com/signup",
         time_minutes=10,
         required_for=frozenset({"launch", "accelerator"}),
@@ -71,7 +71,7 @@ CLIENT_PREREQUISITES: tuple[ClientPrerequisite, ...] = (
         signup_url="https://www.namecheap.com/",
         time_minutes=10,
         required_for=frozenset({"accelerator"}),
-        note="Optional — say in intake if you prefer github.io only.",
+        note="Optional — note in your brief if you prefer github.io only.",
     ),
 )
 

@@ -1,12 +1,12 @@
 {% extends "base_public.html" %}
 {% block robots %}noindex, nofollow{% endblock %}
-{% block title %}Complete intake — {{ site_name }}{% endblock %}
+{% block title %}Project brief — {{ site_name }}{% endblock %}
 {% block body_class %}page-intake-public{% endblock %}
 {% block content %}
 <header class="page-header">
   <p class="kicker">After payment</p>
-  <h1>Complete your intake</h1>
-  <p class="meta">{{ package_name }} · Delivery starts when this form is submitted.</p>
+  <h1>Tell us about your projects</h1>
+  <p class="meta">{{ package_name }} · We start building when you submit this form.</p>
 </header>
 
 {% if error %}
@@ -19,7 +19,7 @@
     {% include "_intake_prerequisites.html" %}
     {% include "_intake_form_fields.html" %}
     <div class="form-span-2 form-actions">
-      <button type="submit" class="btn btn-primary">Submit intake</button>
+      <button type="submit" class="btn btn-primary">Submit brief</button>
     </div>
   </form>
 </div>

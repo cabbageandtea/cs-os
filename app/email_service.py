@@ -66,18 +66,18 @@ def build_intake_reminder_email(
     start_url: str,
 ) -> tuple[str, str, str]:
     """Return (subject, plain text, html)."""
-    subject = f"Complete your intake — {package_name}"
+    subject = f"Next step: your project brief — {package_name}"
     plain = f"""Hi {client_name},
 
-Payment received for {package_name}. Delivery starts when your intake form is complete.
+Payment received for {package_name}. We start building when your brief is complete.
 
-Complete intake (bookmark this link):
+Open your brief (bookmark this link):
 {intake_url}
 
 Account checklist before you submit:
 {start_url}
 
-If you close this tab, use the same intake link above or visit:
+If you close this tab, use the same brief link above or visit:
 {start_url.replace('/start', '/purchase/return')}
 
 Questions: {support_email()}
@@ -87,8 +87,8 @@ Questions: {support_email()}
     html = f"""<!DOCTYPE html>
 <html lang="en"><body style="font-family:system-ui,sans-serif;line-height:1.55;color:#111;max-width:36rem;">
 <p>Hi {client_name},</p>
-<p>Payment received for <strong>{package_name}</strong>. Delivery starts when your intake form is complete.</p>
-<p><a href="{intake_url}" style="display:inline-block;background:#111;color:#fff;padding:12px 18px;text-decoration:none;border-radius:3px;">Complete intake</a></p>
+<p>Payment received for <strong>{package_name}</strong>. We start building when your brief is complete.</p>
+<p><a href="{intake_url}" style="display:inline-block;background:#111;color:#fff;padding:12px 18px;text-decoration:none;border-radius:3px;">Open project brief</a></p>
 <p style="font-size:14px;color:#555;">Account checklist: <a href="{start_url}">{start_url}</a></p>
 <p style="font-size:14px;color:#555;">Lost your link? <a href="{start_url.replace('/start', '/purchase/return')}">Resume with session ID</a></p>
 <p style="font-size:14px;color:#888;">Questions: <a href="mailto:{support_email()}">{support_email()}</a></p>

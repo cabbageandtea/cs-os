@@ -148,8 +148,8 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "and present them so non-technical stakeholders act on the insight."
         ),
         hero_lead=(
-            "I turn messy operational data into dashboards and memos stakeholders act on — "
-            "SQL pipelines, Plotly views, and impact lines that survive a six-second scan."
+            "I turn messy operational data into dashboards and short memos people actually use — "
+            "SQL, Plotly, and bullet points that name the outcome first."
         ),
         sidebar_note="",
         education=MockEducation(
@@ -249,7 +249,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         role_tags=("Data Analyst Intern", "Healthcare analytics", "Campus operations", "Civic data"),
         approach_title="Where questions meet defensible numbers",
         approach_lead=(
-            "Not charts for their own sake — building pipelines and narratives that answer "
+            "Not charts for their own sake — pipelines and write-ups that answer "
             "who acts on the insight and what changed because of it."
         ),
         approach_steps=(
@@ -268,8 +268,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             MockApproachStep(
                 "03",
                 "Present",
-                "Executive summaries, annotated dashboards, and PDF memos built for a six-second "
-                "recruiter scan — outcome first, method second.",
+                "One-page PDF memos with the number a hiring manager can repeat back in a screen.",
             ),
         ),
         experience_heading="Built in labs, validated on real questions",
@@ -354,10 +353,10 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "Intro to Database Systems — A",
         ),
         credentials_heading="Formalizing a data-oriented path",
-        credentials_lead="Coursework and credentials aligned to analyst screens — not a scatter of unrelated badges.",
+        credentials_lead="Coursework and certs that fit analyst interviews — not a badge collection.",
         recruiter_snapshot=(
-            "IS senior · Python/SQL dashboards · campus + healthcare datasets · May 2027 · "
-            "seeking data analyst internships · portfolio + PDF + LinkedIn aligned."
+            "IS senior · Python/SQL dashboards · campus + healthcare data · May 2027 · "
+            "looking for data analyst internships."
         ),
         contact_heading="Open to the next internship",
         location_note="Remote, hybrid, or on-site — healthcare, campus ops, and civic data teams.",
@@ -383,8 +382,8 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "audit-friendly logging, and deploy notes a teammate can follow on Render."
         ),
         hero_lead=(
-            "Full-stack capstones with live demos, pytest coverage, and deploy guides — "
-            "one engineering story from GitHub through PDF to LinkedIn."
+            "Full-stack capstones with live demos, tests, and README deploy steps — "
+            "the same projects on GitHub, my site, and my resume."
         ),
         sidebar_note="",
         education=MockEducation(
@@ -458,9 +457,8 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         contact_blurb="Open to software engineering internships — health tech, SaaS, and product-minded teams.",
         linkedin_headline="CS senior · Full-stack · Seeking software engineering internship",
         linkedin_about=(
-            "Building deployed React + FastAPI capstones with tests and README deploy sections. "
-            "Healthcare IT focus with attention to access control and audit trails. Portfolio, resume, "
-            "and GitHub aligned at taylornguyen.me."
+            "Shipping React + FastAPI capstones with tests and README deploy sections. "
+            "Healthcare IT focus — access control and audit trails matter. Portfolio at taylornguyen.me."
         ),
         linkedin_experience=(
             MockExperience(
@@ -488,8 +486,8 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "Accessible React interfaces with clear states",
             "REST APIs with auth, validation, and tests",
             "Healthcare-minded logging without over-engineering",
-            "Deploy guides recruiters can run locally",
-            "One narrative across every hiring surface",
+            "Deploy guides a recruiter can follow on a lunch break",
+            "Same projects on site, PDF, and LinkedIn",
         ),
         role_tags=("Software Engineer Intern", "Full-stack", "Health tech", "Product engineering"),
         approach_title="From wireframe to deployable service",
@@ -597,10 +595,9 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "Data Structures & Algorithms — A",
         ),
         credentials_heading="Formalizing a product-minded path",
-        credentials_lead="Coursework and club leadership aligned to SWE screens — not a scatter of half-finished repos.",
+        credentials_lead="Coursework and club work that match SWE internship screens — not half-finished forks.",
         recruiter_snapshot=(
-            "CS senior · React + FastAPI capstones · health IT focus · May 2026 · seeking SWE internships · "
-            "portfolio + PDF + LinkedIn aligned."
+            "CS senior · React + FastAPI capstones · health IT · May 2026 · looking for SWE internships."
         ),
         contact_heading="Open to the next internship",
         location_note="Remote, hybrid, or on-site — health tech, SaaS, and mission-driven product teams.",
@@ -624,8 +621,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "deploys, and commit history recruiters can actually read."
         ),
         sidebar_note=(
-            "Retail team lead → full-stack bootcamp → SWE search. Pivot story aligned across "
-            "this site, resume, and LinkedIn."
+            "Retail team lead → bootcamp → SWE search. Same pivot story on this site, resume, and LinkedIn."
         ),
         education=MockEducation(
             degree="Full-stack engineering certificate",
@@ -701,8 +697,8 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
         contact_blurb="Open to junior SWE roles — backend-leaning full stack with ops domain knowledge.",
         linkedin_headline="Junior Software Engineer · Retail ops → full-stack bootcamp",
         linkedin_about=(
-            "Four years retail leadership, now shipping tested APIs and React UIs. Pivot narrative "
-            "consistent across jordankim.me, GitHub, and resume."
+            "Four years retail leadership, now shipping tested APIs and React UIs. "
+            "Portfolio, GitHub, and resume all tell the same pivot — jordankim.me."
         ),
         linkedin_experience=(
             MockExperience(
@@ -741,7 +737,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "React UIs with clear empty states",
             "Dockerized local dev + Render deploys",
             "Notebook-to-service ML handoffs",
-            "Pivot narrative aligned across every surface",
+            "Same pivot story on site, resume, and LinkedIn",
         ),
         role_tags=("Junior SWE", "Backend-leaning", "Retail domain", "Career change"),
         approach_title="Where ops discipline meets shipping",
@@ -838,7 +834,7 @@ EXAMPLE_PROFILES: dict[str, ExampleProfile] = {
             "AWS Cloud Practitioner (in progress)",
         ),
         credentials_heading="Credentials that support the pivot",
-        credentials_lead="Bootcamp capstone plus prior degree — narrative stays consistent on resume and LinkedIn.",
+        credentials_lead="Bootcamp capstone plus prior degree — same pivot story on resume and LinkedIn.",
         recruiter_snapshot=(
             "Retail floor lead → bootcamp → junior SWE · FastAPI/React · live demo + tests · "
             "Pittsburgh area · seeking backend-leaning full-stack roles."

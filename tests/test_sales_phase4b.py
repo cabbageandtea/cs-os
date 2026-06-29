@@ -20,6 +20,8 @@ def test_landing_page_returns_200(client: TestClient) -> None:
     assert "revision round" in response.text.lower()
     assert "Alex Rivera" in response.text
     assert "Taylor Nguyen" in response.text
+    assert "Jordan Kim" in response.text
+    assert "What we ship" in response.text
     assert "Foundation" in response.text
     assert "Launch" in response.text
     assert "Accelerator" in response.text
@@ -41,6 +43,7 @@ def test_demo_page_describes_delivery(client: TestClient) -> None:
     assert response.status_code == 200
     assert "What delivery looks like" in response.text
     assert "Alex Rivera" in response.text
+    assert "Taylor · SWE" in response.text
 
 
 def test_contact_form_stores_lead(client: TestClient, db_session: Session) -> None:

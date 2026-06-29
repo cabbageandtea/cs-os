@@ -40,7 +40,7 @@ def site_meta_description() -> str:
         return custom
     return (
         f"{site_name()} — {site_tagline().rstrip('.')}. "
-        "Portfolio, resume, and professional presence as one system on accounts you own."
+        "Live portfolio, resume, and LinkedIn on accounts you own."
     )
 
 

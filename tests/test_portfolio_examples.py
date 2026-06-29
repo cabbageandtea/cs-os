@@ -38,7 +38,7 @@ def test_alex_portfolio_example(client) -> None:
     assert "State University" in body
     assert "ex-pro-layout-analyst" in body
     assert "ex-pro-hero--analyst" in body
-    assert "Recruiter snapshot" in body
+    assert "At a glance" in body
     assert "example-suite-nav" in body
     assert 'href="/example/alex-rivera/repo/campus-dining"' in body
     assert "https://github.com" not in body
@@ -54,7 +54,7 @@ def test_taylor_portfolio_example(client) -> None:
     assert "ex-pro--pro-rose" in body
     assert "ex-pro-layout-studio" in body
     assert "ex-pro-hero--light" in body
-    assert "Recruiter snapshot" not in body
+    assert "At a glance" not in body
     assert 'href="/example/taylor-nguyen/demo/careconnect"' in body
     assert 'href="/example/taylor-nguyen/repo/gitpulse"' in body
     assert "Experience" in body

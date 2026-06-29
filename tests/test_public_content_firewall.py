@@ -5,6 +5,8 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
+from app.copy_voice import VOICE_BANNED_PHRASES
+
 # Phrases that reveal business model — must not appear on public HTML.
 BANNED_PUBLIC_PHRASES: tuple[str, ...] = (
     "career systems",
@@ -29,8 +31,6 @@ PUBLIC_ROUTES = [
   "/checkout",
   "/start",
   "/status",
-  "/terms",
-  "/privacy",
   "/example/alex-rivera",
   "/example/taylor-nguyen",
   "/example/taylor-nguyen/linkedin",
@@ -42,11 +42,26 @@ PUBLIC_ROUTES = [
   "/login",
 ]
 
+LEGAL_PUBLIC_ROUTES = ("/terms", "/privacy")
 
-@pytest.mark.parametrize("path", PUBLIC_ROUTES)
+# Legal pages use formal defined terms — voice bans apply to marketing routes only.
+VOICE_CHECK_ROUTES = tuple(PUBLIC_ROUTES)
+STRATEGY_CHECK_ROUTES = tuple(PUBLIC_ROUTES) + LEGAL_PUBLIC_ROUTES
+
+
+@pytest.mark.parametrize("path", STRATEGY_CHECK_ROUTES)
 def test_public_routes_do_not_leak_strategy(client: TestClient, path: str) -> None:
     response = client.get(path)
     assert response.status_code == 200, path
     body = response.text.lower()
     for phrase in BANNED_PUBLIC_PHRASES:
         assert phrase not in body, f"{path} leaked banned phrase: {phrase!r}"
+
+
+@pytest.mark.parametrize("path", VOICE_CHECK_ROUTES)
+def test_public_routes_avoid_ai_voice_tells(client: TestClient, path: str) -> None:
+    response = client.get(path)
+    assert response.status_code == 200, path
+    body = response.text.lower()
+    for phrase in VOICE_BANNED_PHRASES:
+        assert phrase not in body, f"{path} leaked off-voice phrase: {phrase!r}"

@@ -12,8 +12,8 @@ class PackageConfigError(ValueError):
 
 # Customer-facing scope rules — keep in sync with /terms §2 and §5.
 REVISION_ROUND_DEFINITION = (
-    "One revision round = one consolidated feedback message on deliverables in your package. "
-    "Copy, layout, and alignment fixes within that scope count toward your included rounds."
+    "One revision round = one message with all your feedback on deliverables in your package. "
+    "Copy, layout, and matching fixes within that scope count toward your included rounds."
 )
 SCOPE_CREEP_EXAMPLES: tuple[str, ...] = (
     "Changing target role after build has started",
@@ -43,12 +43,12 @@ PACKAGES: dict[str, PackageDefinition] = {
         slug="foundation",
         display_name="Foundation",
         legacy_tier="Basic",
-        tagline="Live portfolio deployed to your GitHub.",
+        tagline="Get a portfolio live on your GitHub.",
         default_price_cents=9900,
         stripe_price_env="STRIPE_PRICE_FOUNDATION",
         deliverables=("Portfolio website", "Deployment URL", "GitHub profile guidance"),
         revision_rounds=1,
-        turnaround_display="5–10 business days after intake",
+        turnaround_display="5–10 business days after your brief is in",
         excludes_display=("Resume rewrite", "LinkedIn optimization", "Strategy session"),
         excluded_task_titles=("Resume rewrite",),
     ),
@@ -56,7 +56,7 @@ PACKAGES: dict[str, PackageDefinition] = {
         slug="launch",
         display_name="Launch",
         legacy_tier="Standard",
-        tagline="Portfolio, resume, and LinkedIn aligned.",
+        tagline="Portfolio, resume, and LinkedIn that match.",
         default_price_cents=19900,
         stripe_price_env="STRIPE_PRICE_LAUNCH",
         deliverables=(
@@ -67,7 +67,7 @@ PACKAGES: dict[str, PackageDefinition] = {
             "GitHub profile guidance",
         ),
         revision_rounds=2,
-        turnaround_display="7–14 business days after intake",
+        turnaround_display="7–14 business days after your brief is in",
         excludes_display=(
             "Strategy session",
             "Career narrative document",
@@ -78,7 +78,7 @@ PACKAGES: dict[str, PackageDefinition] = {
         slug="accelerator",
         display_name="Accelerator",
         legacy_tier="Premium",
-        tagline="Custom domain guidance, strategy, and career narrative.",
+        tagline="For pivots and competitive roles — strategy call included.",
         default_price_cents=34900,
         stripe_price_env="STRIPE_PRICE_ACCELERATOR",
         deliverables=(
@@ -91,7 +91,7 @@ PACKAGES: dict[str, PackageDefinition] = {
             "Custom domain setup guide",
         ),
         revision_rounds=3,
-        turnaround_display="10–21 business days after intake",
+        turnaround_display="10–21 business days after your brief is in",
         excludes_display=(
             "Ongoing maintenance or retainers",
             "Job applications submitted on your behalf",
