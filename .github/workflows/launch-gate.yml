@@ -1,6 +1,8 @@
 name: Launch Gate
 
 on:
+  schedule:
+    - cron: "17 3 * * *"
   workflow_dispatch:
     inputs:
       base_url:
@@ -11,8 +13,14 @@ on:
 jobs:
   launch-gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
+    concurrency:
+      group: launch-gate-${{ github.event_name }}
+      cancel-in-progress: true
+    env:
+      BASE_URL: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.base_url || 'https://doggybagg.cc' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,4 +35,14 @@ jobs:
         run: python scripts/validate_claims_matrix.py
 
       - name: Run launch gate
-        run: python scripts/launch_gate.py "${{ github.event.inputs.base_url }}"
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/launch_gate.py "$BASE_URL" | tee launch-gate.log
+
+      - name: Upload launch gate log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: launch-gate-log
+          path: launch-gate.log

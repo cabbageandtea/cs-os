@@ -23,5 +23,12 @@ This folder is for **operator and agent** context. Never expose on:
 - [REVENUE_INCIDENT_PLAYBOOK.md](./REVENUE_INCIDENT_PLAYBOOK.md) — Sev-1 protocol for payment/brief/email failures
 - [14_DAY_EXECUTION_BOARD.md](./14_DAY_EXECUTION_BOARD.md) — operator plan to close launch blockers quickly
 - [EXTERNAL_PROPERTY_REGISTRY.md](./EXTERNAL_PROPERTY_REGISTRY.md) — track Search Console, Ads, GBP, DNS, and drift
+- `.github/workflows/launch-gate.yml` — daily production watchdog plus manual launch gate runs
 
 When editing `app/sales_content.py` or public templates, use **outcome language only**.
+
+## Automation baseline
+
+- The launch gate runs nightly at `03:17 UTC` and is also available on demand from GitHub Actions.
+- Use the workflow dispatch `base_url` input for staging or preview runs.
+- Keep production checks green before changing pricing, copy, or public assets.
