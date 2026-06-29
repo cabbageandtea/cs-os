@@ -33,7 +33,8 @@ SEO_REQUIRED = (
     'property="og:image"',
     'name="twitter:card"',
     "summary_large_image",
-    "logo-header.png",
+    "brand-mark--icon",
+    "brand-name",
 )
 
 
