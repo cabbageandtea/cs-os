@@ -59,6 +59,17 @@ def test_public_routes_do_not_leak_strategy(client: TestClient, path: str) -> No
 
 
 @pytest.mark.parametrize("path", VOICE_CHECK_ROUTES)
+def test_public_routes_avoid_ops_leaks(client: TestClient, path: str) -> None:
+    from app.copy_voice import OPS_LEAK_BANNED_PHRASES
+
+    response = client.get(path)
+    assert response.status_code == 200, path
+    body = response.text.lower()
+    for phrase in OPS_LEAK_BANNED_PHRASES:
+        assert phrase not in body, f"{path} leaked ops detail: {phrase!r}"
+
+
+@pytest.mark.parametrize("path", VOICE_CHECK_ROUTES)
 def test_public_routes_avoid_ai_voice_tells(client: TestClient, path: str) -> None:
     response = client.get(path)
     assert response.status_code == 200, path

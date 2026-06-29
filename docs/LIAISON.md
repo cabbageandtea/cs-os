@@ -1,59 +1,68 @@
-# Liaison playbook — Career Systems OS
+# Liaison playbook — Doggybagg
 
-You are the **human between clients and the system**. Everything else is automated or operator UI.
+You are the **human between clients and the system**. You do the work; the site handles money, scope, and paperwork.
 
 ## Your only recurring jobs
 
 | When | You do | System handles |
 |------|--------|----------------|
-| Client asks about packages | Send them your checkout URL | Pricing, Stripe Checkout, branding |
-| Client paid | **Nothing** — auto-redirect to intake | Webhook + success page redirect |
-| Client submitted intake | **Do the work** in Analysis → Delivered | Validation, template pick, pipeline at Analysis |
-| Client wants changes at Review | Collect **one** feedback message, log in ops notes | Revision caps per package |
-| Stripe/email looks wrong | One-time Dashboard fix (below) | Per-session Checkout branding |
+| Client asks about packages | Send them **https://doggybagg.cc/checkout** | Pricing, scope lists, Stripe |
+| Client paid | **Nothing** — they land on the brief | Webhook + email with brief link |
+| Client submitted brief | **Build** Analysis → Delivered in ops | Validation, template pick, pipeline |
+| Client wants changes at Review | **One** feedback message per revision round | Caps shown on checkout (1 / 2 / 3) |
+| Stripe/email looks wrong | One-time Dashboard fix (below) | Checkout branding per session |
 
-## One-time setup (you, ~10 minutes)
+## What clients see (you don't need to manage this)
+
+- **Scope before pay** — included / not included on checkout and landing  
+- **Examples** — Alex, Taylor, Jordan (Launch / Accelerator level work)  
+- **No ops secrets** — template paths, delivery kits, and pipeline jargon stay in **/clients** (password)
+
+If a client asks "how do you build it?" → *"Fixed scope for your tier; we work in your GitHub and hand off the live site."* Don't walk them through templates or internal steps.
+
+## One-time setup (~10 minutes)
 
 **Start here if you're lost:** [SETUP_SIMPLE.md](./SETUP_SIMPLE.md)
 
-1. **Start local stack** (from repo root):
+1. **Local stack** (from repo root):
    ```powershell
    .\scripts\start_local.ps1
    ```
 2. **Stripe Dashboard (test mode)** → Settings → Business details:
-   - Business name: **Career Systems**
-   - Upload logo from `app/static/logo-icon.png`
+   - Business name: **Doggybagg**
+   - Logo: `app/static/logo-icon.png`
    - Brand color: `#ff6b4a`
-3. **Webhook secret** — `start_local.ps1` writes this to `.env` automatically. Keep the **stripe listen** window open while testing payments.
+3. **Webhook** — `start_local.ps1` writes `STRIPE_WEBHOOK_SECRET` to `.env`. Keep **stripe listen** open while testing pay.
 
 ## Operator access
 
-- URL: http://127.0.0.1:8003/login  
-- Password: value of `OPS_PASSWORD` in `.env` (default `csos-local`)
+- Local: http://127.0.0.1:8003/login  
+- Production: https://doggybagg.cc/login  
+- Password: `OPS_PASSWORD` in Render env (never share with clients)
 
 ## What you never need to do
 
-- Manually create DB rows for paid clients (webhook does it)
-- Edit intake validation rules per client (package rules are automatic)
-- Run pytest (hooks run on save; run `pytest tests/ -v` only if something breaks)
-- Deploy until you have 3 real clients tracked locally
+- Manually create paid clients (webhook does it)
+- Explain internal templates or file paths to clients
+- Run pytest (hooks on save; `python -m pytest tests/` if something breaks)
+- Worry about marketing copy drift — `tests/test_package_scope_chain.py` guards scope
 
-## Escalation triggers (ping a developer)
+## Escalation (ping a developer)
 
-- Payment succeeded but no client on dashboard after 2 minutes → webhook secret or `stripe listen` not running
-- Intake link says invalid/expired → re-issue from client detail or support flow
-- Refund in Stripe → client auto-archives; no action unless client disputes
+- Paid but no client on dashboard after 2 minutes → webhook / `stripe listen`
+- Brief link invalid → re-issue from client detail
+- Refund in Stripe → client archives automatically
 
 ## Success metric
 
-**3 real clients** from payment → intake → delivered, with zero “where is my data?” messages.
+**3 real clients** payment → brief → **Delivered**, zero "where is my data?" messages.
 
-## Showcase / comp client (no charge)
+## Showcase (no charge)
 
-First real delivery in the **technical-entry wedge** — no Stripe. Full checklist: [SHOWCASE_CLIENT_WORKFLOW.md](./SHOWCASE_CLIENT_WORKFLOW.md)
+First delivery in the technical-entry wedge: [SHOWCASE_CLIENT_WORKFLOW.md](./SHOWCASE_CLIENT_WORKFLOW.md)
 
 ## Ideal clients #2–#3
 
-Target the same wedge before expanding scope. Qualification checklist: [ICP.md](./ICP.md)
+Same wedge as showcase: [ICP.md](./ICP.md)
 
-See `EXECUTION.md` for full business scope.
+Package truth chain: `EXECUTION.md` → `app/package_config.py` → checkout → Terms.

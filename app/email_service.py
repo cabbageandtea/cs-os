@@ -74,7 +74,7 @@ Payment received for {package_name}. We start building when your brief is comple
 Open your brief (bookmark this link):
 {intake_url}
 
-Account checklist before you submit:
+Account setup before you submit:
 {start_url}
 
 If you close this tab, use the same brief link above or visit:
@@ -89,7 +89,7 @@ Questions: {support_email()}
 <p>Hi {client_name},</p>
 <p>Payment received for <strong>{package_name}</strong>. We start building when your brief is complete.</p>
 <p><a href="{intake_url}" style="display:inline-block;background:#111;color:#fff;padding:12px 18px;text-decoration:none;border-radius:3px;">Open project brief</a></p>
-<p style="font-size:14px;color:#555;">Account checklist: <a href="{start_url}">{start_url}</a></p>
+<p style="font-size:14px;color:#555;">Account setup: <a href="{start_url}">{start_url}</a></p>
 <p style="font-size:14px;color:#555;">Lost your link? <a href="{start_url.replace('/start', '/purchase/return')}">Resume with session ID</a></p>
 <p style="font-size:14px;color:#888;">Questions: <a href="mailto:{support_email()}">{support_email()}</a></p>
 <p style="font-size:12px;color:#aaa;margin-top:1.5rem;">— {site_name()}</p>

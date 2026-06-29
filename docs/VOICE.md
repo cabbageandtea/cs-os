@@ -79,6 +79,23 @@ Hero / #examples     → human
 - "Single narrative across every surface"
 - Consultant stats ("client-owned accounts", "intake triggers delivery")
 
+## Public boundary (what customers see vs ops)
+
+**Show freely:** package scope, revision caps, turnaround, examples, account setup, refund/revision rules.
+
+**Keep ops-only:** template repo paths, delivery-kit filenames, pipeline task names, hour estimates, margin math, competitor research, prompt libraries.
+
+**Legal exception:** `/terms` may say "template-based" — required for IP and expectations. Marketing pages should not explain *how* templates work.
+
+| Prefer (customer) | Avoid (marketing) |
+|-------------------|-------------------|
+| site layout, brief | portfolio template, intake (UI) |
+| account setup | account checklist (sounds internal) |
+| we build / we ship | audit profiles, QA checklist |
+| same scope every time | same checklist every time |
+
+Tests: `OPS_LEAK_BANNED_PHRASES` in `app/copy_voice.py` + `tests/test_public_content_firewall.py`.
+
 ## Edit checklist
 
 1. Read aloud — LinkedIn carousel or friend explaining $199?

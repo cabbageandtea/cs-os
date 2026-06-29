@@ -25,3 +25,15 @@ VOICE_BANNED_PHRASES: tuple[str, ...] = (
     "after:</strong>",
     "doggybagg delivery",
 )
+
+# Ops/process language — must not appear on customer marketing HTML (terms may still say "template").
+OPS_LEAK_BANNED_PHRASES: tuple[str, ...] = (
+    "templates/resume",
+    "templates/portfolio/",
+    "portfolio template preference",
+    "confirm your portfolio template",
+    "same checklist every time",
+    "we run the same checklist",
+    "internal qa checklist",
+    "qa checklist",
+)

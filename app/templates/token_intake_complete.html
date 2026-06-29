@@ -1,15 +1,15 @@
 {% extends "base_public.html" %}
 {% block robots %}noindex, nofollow{% endblock %}
-{% block title %}Intake Complete — {{ site_name }}{% endblock %}
+{% block title %}Brief received — {{ site_name }}{% endblock %}
 {% block body_class %}page-intake-complete{% endblock %}
 {% block content %}
 <header class="public-page-header">
   <p class="ops-eyebrow">All set</p>
-  <h1>Intake submitted</h1>
+  <h1>Brief received</h1>
   <p class="meta">Thank you, {{ client_name }}. Your delivery timeline starts now.</p>
 </header>
 <div class="bento-card ops-form-card">
-  <p>We’ll audit your profiles, confirm your portfolio template, and begin build. Watch the email from your purchase for updates.</p>
-  <p class="field-hint"><a href="/start">What happens next &amp; how to reach us</a></p>
+  <p>We’ll review what you sent and email you when the first draft is ready. Reply to that thread for revision rounds included in your package.</p>
+  <p class="field-hint"><a href="/status">Check status</a> · <a href="/contact">Questions</a></p>
 </div>
 {% endblock %}

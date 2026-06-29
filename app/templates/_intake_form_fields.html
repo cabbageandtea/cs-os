@@ -77,12 +77,12 @@
 </div>
 
 <div>
-  <label for="portfolio_template">Portfolio template preference</label>
+  <label for="portfolio_template">Site layout (optional)</label>
   <select id="portfolio_template" name="portfolio_template">
-    <option value="">No preference</option>
-    <option value="minimal" {% if prefill_portfolio_template == 'minimal' %}selected{% endif %}>Minimal</option>
-    <option value="data-tech" {% if prefill_portfolio_template == 'data-tech' %}selected{% endif %}>Data-Tech</option>
-    <option value="professional" {% if prefill_portfolio_template == 'professional' %}selected{% endif %}>Professional</option>
+    <option value="">No preference — we'll pick the best fit</option>
+    <option value="minimal" {% if prefill_portfolio_template == 'minimal' %}selected{% endif %}>Clean &amp; simple</option>
+    <option value="data-tech" {% if prefill_portfolio_template == 'data-tech' %}selected{% endif %}>Projects &amp; tech stack</option>
+    <option value="professional" {% if prefill_portfolio_template == 'professional' %}selected{% endif %}>Professional / business</option>
   </select>
 </div>
 

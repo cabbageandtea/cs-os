@@ -55,7 +55,7 @@ PROCESS_STEPS: tuple[dict[str, str], ...] = (
     {
         "step": "02",
         "title": "Send your brief",
-        "body": "Projects, links, target role, account checklist. Students: optional GitHub Education + .me setup on /start. We start when the form is complete.",
+        "body": "Projects, links, target role, and account setup. Students: optional GitHub Education + .me on /start. We start when the form is complete.",
     },
     {
         "step": "03",
@@ -195,7 +195,7 @@ ME_DOMAIN_WHY = {
 
 PRINCIPLES: tuple[str, ...] = (
     "Not a design agency. Not a resume shop. We ship your portfolio and make the rest match.",
-    "Same checklist every time — so you know what you're buying.",
+    "Same scope every time — listed on checkout before you pay.",
     "When we're done, you own the repo, the domain, and the files.",
 )
 
@@ -215,7 +215,7 @@ MARKET_PITFALLS: tuple[dict[str, str], ...] = (
     {
         "title": "PDF-only deliverables",
         "problem": (
-            "Typical resume writers ($150–$600) return documents. Recruiters still cannot see "
+            "Typical resume services return documents. Recruiters still cannot see "
             "deployed projects when they search your name."
         ),
         "answer": (
@@ -246,7 +246,7 @@ MARKET_PITFALLS: tuple[dict[str, str], ...] = (
     {
         "title": "Builder lock-in",
         "problem": (
-            "Cheap portfolio tools ($19–$50) host on their subdomain. You do not own the repo, "
+            "Some portfolio tools host on their subdomain. You do not own the repo, "
             "DNS, or deployment."
         ),
         "answer": (
@@ -370,7 +370,7 @@ LANDING_FAQ = [
     (
         "Why not build this myself?",
         "You can. Budget 20+ hours for deploy, writing, and making everything consistent. "
-        "We run the same checklist every time so you don't have to.",
+        "We follow the same steps every time so you don't have to.",
     ),
     (
         "Do I keep my accounts?",
@@ -378,7 +378,7 @@ LANDING_FAQ = [
     ),
     (
         "What do I need before starting?",
-        "GitHub, an email you check, and LinkedIn for Launch+. The form includes a short account checklist. "
+        "GitHub, an email you check, and LinkedIn for Launch+. The brief includes a short account setup section. "
         "Students: verify GitHub Education (.edu email) if you want help with a free .me — see /start.",
     ),
     (
@@ -390,7 +390,7 @@ LANDING_FAQ = [
     (
         "I'm a student — anything special?",
         "Verify GitHub Education with your .edu email, then claim a free .me if you're eligible. "
-        "See /start for the checklist. We handle DNS so yourname.me loads your portfolio — "
+        "See /start for setup steps. We handle DNS so yourname.me loads your portfolio — "
         "the same URL goes on your resume and LinkedIn.",
     ),
     (
@@ -438,7 +438,7 @@ LANDING_FAQ = [
 
 DEMO_JOURNEY_STEPS = [
     {"title": "Pick a package", "description": "Foundation, Launch, or Accelerator — scope and revision rounds listed at checkout."},
-    {"title": "Pay and fill out the brief", "description": "Stripe checkout, then projects, links, target role, and account checklist."},
+    {"title": "Pay and fill out the brief", "description": "Stripe checkout, then projects, links, target role, and account setup."},
     {"title": "We build", "description": "Portfolio goes live on your GitHub. Resume and LinkedIn updated on Launch+."},
     {"title": "You review", "description": "Use your included revision rounds, then keep the logins and files."},
 ]
