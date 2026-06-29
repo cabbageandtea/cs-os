@@ -154,8 +154,8 @@
       <thead>
         <tr>
           <th scope="col"></th>
-          <th scope="col">Resume writers</th>
-          <th scope="col">DIY builders</th>
+          <th scope="col">{{ comparison_columns.resume_writers }}</th>
+          <th scope="col">{{ comparison_columns.diy_builders }}</th>
           <th scope="col">{{ site_name }}</th>
         </tr>
       </thead>
@@ -176,8 +176,8 @@
       <article class="compare-card">
         <h3>{{ row.factor }}</h3>
         <dl>
-          <div><dt>Resume writers</dt><dd>{{ row.resume_writers }}</dd></div>
-          <div><dt>DIY builders</dt><dd>{{ row.diy_builders }}</dd></div>
+          <div><dt>{{ comparison_columns.resume_writers }}</dt><dd>{{ row.resume_writers }}</dd></div>
+          <div><dt>{{ comparison_columns.diy_builders }}</dt><dd>{{ row.diy_builders }}</dd></div>
           <div><dt>{{ site_name }}</dt><dd><strong>{{ row.doggybagg }}</strong></dd></div>
         </dl>
       </article>
@@ -232,6 +232,14 @@
           <li>{{ item }}</li>
           {% endfor %}
         </ul>
+        {% if pkg.excludes_display %}
+        <p class="checkout-scope-label checkout-scope-label--muted package-excludes-label">Not included</p>
+        <ul class="checkout-scope-list checkout-scope-list--muted package-excludes-list">
+          {% for item in pkg.excludes_display %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
         <p class="package-meta tabular">{{ pkg.turnaround }} · {{ pkg.revision_rounds }} revision{% if pkg.revision_rounds != 1 %}s{% endif %}</p>
         {% if pkg.preview_links %}
         <p class="package-proof meta">

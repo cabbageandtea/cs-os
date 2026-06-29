@@ -71,6 +71,23 @@ def test_checkout_lists_revision_caps(client: TestClient) -> None:
     assert 'href="/terms#revisions"' in response.text
 
 
+def test_checkout_lists_full_package_scope(client: TestClient) -> None:
+    """Marketing compare table claims scope is visible pre-payment — keep checkout in sync."""
+    from app.package_config import PACKAGES, package_display_order
+
+    response = client.get("/checkout")
+    assert response.status_code == 200
+    html = response.text
+
+    for slug in package_display_order():
+        pkg = PACKAGES[slug]
+        for item in pkg.deliverables:
+            assert item in html, f"missing deliverable {item!r} for {slug}"
+        for item in pkg.excludes_display:
+            assert item in html, f"missing exclusion {item!r} for {slug}"
+        assert pkg.turnaround_display in html, f"missing turnaround for {slug}"
+
+
 def test_terms_revision_section_is_specific(client: TestClient) -> None:
     response = client.get("/terms")
     assert response.status_code == 200

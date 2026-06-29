@@ -37,6 +37,7 @@ from app.sales_content import (
     LANDING_FAQ,
     ME_DOMAIN_WHY,
     MARKET_PITFALLS,
+    COMPARISON_COLUMNS,
     COMPARISON_ROWS,
     PORTFOLIO_SECTION_LABEL,
     PORTFOLIO_SECTION_LEAD,
@@ -119,6 +120,7 @@ def landing_page(request: Request):
             "me_domain_why": ME_DOMAIN_WHY,
             "principles": PRINCIPLES,
             "market_pitfalls": MARKET_PITFALLS,
+            "comparison_columns": COMPARISON_COLUMNS,
             "comparison_rows": COMPARISON_ROWS,
         },
     )

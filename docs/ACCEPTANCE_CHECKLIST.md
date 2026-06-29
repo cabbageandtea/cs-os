@@ -6,10 +6,11 @@ Run this before calling CS-OS "launch ready" or taking client money at scale.
 
 ```powershell
 # Local
+python -m pytest tests/test_package_scope_chain.py tests/test_legal.py
 python scripts/verify_acceptance.py
 
 # Production
-$env:BASE_URL="https://cs-os.onrender.com"
+$env:BASE_URL="https://doggybagg.cc"
 python scripts/verify_acceptance.py
 ```
 

@@ -8,9 +8,16 @@ import json
 import os
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import httpx
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app.package_scope import format_scope_report, run_scope_audit
 
 BANNED_PUBLIC_PHRASES: tuple[str, ...] = (
     "career systems",
@@ -159,6 +166,29 @@ def run_checks(base_url: str, timeout: float) -> list[CheckResult]:
             )
         except httpx.HTTPError as exc:
             results.append(CheckResult("ops_auth_gate", False, str(exc), 10))
+
+        scope_html: dict[str, str | None] = {
+            "checkout_html": None,
+            "landing_html": None,
+            "terms_html": None,
+        }
+        for path, key in (("/", "landing_html"), ("/checkout", "checkout_html"), ("/terms", "terms_html")):
+            try:
+                response = client.get(f"{root}{path}")
+                if response.status_code == 200:
+                    scope_html[key] = response.text
+            except httpx.HTTPError:
+                pass
+
+        scope_issues = run_scope_audit(**scope_html)
+        results.append(
+            CheckResult(
+                "package_scope_chain",
+                not scope_issues,
+                "OK" if not scope_issues else format_scope_report(scope_issues)[:240],
+                12,
+            )
+        )
 
     return results
 

@@ -32,11 +32,16 @@ A structured career positioning system that builds:
 
 ### Offer Structure
 
-| Tier | Price | Includes |
-|------|-------|----------|
-| Basic | $99 | Portfolio site, deployment + domain, GitHub integration |
-| Standard | $199 | Basic + resume rewrite + LinkedIn optimization |
-| Premium | $299–399 | Standard + career narrative alignment, 30-min strategy session, profile audit |
+| Package | Slug | Price | Includes |
+|---------|------|-------|----------|
+| **Foundation** | `foundation` | $99 | Portfolio site, deployment URL, GitHub profile guidance |
+| **Launch** | `launch` | $199 | Foundation + resume (PDF) + LinkedIn optimization notes |
+| **Accelerator** | `accelerator` | $349 | Launch + career narrative, 30-min strategy session, custom domain guide |
+
+**Source of truth:** `app/package_config.py` → checkout → Terms §2 → `app/delivery_kits.py` → ops client detail.  
+**Drift guard:** `pytest tests/test_package_scope_chain.py` and `python scripts/verify_acceptance.py`.
+
+Legacy names (Basic / Standard / Premium) map to the slugs above in `app/demo_seed.py`.
 
 ### Delivery Model
 `Intake → Analysis → Build → QA → Review → Delivered`

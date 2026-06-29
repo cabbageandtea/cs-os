@@ -265,6 +265,11 @@ MARKET_PITFALLS: tuple[dict[str, str], ...] = (
     },
 )
 
+COMPARISON_COLUMNS: dict[str, str] = {
+    "resume_writers": "Resume services",
+    "diy_builders": "Template builders",
+}
+
 COMPARISON_ROWS: tuple[dict[str, str], ...] = (
     {
         "factor": "Live portfolio deployed",
@@ -280,9 +285,9 @@ COMPARISON_ROWS: tuple[dict[str, str], ...] = (
     },
     {
         "factor": "Scope before you pay",
-        "resume_writers": "Often vague until writer assigned",
-        "diy_builders": "Feature list only",
-        "doggybagg": "Full list at /checkout",
+        "resume_writers": "Package tiers on the site — writer and details often after purchase",
+        "diy_builders": "Plan features — you map them to your own build",
+        "doggybagg": "Included, excluded, revision rounds, and timeline on checkout before Stripe",
     },
     {
         "factor": "Revision policy",
@@ -298,9 +303,9 @@ COMPARISON_ROWS: tuple[dict[str, str], ...] = (
     },
     {
         "factor": "Preview before checkout",
-        "resume_writers": "Sample PDFs",
-        "diy_builders": "Theme previews",
-        "doggybagg": "Alex, Taylor, Jordan — full site, resume, GitHub, LinkedIn",
+        "resume_writers": "PDF samples — not a live site you'd get",
+        "diy_builders": "Theme demos — you fill the template",
+        "doggybagg": "Full builds — Alex, Taylor, Jordan (site, resume, GitHub, LinkedIn)",
     },
     {
         "factor": "Interview guarantee",
@@ -318,6 +323,7 @@ class PackageSalesInfo:
     price_display: str
     who_for: str
     deliverables: tuple[str, ...]
+    excludes_display: tuple[str, ...]
     turnaround: str
     revision_rounds: int
     featured: bool = False
@@ -325,6 +331,9 @@ class PackageSalesInfo:
 
 
 _PACKAGE_PREVIEW_LINKS: dict[str, tuple[tuple[str, str], ...]] = {
+    "foundation": (
+        ("Site-only preview · Alex", CASE_STUDY["example_url"]),
+    ),
     "launch": (
         ("Alex · data", CASE_STUDY["example_url"]),
         ("Taylor · SWE", CASE_STUDY_STUDENT["example_url"]),
@@ -343,6 +352,7 @@ PACKAGE_SALES: dict[str, PackageSalesInfo] = {
             "accelerator": "Competitive roles or a pivot — extra strategy and domain help.",
         }[slug],
         deliverables=pkg.deliverables,
+        excludes_display=pkg.excludes_display,
         turnaround=pkg.turnaround_display,
         revision_rounds=pkg.revision_rounds,
         featured=(slug == "launch"),
