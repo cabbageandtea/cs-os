@@ -66,16 +66,16 @@
 
     <a href="/" class="brand" aria-label="{{ site_name }} — home">
 
-      <img src="/static/logo-icon.png?v=5" alt="{{ site_name }}" class="brand-mark brand-mark--icon" width="48" height="48" decoding="async">
+      <img src="/static/logo-icon.png?v=5" alt="{{ site_name }}" class="brand-mark brand-mark--icon" width="48" height="48" decoding="async" fetchpriority="high">
       <span class="brand-name">{{ site_name }}</span>
 
     </a>
 
     <nav>
 
-      <a href="/#examples">Portfolio</a>
-      <a href="/#why-me">Why .me</a>
-      <a href="/#packages">Packages</a>
+      <a href="/#examples" class="nav-secondary">Portfolio</a>
+      <a href="/#why-me" class="nav-secondary">Why .me</a>
+      <a href="/#packages" class="nav-secondary">Packages</a>
 
       <a href="/demo">Process</a>
 

@@ -143,6 +143,7 @@
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1;
+    white-space: nowrap;
   }
 
   .public-header .brand-logo-wrap {
@@ -877,6 +878,8 @@
 
   @media (max-width: 40rem) {
     .hero-convert__rail { grid-template-columns: 1fr; }
+    .public-header .brand-name { display: none; }
+    .public-header nav .nav-secondary { display: none; }
     .public-header nav {
       gap: var(--space-2);
       flex-wrap: wrap;
