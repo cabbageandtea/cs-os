@@ -10,6 +10,8 @@ Career Systems uses **three portfolio shells**. Clients get tailored **content**
 | `data-tech` | Data-Tech | Engineering / data roles | ✓ |
 | `professional` | Professional | Business / ops positioning | Launch+ only |
 
+Scaffold files live under `templates/portfolio/{slug}/`. Professional template added for Launch+ delivery.
+
 ## What is included (all packages)
 
 - Pick template at Analysis (client preference from intake or operator override)

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{FULL_NAME}} — {{TARGET_ROLE}}</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">{{TARGET_ROLE}}</p>
+    <h1>{{FULL_NAME}}</h1>
+    <p class="lead">{{ONE_LINE_PITCH}}</p>
+  </header>
+
+  <main>
+    <section id="summary" class="section">
+      <h2>Summary</h2>
+      <p>{{ABOUT_PARAGRAPH}}</p>
+    </section>
+
+    <section id="experience" class="section">
+      <h2>Experience</h2>
+      <article class="card">
+        <h3>{{EXPERIENCE_1_TITLE}}</h3>
+        <p class="meta">{{EXPERIENCE_1_DATES}}</p>
+        <p>{{EXPERIENCE_1_DETAIL}}</p>
+      </article>
+    </section>
+
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <article class="card">
+        <h3>{{PROJECT_1_TITLE}}</h3>
+        <p>{{PROJECT_1_SUMMARY}}</p>
+      </article>
+    </section>
+
+    <section id="skills" class="section">
+      <h2>Skills</h2>
+      <ul class="pill-list">
+        <li>{{SKILL_1}}</li>
+        <li>{{SKILL_2}}</li>
+        <li>{{SKILL_3}}</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <p><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+      <p><a href="{{GITHUB_URL}}">GitHub</a> · <a href="{{LINKEDIN_URL}}">LinkedIn</a></p>
+    </section>
+  </main>
+</body>
+</html>

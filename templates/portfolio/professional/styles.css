@@ -1,0 +1,82 @@
+:root {
+  --bg: #fafafa;
+  --ink: #1a1a1a;
+  --muted: #555;
+  --accent: #1e4d6b;
+  --card: #fff;
+  --font: Georgia, "Times New Roman", serif;
+  --sans: "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.hero {
+  padding: 3rem 1.5rem 2rem;
+  max-width: 42rem;
+  margin: 0 auto;
+  border-bottom: 1px solid #ddd;
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+}
+
+h1 {
+  font-family: var(--font);
+  margin: 0 0 0.5rem;
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+
+h2 {
+  font-family: var(--font);
+  font-size: 1.35rem;
+  font-weight: 400;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.35rem;
+}
+
+.lead { color: var(--muted); font-size: 1.05rem; }
+
+main {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.section { margin-bottom: 2rem; }
+
+.card {
+  margin-bottom: 1.25rem;
+}
+
+.meta { color: var(--muted); font-size: 0.9rem; }
+
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.pill-list li {
+  border: 1px solid #ccc;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+}
+
+a { color: var(--accent); }

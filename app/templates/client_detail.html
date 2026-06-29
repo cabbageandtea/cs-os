@@ -95,11 +95,36 @@
     — {{ recommended_template.best_for }}
   </p>
   {% endif %}
-  {% if portfolio_scaffold_path %}
+{% if portfolio_scaffold_path %}
   <div class="ops-delivery-kit">
-    <h3>Build kit</h3>
+    <h3>Build kit — portfolio</h3>
     <p class="meta">Starter path: <code>{{ portfolio_scaffold_path }}</code></p>
     <p class="meta">Sections: {{ recommended_template.sections | join(' · ') }}</p>
+    <p class="meta">Resume starter: <code>templates/resume/starter.html</code></p>
+  </div>
+  {% endif %}
+
+  {% if delivery_kit | default([]) %}
+  <div class="ops-delivery-kit">
+    <h3>Delivery docs</h3>
+    <p class="meta">Fill these per deliverable, then mark complete on the Deliverables table.</p>
+    <table>
+      <thead>
+        <tr><th>Deliverable</th><th>Template</th></tr>
+      </thead>
+      <tbody>
+        {% for doc in delivery_kit %}
+        <tr>
+          <td>{{ doc.deliverable_name }}</td>
+          <td>
+            <a href="/clients/{{ client.id }}/delivery-doc/{{ doc.key }}" target="_blank" rel="noopener">Open filled doc</a>
+            ·
+            <a href="/clients/{{ client.id }}/delivery-doc/{{ doc.key }}?raw=1" download="{{ doc.key }}.md">Download</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
   {% endif %}
   <pre class="experience-block">{{ display_experience | default('No intake experience on file.') }}</pre>
@@ -154,6 +179,14 @@
 
 <section id="deliverables">
   <h2>Deliverables</h2>
+  {% if incomplete_deliverables | default([]) and project and project.status.value == 'Delivered' %}
+  <div class="alert alert-warning">
+    <strong>Handoff check:</strong> {{ incomplete_deliverables | length }} deliverable(s) not marked complete:
+    {{ incomplete_deliverables | join(', ') }}
+  </div>
+  {% elif incomplete_deliverables | default([]) %}
+  <p class="meta">{{ incomplete_deliverables | length }} still in progress — use delivery docs above.</p>
+  {% endif %}
   <div class="bento-card">
     {% if deliverables | default([]) %}
     <table>

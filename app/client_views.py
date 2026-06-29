@@ -16,6 +16,7 @@ from app.models import (
     TimestampLog,
 )
 from app.outcome_service import get_outcome_for_client
+from app.delivery_kits import delivery_docs_for_package, package_deliverable_checklist
 from app.intake_validation import resolve_client_package_slug
 from app.package_config import get_package
 from app.portfolio_scaffold import portfolio_scaffold_repo_path
@@ -182,6 +183,13 @@ def build_client_detail_context(
     package_turnaround = package.turnaround_display
     package_deliverables = package.deliverables
     package_excludes = package.excludes_display
+    delivery_kit = delivery_docs_for_package(package_slug)
+    deliverable_checklist = package_deliverable_checklist(package_slug)
+    incomplete_deliverables = [
+        d.name
+        for d in deliverables
+        if d.status != DeliverableStatus.COMPLETE
+    ]
 
     return {
         "client": client,
@@ -220,4 +228,7 @@ def build_client_detail_context(
         "package_turnaround": package_turnaround,
         "package_deliverables": package_deliverables,
         "package_excludes": package_excludes,
+        "delivery_kit": delivery_kit,
+        "deliverable_checklist": deliverable_checklist,
+        "incomplete_deliverables": incomplete_deliverables,
     }

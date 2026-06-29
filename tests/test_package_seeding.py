@@ -47,3 +47,17 @@ def test_launch_includes_resume_task_and_deliverable(db_session) -> None:
 
     names = {d.name for d in db_session.scalars(select(Deliverable).where(Deliverable.project_id == project.id))}
     assert "Resume (PDF)" in names
+    assert "GitHub profile guidance" in names
+
+
+def test_accelerator_includes_strategy_and_narrative(db_session) -> None:
+    project = _seed_project(db_session, package_slug="accelerator")
+
+    names = {d.name for d in db_session.scalars(select(Deliverable).where(Deliverable.project_id == project.id))}
+    assert "Career narrative summary" in names
+    assert "Strategy session (30 min)" in names
+    assert "Custom domain setup guide" in names
+    assert "Resume (PDF)" in names
+
+    titles = {t.title for t in db_session.scalars(select(Task).where(Task.project_id == project.id))}
+    assert "Resume rewrite" in titles

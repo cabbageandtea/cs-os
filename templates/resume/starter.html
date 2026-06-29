@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{FULL_NAME}} — Resume</title>
+  <style>
+    body { font-family: "Segoe UI", system-ui, sans-serif; font-size: 11pt; line-height: 1.4; max-width: 8.5in; margin: 0.6in auto; color: #111; }
+    h1 { font-size: 18pt; margin: 0 0 4px; }
+    .sub { color: #444; margin-bottom: 12px; }
+    h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #ccc; margin: 14px 0 6px; }
+    ul { margin: 4px 0; padding-left: 18px; }
+    li { margin-bottom: 3px; }
+    .meta { font-size: 10pt; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>{{FULL_NAME}}</h1>
+  <p class="sub">{{TARGET_ROLE}} · {{EMAIL}} · {{LINKEDIN_URL}} · Portfolio: {{PORTFOLIO_URL}}</p>
+
+  <h2>Education</h2>
+  <p><strong>{{EDUCATION_LINE}}</strong></p>
+
+  <h2>Experience</h2>
+  <ul>
+    <li>{{EXPERIENCE_BULLET_1}}</li>
+    <li>{{EXPERIENCE_BULLET_2}}</li>
+  </ul>
+
+  <h2>Projects</h2>
+  <ul>
+    <li>{{PROJECT_BULLET_1}}</li>
+    <li>{{PROJECT_BULLET_2}}</li>
+  </ul>
+
+  <h2>Skills</h2>
+  <p>{{SKILLS}}</p>
+</body>
+</html>

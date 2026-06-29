@@ -18,13 +18,27 @@ from app.models import (
     TaskStatus,
     TimestampLog,
 )
-from app.pipeline_config import PIPELINE_ORDER, default_tasks_for_project, log_state_label
+from app.package_config import get_package, tasks_for_package
+from app.pipeline_config import PIPELINE_ORDER, log_state_label
 
 DEMO_MARKER = "[DEMO]"
 DEMO_LINKEDIN = "https://linkedin.com/in/demo-csos-profile"
 DEMO_GITHUB = "https://github.com/demo-csos-portfolio"
 DEMO_PORTFOLIO_URL = "https://demo-portfolio.cs-os.example.com"
 DEMO_RESUME_URL = "https://demo-portfolio.cs-os.example.com/resume.pdf"
+
+PACKAGE_TIER_TO_SLUG: dict[str, str] = {
+    "Basic": "foundation",
+    "Foundation": "foundation",
+    "Standard": "launch",
+    "Launch": "launch",
+    "Premium": "accelerator",
+    "Accelerator": "accelerator",
+}
+
+
+def _package_slug_for_tier(package_tier: str) -> str:
+    return PACKAGE_TIER_TO_SLUG.get(package_tier.strip(), "launch")
 
 
 def is_demo_client(client: Client | None) -> bool:
@@ -269,6 +283,7 @@ def _seed_one_client(db: Session, profile: DemoProfile, *, days_ago: int) -> Cli
         linkedin_url=profile.linkedin_url,
         github_url=profile.github_url,
         package_tier=profile.package_tier,
+        package_slug=_package_slug_for_tier(profile.package_tier),
         created_at=base_time,
     )
     db.add(client)
@@ -283,7 +298,9 @@ def _seed_one_client(db: Session, profile: DemoProfile, *, days_ago: int) -> Cli
     db.add(project)
     db.flush()
 
-    for title, stage in default_tasks_for_project():
+    package_slug = _package_slug_for_tier(profile.package_tier)
+
+    for title, stage in tasks_for_package(package_slug):
         task_status = _task_status_for_stage(profile.status, stage)
         task = Task(
             project_id=project.id,
@@ -306,12 +323,7 @@ def _seed_one_client(db: Session, profile: DemoProfile, *, days_ago: int) -> Cli
                 )
             )
 
-    deliverable_specs = [
-        "Portfolio website",
-        "Resume (PDF)",
-        "LinkedIn optimization notes",
-        "Deployment URL",
-    ]
+    deliverable_specs = list(get_package(package_slug).deliverables)
     for idx, name in enumerate(deliverable_specs):
         d_status = _deliverable_status_for_stage(profile.status, idx)
         db.add(

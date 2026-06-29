@@ -9,7 +9,7 @@ except ImportError:
 
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request, status
 from fastapi.exception_handlers import http_exception_handler
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
@@ -25,7 +25,9 @@ from app.database import Base, engine, get_db
 from app.health import build_health_payload
 from app.intake_context import intake_form_context
 from app.intake_tokens import assign_intake_token
-from app.intake_validation import IntakeValidationError
+from app.delivery_kits import get_delivery_doc_spec, render_delivery_doc
+from app.intake_validation import IntakeValidationError, resolve_client_package_slug
+from app.package_config import get_package
 from app.migrations import run_migrations
 from app.models import (
     Client,
@@ -322,6 +324,39 @@ def client_detail(
         context["request"] = request
         context["rollback_policy"] = ROLLBACK_POLICY.value
         return templates.TemplateResponse("client_detail.html", context, status_code=200)
+
+
+@app.get("/clients/{client_id}/delivery-doc/{doc_key}")
+def client_delivery_doc(
+    client_id: int,
+    doc_key: str,
+    raw: int = Query(0),
+    db: Session = Depends(get_db),
+    _ops: str = Depends(require_ops_auth),
+):
+    client = _load_client(db, client_id)
+    if client is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+
+    spec = get_delivery_doc_spec(doc_key)
+    if spec is None:
+        raise HTTPException(status_code=404, detail="Unknown delivery document.")
+
+    package_slug = resolve_client_package_slug(client.package_slug, client.package_tier)
+    if spec.deliverable_name not in get_package(package_slug).deliverables:
+        raise HTTPException(status_code=404, detail="Document not in client package.")
+
+    try:
+        body = render_delivery_doc(spec, client, package_slug=package_slug)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    filename = f"{doc_key}-{client_id}.md"
+    headers = {}
+    if raw:
+        headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    return PlainTextResponse(body, media_type="text/markdown; charset=utf-8", headers=headers)
 
 
 @app.post("/clients/{client_id}/issue-intake-link", response_class=HTMLResponse)

@@ -14,6 +14,11 @@ def test_data_tech_scaffold_exists() -> None:
     assert portfolio_scaffold_dir("data-tech") is not None
 
 
+def test_professional_scaffold_exists() -> None:
+    assert portfolio_scaffold_dir("professional") is not None
+    assert portfolio_scaffold_repo_path("professional") == "templates/portfolio/professional/"
+
+
 def test_unknown_scaffold_returns_none() -> None:
     assert portfolio_scaffold_dir("nonexistent") is None
     assert portfolio_scaffold_repo_path("nonexistent") is None
