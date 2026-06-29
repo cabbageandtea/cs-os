@@ -74,7 +74,9 @@ def _checkout_completed_event(
     }
 
 
-def _make_pending_purchase(db: Session, *, session_id: str = "cs_test_session_1") -> Purchase:
+def _make_pending_purchase(
+    db: Session, *, session_id: str = "cs_test_session_1"
+) -> Purchase:
     purchase = Purchase(
         package_slug="launch",
         amount=19900,
@@ -122,6 +124,24 @@ def test_duplicate_webhook_creates_only_one_client(db_session: Session) -> None:
 
     webhook_count = db_session.scalar(select(func.count()).select_from(StripeWebhookEvent))
     assert webhook_count == 1
+
+
+def test_purchase_status_returns_intake_url_after_payment(
+    client: TestClient, db_session: Session
+) -> None:
+    purchase = _make_pending_purchase(db_session, session_id="cs_test_status_poll")
+    event = _checkout_completed_event(
+        purchase_id=purchase.id,
+        session_id="cs_test_status_poll",
+    )
+    handle_stripe_event(db_session, event)
+
+    response = client.get("/purchase/status", params={"session_id": "cs_test_status_poll"})
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["ready"] is True
+    assert payload["status"] == PurchaseStatus.PAID.value
+    assert payload["intake_url"] and "/intake/" in payload["intake_url"]
 
 
 def test_invalid_webhook_rejected(client: TestClient, db_session: Session) -> None:

@@ -15,11 +15,11 @@ python scripts/verify_acceptance.py
 ```
 
 ```powershell
-# Full browser suite
+# Full browser suite (local)
 .\scripts\run_e2e.ps1
 
-# Production smoke only (no mutating ops tests)
-npm run test:e2e:prod
+# Production launch gates (live Stripe redirect, health, email)
+.\scripts\run_e2e_prod.ps1
 ```
 
 **Pass bar:** score ≥ 80 (B). Email on production is optional until Resend is configured — expect 75–85 without it.

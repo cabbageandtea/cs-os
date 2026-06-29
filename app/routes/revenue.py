@@ -7,11 +7,13 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from app.jinja_env import templates
+from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
 from app.intake_context import intake_form_context
 from app.intake_notify import intake_url_for_token, maybe_send_intake_reminder_email
+from app.intake_tokens import assign_intake_token
 from app.intake_validation import IntakeValidationError, resolve_client_package_slug
 from app.models import Client, IntakeStatus, Purchase, PurchaseStatus
 from app.package_config import PACKAGES, PackageConfigError, checkout_package_rows

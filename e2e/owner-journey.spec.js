@@ -2,7 +2,7 @@
 const { test, expect } = require("@playwright/test");
 
 const OPS_PASSWORD = process.env.OPS_PASSWORD || "csos-local";
-const IS_PROD = (process.env.BASE_URL || "").includes("onrender.com");
+const IS_PROD = /doggybagg\.cc|onrender\.com/i.test(process.env.BASE_URL || "");
 
 test.describe("operator journey", () => {
   test.skip(IS_PROD, "Mutating ops tests run locally/CI only");
