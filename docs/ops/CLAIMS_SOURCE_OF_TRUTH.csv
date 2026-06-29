@@ -1,0 +1,7 @@
+claim_id,claim_text,surface,deliverable_key,owner,evidence_link,test_guard,status,last_verified,notes
+C001,Full package scope is visible before payment,checkout,package_scope_display,ops,docs/CUSTOMER_TERMS.md,tests/test_package_scope_chain.py,approved,2026-06-29,Must stay aligned with terms and seeded deliverables
+C002,Payment creates a brief flow and operator-visible intake,purchase_return,purchase_brief_flow,engineering,docs/ACCEPTANCE_CHECKLIST.md,e2e/launch-gate.spec.ts,approved,2026-06-29,Validate redirect and token issuance
+C003,Portfolio examples are distinct in voice and layout,landing,showcase_examples,design,docs/PORTFOLIO_TEMPLATES.md,tests/test_portfolio_examples.py,approved,2026-06-29,No duplicated visual grammar across examples
+C004,No internal ops language leaks to public pages,public_routes,public_content_firewall,engineering,docs/VOICE.md,tests/test_public_content_firewall.py,approved,2026-06-29,Block AI-heavy or internal terms
+C005,Delivery kits exist for each package deliverable,ops_dashboard,delivery_kit_coverage,ops,docs/SHOWCASE_CLIENT_WORKFLOW.md,tests/test_sales_phase4b.py,approved,2026-06-29,Must include package-accurate templates
+C006,Email handoff keeps brief links from being lost,ops_handoff,resend_delivery,engineering,docs/ACCEPTANCE_CHECKLIST.md,e2e/revenue-loop.spec.ts,draft,2026-06-29,Promote to approved after production resend pass

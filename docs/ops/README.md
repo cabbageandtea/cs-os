@@ -18,5 +18,10 @@ This folder is for **operator and agent** context. Never expose on:
 ## Files
 
 - [INTERNAL_PLAYBOOK.md](./INTERNAL_PLAYBOOK.md) — business model, package leverage, liaison scripts
+- [CLAIMS_SOURCE_OF_TRUTH.csv](./CLAIMS_SOURCE_OF_TRUTH.csv) — every public claim mapped to proof and guard tests
+- [DELIVERY_READINESS_SCORECARD.md](./DELIVERY_READINESS_SCORECARD.md) — package-by-package sell/no-sell gate
+- [REVENUE_INCIDENT_PLAYBOOK.md](./REVENUE_INCIDENT_PLAYBOOK.md) — Sev-1 protocol for payment/brief/email failures
+- [14_DAY_EXECUTION_BOARD.md](./14_DAY_EXECUTION_BOARD.md) — operator plan to close launch blockers quickly
+- [EXTERNAL_PROPERTY_REGISTRY.md](./EXTERNAL_PROPERTY_REGISTRY.md) — track Search Console, Ads, GBP, DNS, and drift
 
 When editing `app/sales_content.py` or public templates, use **outcome language only**.

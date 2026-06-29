@@ -1,0 +1,30 @@
+name: Launch Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Target URL for launch gate checks"
+        required: true
+        default: "https://doggybagg.cc"
+
+jobs:
+  launch-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate claims source of truth
+        run: python scripts/validate_claims_matrix.py
+
+      - name: Run launch gate
+        run: python scripts/launch_gate.py "${{ github.event.inputs.base_url }}"
