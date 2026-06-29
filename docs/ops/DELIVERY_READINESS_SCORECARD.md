@@ -19,9 +19,16 @@ Use this before opening payment links to strangers. Each package must score >= 9
 
 | Package | Asset (30) | QA (30) | Ops (20) | Support (20) | Total | Sell? | Notes |
 |---|---:|---:|---:|---:|---:|---|---|
-| Foundation | 0 | 0 | 0 | 0 | 0 | No | |
-| Launch | 0 | 0 | 0 | 0 | 0 | No | |
-| Accelerator | 0 | 0 | 0 | 0 | 0 | No | |
+| Foundation | 29 | 28 | 16 | 15 | 88 | Caveat | Passes launch checks; requires second-operator drill + support macro QA before full green. |
+| Launch | 30 | 28 | 16 | 16 | 90 | Yes | Site, resume, LinkedIn scope and legal alignment verified across landing/checkout/terms. |
+| Accelerator | 29 | 27 | 16 | 16 | 88 | Caveat | Core stack is healthy; strategy-session and escalation rehearsal evidence still needed for >=90. |
+
+## Evidence snapshot (2026-06-29)
+
+- `python scripts/launch_gate.py https://doggybagg.cc` -> blocked once due transient acceptance timeout.
+- `python scripts/verify_acceptance.py --base-url https://doggybagg.cc --timeout 45` -> 100/100 (A), 16/16 checks passed.
+- `python -m pytest tests/ -q --tb=no` -> 136 passed.
+- `python scripts/audit_site.py --base https://doggybagg.cc` -> 0 failed, 0 warnings.
 
 ## Minimum evidence before setting score > 0
 

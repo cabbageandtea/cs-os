@@ -66,3 +66,5 @@ First delivery in the technical-entry wedge: [SHOWCASE_CLIENT_WORKFLOW.md](./SHO
 Same wedge as showcase: [ICP.md](./ICP.md)
 
 Package truth chain: `EXECUTION.md` → `app/package_config.py` → checkout → Terms.
+
+**Google / ads cleanup:** [GOOGLE_PROPERTIES.md](./GOOGLE_PROPERTIES.md) — Search Console, Business Profile, Ads.

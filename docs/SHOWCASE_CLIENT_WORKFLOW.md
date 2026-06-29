@@ -4,7 +4,7 @@ Use this for **Client #1** (e.g. first real showcase in the technical-entry wedg
 
 **ICP fit:** Students, new grads, bootcamp grads, or career changers targeting **technical roles** (SWE, data, analytics). See [ICP.md](./ICP.md).
 
-**Production ops:** https://cs-os.onrender.com/login
+**Production ops:** https://doggybagg.cc/login
 
 ---
 

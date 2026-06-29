@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 
@@ -17,20 +18,59 @@ def _run(label: str, cmd: list[str]) -> int:
     return result.returncode
 
 
+def _run_with_retry(label: str, cmd: list[str], retries: int) -> int:
+    result = _run(label, cmd)
+    attempt = 1
+    while result != 0 and attempt <= retries:
+        print(f"RETRY: {label} ({attempt}/{retries})")
+        result = _run(f"{label} retry {attempt}", cmd)
+        attempt += 1
+    return result
+
+
 def main() -> int:
-    base = sys.argv[1] if len(sys.argv) > 1 else "https://doggybagg.cc"
+    parser = argparse.ArgumentParser(description="Run launch readiness checks")
+    parser.add_argument(
+        "base_url",
+        nargs="?",
+        default="https://doggybagg.cc",
+        help="Target base URL (default: https://doggybagg.cc)",
+    )
+    parser.add_argument(
+        "--verify-timeout",
+        type=float,
+        default=45.0,
+        help="Timeout in seconds for verify_acceptance HTTP checks (default: 45)",
+    )
+    parser.add_argument(
+        "--retries",
+        type=int,
+        default=1,
+        help="Retry count for flaky networked checks (default: 1)",
+    )
+    args = parser.parse_args()
+    base = args.base_url
     import os
 
     os.environ["BASE_URL"] = base
     failures = 0
     failures += _run("pytest", [sys.executable, "-m", "pytest", "tests/", "-q", "--tb=no"])
-    failures += _run(
+    failures += _run_with_retry(
         "verify_acceptance",
-        [sys.executable, "scripts/verify_acceptance.py"],
+        [
+            sys.executable,
+            "scripts/verify_acceptance.py",
+            "--base-url",
+            base,
+            "--timeout",
+            str(args.verify_timeout),
+        ],
+        args.retries,
     )
-    failures += _run(
+    failures += _run_with_retry(
         "audit_site",
         [sys.executable, "scripts/audit_site.py", "--base", base],
+        args.retries,
     )
     try:
         import httpx

@@ -71,6 +71,13 @@ app.include_router(revenue_router)
 BASE_DIR = Path(__file__).resolve().parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
+_GOOGLE_SITE_VERIFICATION_HTML = "googleb827bf20974fd6a1.html"
+
+
+@app.get(f"/{_GOOGLE_SITE_VERIFICATION_HTML}", response_class=PlainTextResponse)
+def google_site_verification_file() -> PlainTextResponse:
+    return PlainTextResponse(f"google-site-verification: {_GOOGLE_SITE_VERIFICATION_HTML}")
+
 
 @app.get("/health")
 def health_check(request: Request, db: Session = Depends(get_db)):

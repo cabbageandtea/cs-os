@@ -37,7 +37,7 @@ If you close either window, payments won’t create clients on your dashboard.
 Only if checkout still says “doggybagg” or old branding:
 
 1. Go to https://dashboard.stripe.com/test/settings/branding  
-2. Business name: **Career Systems**  
+2. Business name: **Doggybagg**  
 3. Logo: upload `app/static/logo-icon.png` from this project  
 4. Accent color: `#ff6b4a`
 

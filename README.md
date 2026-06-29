@@ -2,7 +2,7 @@
 
 Minimal internal operations system for career portfolio client delivery.
 
-**Production:** https://cs-os.onrender.com · **Wedge:** technical-entry hiring (students, bootcamp grads, career changers into SWE/data/analytics).
+**Production:** https://doggybagg.cc · **Ops:** https://doggybagg.cc/login · **Wedge:** technical-entry hiring (students, bootcamp grads, career changers into SWE/data/analytics).
 
 ## Quick Start
 
