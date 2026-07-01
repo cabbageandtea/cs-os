@@ -35,7 +35,6 @@ def set_ops_session(response, password: str) -> None:
         httponly=True,
         secure=not database_url.startswith("sqlite"),
         samesite="lax",
-        secure=not os.environ.get("DATABASE_URL", "").startswith("sqlite"),
         max_age=SESSION_MAX_AGE,
     )
 
