@@ -15,6 +15,14 @@ uvicorn app.main:app --reload --port 8003
 
 Open http://127.0.0.1:8003 — sign in at `/login` with your `OPS_PASSWORD` from `.env` (default local: `csos-local`).
 
+## CI setup (Datadog Test Visibility)
+
+Add a GitHub Actions repository secret named `DD_API_KEY` before running CI test reporting:
+
+1. Create/copy an API key in Datadog: https://us5.datadoghq.com/organization-settings/api-keys
+2. In GitHub, go to **Settings → Secrets and variables → Actions → New repository secret**
+3. Name: `DD_API_KEY`, Value: your Datadog API key
+
 ## Stripe Test Mode (Phase 4A)
 
 Copy `.env.example` to `.env` and fill in Stripe test keys and Price IDs.
