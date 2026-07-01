@@ -24,6 +24,12 @@ services:
           property: connectionString
       - key: BASE_URL
         sync: false
+      - key: DD_RUM_APPLICATION_ID
+        sync: false
+      - key: DD_RUM_CLIENT_TOKEN
+        sync: false
+      - key: DD_ENV
+        value: production
       - key: SITE_NAME
         value: Doggybagg
       - key: SITE_DOMAIN

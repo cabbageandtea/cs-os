@@ -19,8 +19,11 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
+      - name: Install ddtrace
+        run: pip install ddtrace
+
       - name: Pytest
-        run: python -m pytest tests/ -q
+        run: DD_SERVICE=cs-os DD_ENV=ci DD_CIVISIBILITY_AGENTLESS_ENABLED=true DD_API_KEY=${{ secrets.DD_API_KEY }} DD_SITE=us5.datadoghq.com python -m pytest --ddtrace tests/ -q
 
       - uses: actions/setup-node@v4
         with:
@@ -61,7 +64,17 @@ jobs:
           E2E_NO_SERVER: "1"
           BASE_URL: http://127.0.0.1:8010
           OPS_PASSWORD: csos-local
-        run: npx playwright test
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: test-results/junit.xml
+        run: npx playwright test --reporter=list,junit
+
+      - name: Upload Playwright JUnit to Datadog
+        if: always()
+        env:
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
+          DD_SITE: us5.datadoghq.com
+          DD_SERVICE: cs-os
+          DD_ENV: ci
+        run: npx @datadog/datadog-ci junit upload --service cs-os test-results/junit.xml
 
       - name: Acceptance verifier (local)
         env:
