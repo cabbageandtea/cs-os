@@ -28,10 +28,12 @@ def _session_token(password: str) -> str:
 
 
 def set_ops_session(response, password: str) -> None:
+    database_url = os.environ.get("DATABASE_URL", "").lower()
     response.set_cookie(
         SESSION_COOKIE,
         _session_token(password),
         httponly=True,
+        secure=not database_url.startswith("sqlite"),
         samesite="lax",
         secure=not os.environ.get("DATABASE_URL", "").startswith("sqlite"),
         max_age=SESSION_MAX_AGE,
