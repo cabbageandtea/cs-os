@@ -1,4 +1,6 @@
+import logging
 from pathlib import Path
+from time import perf_counter
 
 try:
     from dotenv import load_dotenv
@@ -7,6 +9,7 @@ try:
 except ImportError:
     pass
 
+from app.logging_config import setup_logging
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request, status
 from fastapi.exception_handlers import http_exception_handler
 from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
@@ -45,6 +48,8 @@ from app.stripe_checkout import base_url
 from app.jinja_env import templates
 from app.pipeline_config import ROLLBACK_POLICY
 
+setup_logging()
+
 from app.services import (
     PersistenceError,
     WorkflowError,
@@ -61,6 +66,41 @@ run_migrations(engine)
 from app.site_branding import site_name
 
 app = FastAPI(title=f"{site_name()} OS", version="0.1.0")
+_access_logger = logging.getLogger("app.access")
+
+
+@app.middleware("http")
+async def security_headers_middleware(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    return response
+
+
+@app.middleware("http")
+async def request_logging_middleware(request: Request, call_next):
+    path = request.url.path
+    skip_logging = path == "/health" or path.startswith("/static")
+    started = perf_counter()
+    status_code = 500
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+        return response
+    finally:
+        if not skip_logging:
+            duration_ms = round((perf_counter() - started) * 1000, 2)
+            _access_logger.info(
+                "request completed",
+                extra={
+                    "http.method": request.method,
+                    "http.path": path,
+                    "http.status_code": status_code,
+                    "http.duration_ms": duration_ms,
+                },
+            )
 
 from app.routes.revenue import router as revenue_router
 from app.routes.sales import router as sales_router
