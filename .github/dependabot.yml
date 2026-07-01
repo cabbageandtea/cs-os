@@ -1,12 +1,12 @@
 version: 2
 updates:
-  - package-ecosystem: pip
+  - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: weekly
-    target-branch: master
-  - package-ecosystem: npm
+      interval: "weekly"
+    target-branch: "master"
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: weekly
-    target-branch: master
+      interval: "weekly"
+    target-branch: "master"
