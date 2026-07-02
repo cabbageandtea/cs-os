@@ -27,13 +27,21 @@ def _session_token(password: str) -> str:
     return base64.urlsafe_b64encode(digest).decode().rstrip("=")
 
 
+def _cookie_secure() -> bool:
+    """Secure flag on when BASE_URL uses https (checks transport, not database type)."""
+    base = (os.environ.get("BASE_URL") or "").strip().lower()
+    if base.startswith("https://"):
+        return True
+    # Render, Fly.io, and Heroku set X-Forwarded-Proto when TLS-terminated upstream
+    return False
+
+
 def set_ops_session(response, password: str) -> None:
-    database_url = os.environ.get("DATABASE_URL", "").lower()
     response.set_cookie(
         SESSION_COOKIE,
         _session_token(password),
         httponly=True,
-        secure=not database_url.startswith("sqlite"),
+        secure=_cookie_secure(),
         samesite="lax",
         max_age=SESSION_MAX_AGE,
     )
