@@ -86,24 +86,41 @@ def create_build_job(
     client_id: int,
     purchase_id: int,
 ) -> PortfolioBuildJob:
-    """Create a new portfolio build job. Idempotent: checks if job exists for this purchase."""
-    # Check if a job already exists for this purchase
+    """
+    Create a new portfolio build job. Idempotent: checks if job exists for this purchase.
+    ZERO-TRUST: Validates all inputs before database operations.
+    """
+    if not client_id or not purchase_id:
+        raise OrchestrationError(f"Invalid input: client_id={client_id}, purchase_id={purchase_id}")
+    
+    # Check if a job already exists for this purchase (only non-failed jobs)
     existing = db.scalar(
         select(PortfolioBuildJob).where(
             PortfolioBuildJob.purchase_id == purchase_id,
-            PortfolioBuildJob.status != PortfolioBuildJobStatus.FAILED.value,
+            PortfolioBuildJob.status.in_([
+                PortfolioBuildJobStatus.PENDING.value,
+                PortfolioBuildJobStatus.RETRY_PENDING.value,
+                PortfolioBuildJobStatus.PROVISIONING.value,
+                PortfolioBuildJobStatus.GENERATING.value,
+                PortfolioBuildJobStatus.PUSHING.value,
+                PortfolioBuildJobStatus.NOTIFYING.value,
+                PortfolioBuildJobStatus.COMPLETE.value,
+            ])
         )
     )
     if existing:
+        logger.info(f"[create_job] idempotent: job {existing.id} already exists for purchase {purchase_id}")
         return existing
 
     job = PortfolioBuildJob(
         client_id=client_id,
         purchase_id=purchase_id,
         status=PortfolioBuildJobStatus.PENDING.value,
+        retry_count=0,
     )
     db.add(job)
     db.commit()
+    logger.info(f"[create_job] created new job {job.id} for purchase {purchase_id}")
     return job
 
 
@@ -168,6 +185,7 @@ def _step_generating(db: Session, job: PortfolioBuildJob, client: Client) -> str
     
     Returns: Generated portfolio JSON (clinical, data-driven).
     Idempotency: Check if portfolio content already cached in client record.
+    NOTE: Synchronous wrapper for async generator. Uses get_or_create_event_loop() for thread-safety.
     """
     from app.portfolio_generator import generate_portfolio_json, PortfolioValidationError
 
@@ -183,14 +201,23 @@ def _step_generating(db: Session, job: PortfolioBuildJob, client: Client) -> str
             logger.error(f"[job {job.id}] GENERATING FAILED: client missing intake_data")
             raise GenerationError("Client intake_data is empty or missing")
 
-        # Call LLM to generate portfolio (async call, synchronous wrapper)
+        # Call LLM to generate portfolio (thread-safe async wrapper)
         logger.debug(f"[job {job.id}] GENERATING: calling LLM for client {client.id}")
         import asyncio
-        portfolio_json = asyncio.run(generate_portfolio_json(client))
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
         
-        if not portfolio_json:
-            logger.error(f"[job {job.id}] GENERATING FAILED: LLM returned empty portfolio")
-            raise GenerationError("LLM returned empty portfolio")
+        portfolio_json = loop.run_until_complete(generate_portfolio_json(client))
+        
+        if not portfolio_json or len(portfolio_json) < 50:
+            logger.error(f"[job {job.id}] GENERATING FAILED: LLM returned empty/invalid portfolio (size={len(portfolio_json) if portfolio_json else 0})")
+            raise GenerationError("LLM returned empty or invalid portfolio")
 
         logger.info(f"[job {job.id}] GENERATING: success, portfolio_size={len(portfolio_json)}")
         return portfolio_json
@@ -320,61 +347,61 @@ def process_job(db: Session, job_id: int) -> None:
         logger.debug(f"[job {job.id}] marked started_at={job.started_at}")
 
     try:
-        # Step 1: Provision
-        if job.status == PortfolioBuildJobStatus.PENDING.value:
+        portfolio_html = None
+        portfolio_url = None
+
+        # Step 1: Provision (PENDING → PROVISIONING → PROVISIONING complete)
+        if job.status in (PortfolioBuildJobStatus.PENDING.value, PortfolioBuildJobStatus.PROVISIONING.value):
             job.status = PortfolioBuildJobStatus.PROVISIONING.value
             job.current_step = "provisioning"
             db.commit()
             _step_provisioning(db, job, client)
             db.commit()
 
-        # Step 2: Generate
-        if job.status == PortfolioBuildJobStatus.PROVISIONING.value:
+        # Step 2: Generate (PROVISIONING → GENERATING → GENERATING complete)
+        if job.status in (PortfolioBuildJobStatus.PROVISIONING.value, PortfolioBuildJobStatus.GENERATING.value):
             job.status = PortfolioBuildJobStatus.GENERATING.value
             job.current_step = "generating"
             db.commit()
             portfolio_html = _step_generating(db, job, client)
             db.commit()
-        else:
-            # Recover from previous state
-            portfolio_html = _step_generating(db, job, client)
 
-        # Step 3: Push to GitHub
-        if job.status == PortfolioBuildJobStatus.GENERATING.value:
+        # Step 3: Push to GitHub (GENERATING → PUSHING → PUSHING complete)
+        if job.status in (PortfolioBuildJobStatus.GENERATING.value, PortfolioBuildJobStatus.PUSHING.value):
+            if not portfolio_html:
+                logger.error(f"[job {job.id}] CORRUPTION: portfolio_html missing at PUSHING step")
+                raise OrchestrationError("State machine corruption: portfolio_html not available")
+            
             job.status = PortfolioBuildJobStatus.PUSHING.value
             job.current_step = "pushing"
             db.commit()
             github_url, portfolio_url = _step_pushing(db, job, client, portfolio_html)
             db.commit()
-        else:
-            # Recover from previous state
-            if job.portfolio_url:
-                portfolio_url = job.portfolio_url
-            else:
-                github_url, portfolio_url = _step_pushing(db, job, client, portfolio_html)
-                db.commit()
 
-        # Step 4: Notify client
-        if job.status == PortfolioBuildJobStatus.PUSHING.value:
+        # Step 4: Notify client (PUSHING → NOTIFYING → NOTIFYING complete)
+        if job.status in (PortfolioBuildJobStatus.PUSHING.value, PortfolioBuildJobStatus.NOTIFYING.value):
+            if not portfolio_url and job.portfolio_url:
+                portfolio_url = job.portfolio_url
+            elif not portfolio_url:
+                logger.error(f"[job {job.id}] CORRUPTION: portfolio_url missing at NOTIFYING step")
+                raise OrchestrationError("State machine corruption: portfolio_url not available")
+            
             job.status = PortfolioBuildJobStatus.NOTIFYING.value
             job.current_step = "notifying"
             db.commit()
             _step_notifying(db, job, client, portfolio_url)
             db.commit()
-        else:
-            # Recover from previous state
-            if not job.notified_client_at:
-                _step_notifying(db, job, client, job.portfolio_url or "")
-                db.commit()
 
         # Mark complete
-        job.status = PortfolioBuildJobStatus.COMPLETE.value
-        job.current_step = None
-        job.completed_at = utcnow()
-        job.error_message = None
-        job.error_step = None
-        db.commit()
-        elapsed = (job.completed_at - job.started_at).total_seconds() if job.started_at else 0
+        if job.status != PortfolioBuildJobStatus.COMPLETE.value:
+            job.status = PortfolioBuildJobStatus.COMPLETE.value
+            job.current_step = None
+            job.completed_at = utcnow()
+            job.error_message = None
+            job.error_step = None
+            db.commit()
+        
+        elapsed = (job.completed_at - job.started_at).total_seconds() if job.started_at and job.completed_at else 0
         logger.info(f"[job {job.id}] COMPLETE: portfolio live at {job.portfolio_url}, elapsed={elapsed:.1f}s")
 
     except StepError as exc:
@@ -403,13 +430,13 @@ def _handle_step_failure(db: Session, job: PortfolioBuildJob, error: StepError) 
         db.commit()
         raise error
 
-    # Retry with exponential backoff
+    # Retry with exponential backoff (capped at 5 minutes)
     job.retry_count += 1
-    backoff_seconds = 2 ** job.retry_count
-    logger.warning(f"[job {job.id}] RETRY: {error.step} failed, attempt {job.retry_count}/{job.max_retries}, will retry in {backoff_seconds}s")
+    backoff_seconds = min(2 ** (job.retry_count + 1), 300)  # 2^(n+1), capped at 300s (5min)
+    logger.warning(f"[job {job.id}] RETRY: {error.step} failed, attempt {job.retry_count}/{job.max_retries}, next retry in {backoff_seconds}s")
     job.status = PortfolioBuildJobStatus.RETRY_PENDING.value
     db.commit()
-    # Next worker invocation will pick this up
+    # Next worker invocation will pick this up after backoff delay
 
 
 def get_pending_jobs(db: Session, limit: int = 10) -> list[PortfolioBuildJob]:

@@ -68,10 +68,27 @@ def process_single_job(db: Session, job_id: int) -> bool:
     """
     Process a single job. Returns True if successful, False if retriable error.
     
+    Implements atomic job lock to prevent concurrent processing of same job by multiple workers.
     Catches all exceptions to ensure worker doesn't crash.
     """
+    from app.models import PortfolioBuildJob
+    from sqlalchemy import update
+    
     try:
-        logger.info("Starting job %s", job_id)
+        # Atomic lock: only process if we can transition from PENDING/RETRY_PENDING to PROVISIONING
+        # This prevents race conditions where two workers grab same job
+        job = db.get(PortfolioBuildJob, job_id, with_for_update=True)
+        
+        if not job:
+            logger.error("Job %s not found", job_id)
+            return False
+        
+        # Double-check job is still pending after acquiring lock
+        if job.status not in ("pending", "retry_pending"):
+            logger.debug("Job %s already processed (status=%s)", job_id, job.status)
+            return True
+        
+        logger.info("Processing job %s (status=%s, retry=%d/%d)", job_id, job.status, job.retry_count, job.max_retries)
         process_job(db, job_id)
         logger.info("Completed job %s", job_id)
         return True
@@ -80,7 +97,7 @@ def process_single_job(db: Session, job_id: int) -> bool:
         # Job has been updated with error state; worker continues
         return False
     except Exception as exc:
-        logger.exception("Unexpected error in job %s: %s", job_id, exc)
+        logger.exception("Unexpected error processing job %s: %s", job_id, exc)
         # Don't crash; log and continue
         return False
 
@@ -128,6 +145,15 @@ def run_worker(poll_interval: int = 5, batch_size: int = 10, max_jobs: int = 0) 
                         break
 
                     job_id = job.id
+                    
+                    # RETRY_PENDING jobs: check if backoff delay has passed
+                    if job.status == "retry_pending" and job.retry_count > 0:
+                        backoff_seconds = min(2 ** (job.retry_count + 1), 300)
+                        time_since_update = (time.time() - job.updated_at.timestamp()) if job.updated_at else 0
+                        if time_since_update < backoff_seconds:
+                            logger.debug(f"Job {job_id} backoff in progress ({time_since_update:.1f}s / {backoff_seconds}s), skipping")
+                            continue
+                    
                     process_single_job(db, job_id)
                     jobs_processed += 1
 

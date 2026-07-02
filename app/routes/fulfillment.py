@@ -12,9 +12,11 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.fulfillment_orchestrator import get_job_status, OrchestrationError
-from app.models import PortfolioBuildJob, Purchase
+from app.models import PortfolioBuildJob, PortfolioBuildJobStatus, Purchase
+import logging
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 @router.get("/builds/status")
@@ -31,22 +33,33 @@ def get_build_status(
     - client_id (authenticated clients)
     
     Returns current job state, portfolio URL (when complete), and error details.
+    ZERO-TRUST: Validates all inputs before querying database.
     """
+    # Validate input (ZERO-TRUST)
     if not session_id and not client_id:
         raise HTTPException(
             status_code=400,
             detail="Either session_id or client_id required"
         )
+    
+    if session_id and len(session_id) < 5:
+        raise HTTPException(status_code=400, detail="Invalid session_id format")
+    
+    if client_id and client_id < 1:
+        raise HTTPException(status_code=400, detail="Invalid client_id")
 
     if session_id:
-        # Look up by Stripe session
+        # Look up by Stripe session (ZERO-TRUST: validate session_id format)
+        if not (isinstance(session_id, str) and len(session_id) > 5):
+            return JSONResponse({"status": "unknown", "message": "Invalid session_id"})
+        
         purchase = db.scalar(
             select(Purchase).where(Purchase.stripe_session_id == session_id)
         )
         if not purchase or not purchase.client_id:
             return JSONResponse({
-                "status": "unknown",
-                "message": "No purchase found for this session"
+                "status": "pending",
+                "message": "Payment processing; portfolio build will start automatically"
             })
         client_id = purchase.client_id
 
@@ -60,7 +73,7 @@ def get_build_status(
         if not job:
             return JSONResponse({
                 "status": "pending",
-                "message": "No build job yet; likely still provisioning"
+                "message": "Build job created; provisioning in progress"
             })
 
         try:
@@ -68,10 +81,10 @@ def get_build_status(
         except OrchestrationError as exc:
             return JSONResponse({
                 "status": "error",
-                "message": str(exc)
+                "message": f"Build failed: {str(exc)}"
             }, status_code=500)
 
-    return JSONResponse({"status": "unknown"})
+    return JSONResponse({"status": "unknown", "message": "Unable to determine build status"})
 
 
 @router.get("/builds/{job_id}")
@@ -84,6 +97,40 @@ def get_job_status_by_id(
         return get_job_status(db, job_id)
     except OrchestrationError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.get("/health")
+def fulfillment_health(db: Session = Depends(get_db)):
+    """Health check for fulfillment system. Returns queue stats and system status."""
+    try:
+        from sqlalchemy import func
+        
+        # Count jobs by status
+        stats = {}
+        for status in PortfolioBuildJobStatus:
+            count = db.scalar(
+                select(func.count(PortfolioBuildJob.id)).where(
+                    PortfolioBuildJob.status == status.value
+                )
+            )
+            stats[status.value] = count or 0
+        
+        total_jobs = sum(stats.values())
+        pending_jobs = stats.get("pending", 0) + stats.get("retry_pending", 0)
+        
+        return JSONResponse({
+            "status": "ok",
+            "total_jobs": total_jobs,
+            "pending_jobs": pending_jobs,
+            "stats_by_status": stats,
+            "queue_health": "healthy" if pending_jobs < 1000 else "warning" if pending_jobs < 5000 else "critical"
+        })
+    except Exception as e:
+        logger.exception("Health check failed: %s", e)
+        return JSONResponse({
+            "status": "error",
+            "message": f"Health check failed: {str(e)}"
+        }, status_code=500)
 
 
 @router.get("/builds/list")

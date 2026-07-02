@@ -76,14 +76,28 @@ async def push_portfolio_to_github(
     Raises:
         GitHubIntegrationError if any operation fails.
     """
-    # ZERO-TRUST validation
-    _validate_client_github_data(client)
-    github_token, github_org = _validate_github_env()
+    # ZERO-TRUST validation (fail fast on invalid inputs)
+    try:
+        _validate_client_github_data(client)
+        github_token, github_org = _validate_github_env()
+    except GitHubIntegrationError as e:
+        logger.error(f"[github] validation failed: {e}")
+        raise
     
     if not portfolio_json or len(portfolio_json) < 50:
-        raise GitHubIntegrationError("Portfolio JSON is empty or too small")
+        raise GitHubIntegrationError(f"Portfolio JSON is empty or too small (size={len(portfolio_json) if portfolio_json else 0})")
     
-    logger.info(f"[github] push_portfolio_to_github: client={client.id}, public_id={client.public_id}")
+    # Validate JSON structure before pushing
+    import json
+    try:
+        parsed = json.loads(portfolio_json)
+        if not isinstance(parsed, dict) or "client_name" not in parsed:
+            raise GitHubIntegrationError("Portfolio JSON missing required 'client_name' field")
+        logger.debug(f"[github] validated portfolio JSON: client_name={parsed.get('client_name')}, has_projects={len(parsed.get('projects', []))}")
+    except json.JSONDecodeError as e:
+        raise GitHubIntegrationError(f"Portfolio JSON is malformed: {e}")
+    
+    logger.info(f"[github] push_portfolio_to_github: client={client.id}, public_id={client.public_id}, org={github_org}")
     
     # Placeholder: integrate with PyGithub or GitHub REST API
     # Implementation steps:

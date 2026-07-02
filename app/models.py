@@ -289,6 +289,7 @@ class PortfolioBuildJob(Base):
     error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     error_step: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow, index=True)
     started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     notified_client_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
