@@ -17,6 +17,7 @@ from app.provisioning import (
     find_purchase_by_session_id,
     provision_client_from_purchase,
 )
+from app.fulfillment_orchestrator import create_build_job
 
 
 class WebhookConfigError(RuntimeError):
@@ -110,6 +111,8 @@ def _handle_checkout_completed(db: Session, session: dict[str, Any]) -> None:
         purchase.package_slug = package_slug
 
     customer_email = session.get("customer_details", {}).get("email") or session.get("customer_email")
+    
+    # Provision client (synchronous, fast)
     provision_client_from_purchase(
         db,
         purchase,
@@ -117,6 +120,10 @@ def _handle_checkout_completed(db: Session, session: dict[str, Any]) -> None:
         stripe_customer_id=session.get("customer"),
         stripe_payment_intent_id=session.get("payment_intent"),
     )
+
+    # Enqueue portfolio build job (asynchronous)
+    # Worker process will pick this up and execute the 4-step fulfillment pipeline
+    _enqueue_portfolio_build(db, purchase)
 
 
 def _handle_payment_failed(db: Session, payment_intent: dict[str, Any]) -> None:
@@ -150,6 +157,20 @@ def _handle_charge_refunded(db: Session, charge: dict[str, Any]) -> None:
     if purchase.status == PurchaseStatus.REFUNDED.value:
         return
     archive_client_after_refund(db, purchase)
+
+
+def _enqueue_portfolio_build(db: Session, purchase: Purchase) -> None:
+    """Enqueue a portfolio build job for asynchronous processing by worker."""
+    if not purchase.client_id:
+        return
+    
+    # This is idempotent: create_build_job checks for existing jobs
+    job = create_build_job(
+        db,
+        client_id=purchase.client_id,
+        purchase_id=purchase.id,
+    )
+    # Job is now pending; worker will pick it up
 
 
 def process_webhook(db: Session, payload: bytes, signature: str | None) -> None:

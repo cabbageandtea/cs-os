@@ -260,9 +260,41 @@ class ClientOutcome(Base):
     testimonial: Mapped[str] = mapped_column(Text)
     display_permission: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=utcnow, onupdate=utcnow
-    )
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class PortfolioBuildJobStatus(str, enum.Enum):
+    PENDING = "pending"
+    PROVISIONING = "provisioning"
+    GENERATING = "generating"
+    PUSHING = "pushing"
+    NOTIFYING = "notifying"
+    COMPLETE = "complete"
+    FAILED = "failed"
+    RETRY_PENDING = "retry_pending"
+
+
+class PortfolioBuildJob(Base):
+    __tablename__ = "portfolio_build_jobs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    client_id: Mapped[int] = mapped_column(ForeignKey("clients.id"), index=True)
+    purchase_id: Mapped[int] = mapped_column(ForeignKey("purchases.id"), index=True)
+    status: Mapped[str] = mapped_column(String(50), default=PortfolioBuildJobStatus.PENDING.value, index=True)
+    current_step: Mapped[str] = mapped_column(String(50), nullable=True)
+    retry_count: Mapped[int] = mapped_column(Integer, default=0)
+    max_retries: Mapped[int] = mapped_column(Integer, default=3)
+    portfolio_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    github_repo_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    error_step: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    completed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    notified_client_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    client: Mapped[Client] = relationship(foreign_keys=[client_id])
+    purchase: Mapped[Purchase] = relationship(foreign_keys=[purchase_id])
 
 
 def new_public_id() -> str:

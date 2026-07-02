@@ -161,6 +161,36 @@ def send_intake_reminder_email(
     return send_email(to_email=to_email, subject=subject, plain=plain, html=html)
 
 
+def send_portfolio_live_email(
+    *,
+    client_name: str,
+    client_email: str,
+    portfolio_url: str,
+) -> bool:
+    """Send notification when client's portfolio is live and deployed."""
+    subject = f"🎉 Your portfolio is live!"
+    plain = f"""Hi {client_name},
+
+Your professional portfolio is now live and ready to share:
+{portfolio_url}
+
+You can customize it anytime. Share this link with recruiters and hiring managers!
+
+— {site_name()}
+Support: {support_email()}
+"""
+    html = f"""<!DOCTYPE html>
+<html lang="en"><body style="font-family:system-ui,sans-serif;line-height:1.55;color:#111;max-width:36rem;">
+<p>Hi {client_name},</p>
+<p>🎉 <strong>Your portfolio is now live and ready to share!</strong></p>
+<p><a href="{portfolio_url}" style="display:inline-block;background:#0066cc;color:#fff;padding:14px 22px;text-decoration:none;border-radius:4px;font-weight:600;">View Your Portfolio</a></p>
+<p>Share this link with recruiters and hiring managers. You can customize it anytime in your dashboard.</p>
+<p style="font-size:14px;color:#555;margin-top:2rem;">Questions or feedback? Reply to this email or contact <a href="mailto:{support_email()}">{support_email()}</a></p>
+<p style="font-size:12px;color:#aaa;margin-top:1.5rem;">— {site_name()}</p>
+</body></html>"""
+    return send_email(to_email=client_email, subject=subject, plain=plain, html=html)
+
+
 def send_contact_lead_notification(
     *,
     name: str,

@@ -104,9 +104,11 @@ async def request_logging_middleware(request: Request, call_next):
 
 from app.routes.revenue import router as revenue_router
 from app.routes.sales import router as sales_router
+from app.routes.fulfillment import router as fulfillment_router
 
 app.include_router(sales_router)
 app.include_router(revenue_router)
+app.include_router(fulfillment_router)
 
 BASE_DIR = Path(__file__).resolve().parent
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")

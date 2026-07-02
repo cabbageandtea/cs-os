@@ -35,6 +35,11 @@ jobs:
           npm install
           npx playwright install chromium --with-deps
 
+      - name: Initialize test database
+        env:
+          DATABASE_URL: sqlite:///./cs_os_ci.db
+        run: python -c "from app.database import engine; from app.migrations import run_migrations; run_migrations(engine)"
+
       - name: Start test server
         env:
           DATABASE_URL: sqlite:///./cs_os_ci.db
